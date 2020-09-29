@@ -1,0 +1,17 @@
+---
+run_params:
+  n_runs: 25
+  n_epochs: 100
+  n_steps: 30000
+  n_episodes_test: 10
+  hours: 24
+  minutes: 0
+  aggregate_hours: 3
+  aggregate_minutes: 0
+  demo: false
+  aggregation_job: false
+  memory: 4000
+suite_params:
+  #log_dir: paper_logs_full
+  log_id: full_benchmark_3.1
+  use_timestamp: false

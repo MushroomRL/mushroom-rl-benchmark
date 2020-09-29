@@ -1,0 +1,32 @@
+# GitIgnore for Mushroom Benchmark
+
+# Default excluded folders
+mushroom_rl_benchmark.egg-info/
+__pycache__/
+.vscode/
+.ipynb_*/
+logs/
+venv/
+
+# Custom excluded folders
+test_scripts/
+rlip_part1/
+rlip_part2/
+
+paper_logs/
+paper_logs_full_local/
+paper_logs_test_old/
+paper_results/
+paper_results_initial/
+paper_results_davide/
+paper_results_old/
+
+# Default excluded files
+.DS_Store
+*.un~
+*.ipynb
+
+# Custom excluded files
+mltrain.py
+heaptrack.*
+mprofile*

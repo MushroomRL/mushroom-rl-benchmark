@@ -1,0 +1,11 @@
+---
+run_params:
+  n_runs: 25
+  n_epochs: 100
+  n_steps: 30000
+  n_episodes_test: 10
+  max_concurrent_runs: 5
+suite_params:
+  log_dir: paper_logs_full
+  log_id: full_benchmark_3.0
+  use_timestamp: false

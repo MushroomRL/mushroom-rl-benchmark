@@ -1,0 +1,18 @@
+---
+run_params: 
+  n_runs: 5
+  n_epochs: 10
+  n_steps: 15000
+  n_episodes_test: 5
+  hours: 1
+  minutes: 30
+  aggregate_hours: 0
+  aggregate_minutes: 15
+  demo: false
+  memory: 4000
+suite_params: 
+  log_dir: paper_logs_cluster
+  #log_id: run_
+  use_timestamp: true
+    
+

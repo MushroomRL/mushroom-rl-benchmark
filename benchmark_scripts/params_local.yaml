@@ -1,0 +1,10 @@
+---
+run_params:
+  n_runs: 4
+  n_epochs: 10
+  n_steps: 15000
+  n_episodes_test: 5
+suite_params:
+  log_dir: paper_logs
+  log_id: round1
+  use_timestamp: false
