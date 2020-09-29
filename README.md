@@ -37,7 +37,7 @@ You can do a minimal installation of ``mushroom_rl_benchmark`` with:
 
 You can run the example scripts with:
 
-    python example_scripts/benchmarking_trpo.py
+    python examples/benchmarking_trpo.py
 
 ## Execution instructions for Full Benchmark
 
@@ -61,28 +61,28 @@ The script for starting the benchmarks takes following arguments:
 
 The agent and environment parameters used for benchmarking the agents on an environment are located in
 
-    paper_scripts/env/*
+    benchmark_scripts/env/*
 
 The suite and run parameters used for local, slurm and full_slurm benchmarks are located in
 
-    paper_scripts/params_local.yaml
-    paper_scripts/params_slurm.yaml
-    paper_scripts/params_slurm_full.yaml
+    benchmark_scripts/params_local.yaml
+    benchmark_scripts/params_slurm.yaml
+    benchmark_scripts/params_slurm_full.yaml
 
 ### Execute locally
 
 To run locally call the script like this:
 
-    $ python3 paper_scripts/benchmark.py -e <EnvironmentName> [-t]
+    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> [-t]
 
 ### Execute on the cluster
 
 To run locally call the script like this:
 
-    $ python3 paper_scripts/benchmark.py -e <EnvironmentName> -s [-t]
+    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> -s [-t]
 
 ### Execute the full benchmark on the cluster
 
 To run locally call the script like this:
 
-    $ python3 paper_scripts/benchmark.py -e <EnvironmentName> -s -f [-t]
+    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> -s -f [-t]
