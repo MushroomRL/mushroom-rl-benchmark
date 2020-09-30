@@ -1,10 +1,12 @@
 Builders
 ========
 
-Environment Builder
--------------------
+.. automodule:: mushroom_rl_benchmark.builders.environment_builder
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.environment.environment_builder
+.. automodule:: mushroom_rl_benchmark.builders.agent_builder
    :members:
    :undoc-members:
    :show-inheritance:
@@ -12,37 +14,33 @@ Environment Builder
 Agent Builders
 --------------
 
-.. automodule:: mushroom_rl_benchmark.agent.a2c_builder
+.. automodule:: mushroom_rl_benchmark.builders.a2c_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.agent.agent_builder
+
+.. automodule:: mushroom_rl_benchmark.builders.ddpg_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.agent.ddpg_builder
+.. automodule:: mushroom_rl_benchmark.builders.ppo_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.agent.ppo_builder
+.. automodule:: mushroom_rl_benchmark.builders.sac_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.agent.sac_builder
+.. automodule:: mushroom_rl_benchmark.builders.td3_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.agent.td3_builder
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: mushroom_rl_benchmark.agent.trpo_builder
+.. automodule:: mushroom_rl_benchmark.builders.trpo_builder
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,18 +1,19 @@
 Core functionality
 ==================
 
-Experiment
-----------
+Suite
+-----
 
-.. automodule:: mushroom_rl_benchmark.experiment_class
+.. automodule:: mushroom_rl_benchmark.core.suite
    :members:
    :undoc-members:
    :show-inheritance:
 
-Suite
------
 
-.. automodule:: mushroom_rl_benchmark.suite
+Experiment
+----------
+
+.. automodule:: mushroom_rl_benchmark.core.experiment
    :members:
    :undoc-members:
    :show-inheritance:
@@ -20,7 +21,7 @@ Suite
 Logger
 ------
 
-.. automodule:: mushroom_rl_benchmark.logger
+.. automodule:: mushroom_rl_benchmark.core.logger
    :members:
    :undoc-members:
    :show-inheritance:
@@ -29,7 +30,7 @@ Logger
 Visualizer
 ----------
 
-.. automodule:: mushroom_rl_benchmark.visualizer
+.. automodule:: mushroom_rl_benchmark.core.visualizer
    :members:
    :undoc-members:
    :show-inheritance:
