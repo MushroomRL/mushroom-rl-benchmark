@@ -1,4 +1,5 @@
-# MushroomRL Benchmark
+# MushroomRL Benchmark [![Documentation Status](https://readthedocs.org/projects/mushroom-rl-benchmark/badge/?version=latest)](https://mushroom-rl-benchmark.readthedocs.io/en/latest/?badge=latest)
+
 
 ## What is MushroomRL Benchmark?
 
