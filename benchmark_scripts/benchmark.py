@@ -27,7 +27,7 @@ if __name__ == '__main__':
     script_dir = Path(__file__).parent
     config_file = script_dir / 'env' / (env_id + '.yaml')
 
-    agent_data, env_data = yaml.load(open(config_file, 'r')).values()
+    agent_data, env_data = yaml.safe_load(open(config_file, 'r')).values()
 
     agents = agent_data.keys()
     agents_params = agent_data.values()
