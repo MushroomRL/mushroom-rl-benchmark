@@ -135,7 +135,6 @@ class BenchmarkVisualizer:
         core = Core(agent, mdp)
         core.evaluate(n_episodes=episodes, render=True)
 
-
     @classmethod
     def from_path(cls, path):
         """
