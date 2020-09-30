@@ -135,7 +135,7 @@ class BenchmarkExperiment:
                     # Check for best Agent (depends on J)
                     if run['score'][0] > new_score[0]:
                         new_score = run['score']
-                        new_agent = run['builders']
+                        new_agent = run['agent']
 
                 self.extend_and_save_Js(run_Js)
                 self.extend_and_save_Rs(run_Rs)
