@@ -4,7 +4,7 @@ default_backend = matplotlib.rcParams['backend']
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from pathlib import Path
-from .utils import get_mean_and_confidence
+from mushroom_rl_benchmark.utils import get_mean_and_confidence
 from mushroom_rl.core import Core
 
 from mushroom_rl_benchmark import BenchmarkLogger
@@ -125,7 +125,7 @@ class BenchmarkVisualizer:
 
     def show_agent(self, episodes=5, mdp_render=False):
         """
-        Method to run and visualize the best agent in the environment.
+        Method to run and visualize the best builders in the environment.
         """
         matplotlib.use(default_backend)
         mdp = self.logger.load_environment_builder().build()

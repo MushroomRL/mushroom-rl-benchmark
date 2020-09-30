@@ -1,11 +1,11 @@
 from copy import deepcopy
 import mushroom_rl.environments
 
-class EnvironmentBuilder:
 
+class EnvironmentBuilder:
     def __init__(self, env_name, env_params):
         """
-        Initialize EnvironmentBuilder
+        Constructor
 
         Args:
             env_name: name of the environment to build
@@ -17,6 +17,7 @@ class EnvironmentBuilder:
     def build(self):
         """
         Build and return an environment
+
         """
         environment = getattr(mushroom_rl.environments, self.env_name)
         return environment(*self.env_params.values())
@@ -24,5 +25,6 @@ class EnvironmentBuilder:
     def copy(self):
         """
         Create a deepcopy of the environment_builder and return it
+
         """
         return deepcopy(self)

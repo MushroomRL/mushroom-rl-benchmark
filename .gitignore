@@ -30,3 +30,6 @@ paper_results_old/
 mltrain.py
 heaptrack.*
 mprofile*
+
+# PyCharm
+.idea/

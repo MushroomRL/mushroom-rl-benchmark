@@ -26,8 +26,9 @@ for group_name in extras:
         all_deps += extras[group_name]
 extras['all'] = all_deps
 
-long_description = 'mushroom_rl_benchmark is a simple and easy to use tool to create scientific benchmarks for RL algorithms.' \
-                   'It enables running experiments local (sequential, parallel) or with SLURM.'
+long_description = 'mushroom_rl_benchmark is a simple and easy to use tool' \
+                   ' to create scientific benchmarks for RL algorithms.' \
+                   ' It enables running experiments local (sequential, parallel) or with SLURM.'
 
 setup(
     name='mushroom_rl_benchmark',

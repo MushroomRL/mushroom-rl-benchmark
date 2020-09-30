@@ -5,6 +5,7 @@ from .trpo_builder import TRPOBuilder
 from .ddpg_builder import DDPGBuilder
 from .td3_builder import TD3Builder
 from .sac_builder import SACBuilder
+from .environment_builder import EnvironmentBuilder
 
 __all__ = [
     'AgentBuilder',
@@ -13,5 +14,6 @@ __all__ = [
     'TRPOBuilder',
     'DDPGBuilder',
     'TD3Builder',
-    'SACBuilder'
+    'SACBuilder',
+    'EnvironmentBuilder'
 ]

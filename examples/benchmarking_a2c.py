@@ -4,8 +4,7 @@ Script for benchmarking A2C Agent
 
 import time
 from mushroom_rl_benchmark import BenchmarkExperiment, BenchmarkLogger
-from mushroom_rl_benchmark.environment import EnvironmentBuilder
-from mushroom_rl_benchmark.agent import A2CBuilder
+from mushroom_rl_benchmark.builders import EnvironmentBuilder, A2CBuilder
 
 if __name__ == '__main__':
 

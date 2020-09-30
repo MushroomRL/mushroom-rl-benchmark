@@ -62,7 +62,7 @@ class BenchmarkExperiment:
             if cmp_E:
                 self.extend_and_save_policy_entropies([result['Es']])
             new_score = result['score']
-            new_agent = result['agent']
+            new_agent = result['builders']
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
                     best_J=new_score[0],
@@ -135,7 +135,7 @@ class BenchmarkExperiment:
                     # Check for best Agent (depends on J)
                     if run['score'][0] > new_score[0]:
                         new_score = run['score']
-                        new_agent = run['agent']
+                        new_agent = run['builders']
 
                 self.extend_and_save_Js(run_Js)
                 self.extend_and_save_Rs(run_Rs)

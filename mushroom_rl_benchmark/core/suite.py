@@ -1,9 +1,9 @@
 from mushroom_rl_benchmark import BenchmarkExperiment, BenchmarkLogger
 import mushroom_rl_benchmark.agent
-from mushroom_rl_benchmark.environment import EnvironmentBuilder
+from mushroom_rl_benchmark.builders import EnvironmentBuilder
+
 
 class BenchmarkSuite:
-
     def __init__(self, log_dir=None, log_id=None, use_timestamp=True, **run_params):
         self.experiment_structure = dict()
         self.environment_list = []
@@ -15,7 +15,7 @@ class BenchmarkSuite:
 
         if environment in self.environment_list:
             if agent_name in self.experiment_structure[environment]:
-                raise AttributeError('An experiment for environment {} and agent {} already exists.'.format(environment, agent_name))
+                raise AttributeError('An experiment for environment {} and builders {} already exists.'.format(environment, agent_name))
             else:
                 self.experiment_structure[environment][agent_name] = self._create_experiment(environment, environment_params, agent_name, agent_builder_params)
         else:
@@ -67,5 +67,3 @@ class BenchmarkSuite:
             for agent, exp in agents.items():
                 self.logger.info('Starting Experiment for {} on {}'.format(agent, environment))
                 exp.run(exec_type=exec_type, **self.run_params)
-
-    

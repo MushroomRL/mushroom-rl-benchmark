@@ -1,15 +1,17 @@
-import sys, torch
+import sys
+import torch
 import numpy as np
 from copy import deepcopy
-from tqdm import tqdm, trange
+from tqdm import tqdm
 
 from mushroom_rl.core import Core
 from mushroom_rl.utils.dataset import compute_J, parse_dataset
 
 from mushroom_rl_benchmark.utils import be_range, get_init_states
 
-def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None, quiet=True):
 
+def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None,
+             quiet=True):
     if seed is not None:
         print('SEED', seed)
         np.random.seed(seed)
@@ -91,8 +93,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
 
     return result
 
-def compute_metrics(core, eval_params, agent_builder, cmp_E):
 
+def compute_metrics(core, eval_params, agent_builder, cmp_E):
     dataset = core.evaluate(**eval_params)
 
     # Compute J
@@ -117,6 +119,7 @@ def compute_metrics(core, eval_params, agent_builder, cmp_E):
     
     return J, R, Q, E
 
+
 def print_metrics(epoch, J, R, Q, E, start=False):
     if E is None:
         tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
@@ -126,4 +129,3 @@ def print_metrics(epoch, J, R, Q, E, start=False):
         tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
         tqdm.write('J: {}, R: {}, Q: {}, E: {}'.format(J, R, Q, E))
         tqdm.write('##################################################################################################')
-    

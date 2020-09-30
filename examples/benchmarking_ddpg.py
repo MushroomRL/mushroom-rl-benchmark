@@ -4,8 +4,7 @@ Script for benchmarking DDPG Agent
 
 import time
 from mushroom_rl_benchmark import BenchmarkExperiment, BenchmarkLogger
-from mushroom_rl_benchmark.environment import EnvironmentBuilder
-from mushroom_rl_benchmark.agent import DDPGBuilder
+from mushroom_rl_benchmark.builders import EnvironmentBuilder, DDPGBuilder
 
 if __name__ == '__main__':
 

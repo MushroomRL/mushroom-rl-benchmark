@@ -1,7 +1,7 @@
 from copy import deepcopy
 
-class AgentBuilder:
 
+class AgentBuilder:
     def __init__(self, n_steps_per_fit, compute_policy_entropy=True, compute_entropy_with_states=False, preprocessors=None):
         """
         Initialize AgentBuilder
@@ -13,7 +13,7 @@ class AgentBuilder:
 
     def set_n_steps_per_fit(self, n_steps_per_fit):
         """
-        Set n_steps_per_fit for the specific agent
+        Set n_steps_per_fit for the specific builders
 
         Args:
             n_steps_per_fit: number of steps per fit
@@ -22,13 +22,13 @@ class AgentBuilder:
 
     def get_n_steps_per_fit(self):
         """
-        Get n_steps_per_fit for the specific agent
+        Get n_steps_per_fit for the specific builders
         """
         return self._n_steps_per_fit
 
     def set_preprocessors(self, preprocessors):
         """
-        Set preprocessor for the specific agent
+        Set preprocessor for the specific builders
 
         Args:
             preprocessors: list of preprocessor classes
@@ -37,7 +37,7 @@ class AgentBuilder:
 
     def get_preprocessors(self):
         """
-        Get preprocessors for the specific agent
+        Get preprocessors for the specific builders
         """
         return self._preprocessors
 
@@ -49,19 +49,19 @@ class AgentBuilder:
 
     def build(self):
         """
-        Build and return the agent
+        Build and return the builders
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
 
     def compute_Q(self, agent, states):
         """
-        Compute the Q Value for an agent
+        Compute the Q Value for an builders
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
     
     @classmethod
     def default(cls):
         """
-        Create a default initialization for the specific agent and return a new AgentBuilder class
+        Create a default initialization for the specific builders and return a new AgentBuilder class
         """
         raise NotImplementedError('AgentBuilder is an abstract class')

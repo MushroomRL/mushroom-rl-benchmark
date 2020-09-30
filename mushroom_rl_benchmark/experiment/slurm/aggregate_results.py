@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 
-import os
-import torch
-import numpy as np
 from pathlib import Path
 
 from mushroom_rl_benchmark import BenchmarkLogger, BenchmarkVisualizer
-from mushroom_rl_benchmark.experiment import exec_run
 from mushroom_rl_benchmark.experiment.slurm import read_arguments_aggregate
+
 
 def run(res_dir, res_id):
     work_dir = Path(res_dir, res_id)
@@ -73,5 +70,3 @@ def run(res_dir, res_id):
 if __name__ == '__main__':
     res_dir, res_id = read_arguments_aggregate()
     run(res_dir, res_id)
-    
-    

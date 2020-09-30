@@ -1,16 +1,26 @@
-import os, sys, ast, json
-import argparse
 import numpy as np
 from inspect import signature
 import scipy.stats as st
 from tqdm import trange
 
+
 def get_mean_and_confidence(data):
+    """
+    Compute the mean and 95% confidennce interval
+    Args:
+        data (np.ndarray): Array of experiment data of shape (n_runs, n_epochs)
+
+    Returns:
+        The mean of the dataset at each epoch along with the confidence interval
+
+
+    """
     mean = np.mean(data, axis=0)
     se = st.sem(data, axis=0)
     n = len(data)
     interval, _ = st.t.interval(0.95, n-1, scale=se)
     return mean, interval
+
 
 def get_init_states(dataset):
     pick = True
@@ -21,11 +31,13 @@ def get_init_states(dataset):
         pick = d[-1]
     return np.array(x_0)
 
+
 def be_range(n, quiet):
     if quiet:
         return range(n)
     else:
         return trange(n, leave=False)
+
 
 def extract_arguments(args, method):
     intersection = lambda list1, list2: [x for x in list1 if x in list2]

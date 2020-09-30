@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
-import torch, yaml
+
+import yaml
 from pathlib import Path
 from argparse import ArgumentParser
 from mushroom_rl_benchmark import BenchmarkSuite
 
+
 def get_args():
     parser = ArgumentParser()
     arg_test = parser.add_argument_group('benchmark_script')
-    arg_test.add_argument("-e", "--env", type=str, required=True, help='Select an environment for the benchmark.')
-    arg_test.add_argument("-s", "--slurm", action='store_true', help='Flag to signalize the usage of SLURM.')
-    arg_test.add_argument("-t", "--test", action='store_true', help='Flag go signalize that you want to test the script and NOT execute the benchmark.')
-    arg_test.add_argument("-f", "--full", action='store_true', help='Flag to indicate that you want to run the full benchmark.')
+    arg_test.add_argument("-e", "--env", type=str, required=True,
+                          help='Select an environment for the benchmark.')
+    arg_test.add_argument("-s", "--slurm", action='store_true',
+                          help='Flag to signalize the usage of SLURM.')
+    arg_test.add_argument("-t", "--test", action='store_true',
+                          help='Flag go signalize that you want to test the script and NOT execute the benchmark.')
+    arg_test.add_argument("-f", "--full", action='store_true',
+                          help='Flag to indicate that you want to run the full benchmark.')
+
     args = vars(parser.parse_args())
     return args.values()
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     env_id, use_slurm, test, full_experiment = get_args()
     script_dir = Path(__file__).parent
     config_file = script_dir / 'env' / (env_id + '.yaml')

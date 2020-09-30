@@ -1,6 +1,4 @@
 import os
-import torch
-import numpy as np
 
 from mushroom_rl_benchmark import BenchmarkLogger
 from mushroom_rl_benchmark.experiment import exec_run
@@ -35,7 +33,7 @@ if __name__ == '__main__':
     if cmp_E:
         logger.save_policy_entropies([result['Es']])
     new_score = result['score']
-    new_agent = result['agent']
+    new_agent = result['builders']
     stats = dict(
         best_J=new_score[0],
         best_R=new_score[1],
@@ -46,5 +44,3 @@ if __name__ == '__main__':
     logger.save_best_agent(new_agent)
 
     logger.info('Finished execution.')
-
-    

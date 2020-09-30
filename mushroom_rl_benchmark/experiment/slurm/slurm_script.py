@@ -1,5 +1,6 @@
 import os
 
+
 def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params):
     code = generate_slurm(**slurm_params)
 
@@ -10,6 +11,7 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
         file.write(code)
 
     return slurm_path
+
 
 def generate_slurm(exp_name, exp_dir_slurm, python_file, n_exp=1, max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0, project_name=None):
     duration = to_duration(hours, minutes, seconds) 
@@ -56,6 +58,7 @@ echo "Starting Job $SLURM_JOB_ID, Index $SLURM_ARRAY_TASK_ID"
     code += 'eval $CMD\n'
 
     return code
+
 
 def to_duration(hours, minutes, seconds):
     h = "0" + str(hours) if hours < 10 else str(hours)

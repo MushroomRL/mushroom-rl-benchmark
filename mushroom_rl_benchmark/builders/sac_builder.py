@@ -3,11 +3,11 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import SAC
-from mushroom_rl.policy import GaussianTorchPolicy
 from mushroom_rl.utils.preprocessors import StandardizationPreprocessor
 
-from mushroom_rl_benchmark.agent import AgentBuilder
-from mushroom_rl_benchmark.agent.network import SACActorNetwork as ActorNetwork, SACCriticNetwork as CriticNetwork
+from mushroom_rl_benchmark.builders import AgentBuilder
+from mushroom_rl_benchmark.builders.network import SACActorNetwork as ActorNetwork, SACCriticNetwork as CriticNetwork
+
 
 class SACBuilder(AgentBuilder):
     """
@@ -87,4 +87,3 @@ class SACBuilder(AgentBuilder):
             target_entropy=target_entropy)
 
         return cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
-        

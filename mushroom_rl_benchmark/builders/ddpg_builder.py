@@ -5,8 +5,9 @@ import torch.nn.functional as F
 from mushroom_rl.algorithms.actor_critic import DDPG
 from mushroom_rl.policy import OrnsteinUhlenbeckPolicy
 
-from mushroom_rl_benchmark.agent import AgentBuilder
-from mushroom_rl_benchmark.agent.network import DDPGActorNetwork as ActorNetwork, DDPGCriticNetwork as CriticNetwork
+from mushroom_rl_benchmark.builders import AgentBuilder
+from mushroom_rl_benchmark.builders.network import DDPGActorNetwork as ActorNetwork, DDPGCriticNetwork as CriticNetwork
+
 
 class DDPGBuilder(AgentBuilder):
     """
@@ -82,4 +83,3 @@ class DDPGBuilder(AgentBuilder):
             tau=1e-3)
 
         return cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params)
-        

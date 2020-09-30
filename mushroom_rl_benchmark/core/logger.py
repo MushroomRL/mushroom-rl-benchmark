@@ -6,11 +6,11 @@ from datetime import datetime
 
 import torch
 import numpy as np
-from pathlib import Path, PurePath
+from pathlib import Path
 from mushroom_rl.algorithms import Agent
 
-class BenchmarkLogger:
 
+class BenchmarkLogger:
     file_Js = 'Js.pkl'
     file_Rs = 'Rs.pkl'
     file_Qs = 'Qs.pkl'
@@ -21,7 +21,6 @@ class BenchmarkLogger:
     file_agent_builder = 'agent_builder.pkl'
     file_config = 'config.json'
     file_stats = 'stats.json'
-    
 
     def __init__(self, log_dir=None, log_id=None, use_timestamp=True):
 
@@ -64,7 +63,7 @@ class BenchmarkLogger:
         if not os.path.exists(log_dir):
             Path(log_dir).mkdir(parents=True, exist_ok=True)
         if not os.path.isdir(log_dir):
-            raise NotADirectoryError("Path to save agent is not valid")
+            raise NotADirectoryError("Path to save builders is not valid")
         self.log_dir = log_dir
 
     def get_log_dir(self):
@@ -79,7 +78,7 @@ class BenchmarkLogger:
         if not os.path.exists(path):
             Path(path).mkdir(parents=True, exist_ok=True)
         if not os.path.isdir(path):
-            raise NotADirectoryError("Path to save agent is not valid")
+            raise NotADirectoryError("Path to save builders is not valid")
         self.log_id = log_id
 
     def get_log_id(self):

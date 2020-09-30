@@ -1,10 +1,10 @@
-import json
 import argparse
 
-def make_arguments(**params):
 
+def make_arguments(**params):
     param_strings = ["--{} '{}'".format(key, params[key]) for key in params.keys()]
     return ' '.join(param_strings)
+
 
 def read_arguments_run(arg_string=None):
     parser = argparse.ArgumentParser()
@@ -25,7 +25,8 @@ def read_arguments_run(arg_string=None):
     log_dir = args['log_dir']
     del args['log_dir']
 
-    return (log_dir, args)
+    return log_dir, args
+
 
 def read_arguments_aggregate(arg_string=None):
     parser = argparse.ArgumentParser()
@@ -43,4 +44,4 @@ def read_arguments_aggregate(arg_string=None):
     log_dir = args['log_dir']
     log_id = args['log_id']
 
-    return (log_dir, log_id)
+    return log_dir, log_id

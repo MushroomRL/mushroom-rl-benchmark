@@ -1,10 +1,10 @@
 __version__ = '1.0.0'
 
 try:
-    from .logger import BenchmarkLogger
-    from .visualizer import BenchmarkVisualizer
-    from .experiment_class import BenchmarkExperiment
-    from .suite import BenchmarkSuite
+    from .core.logger import BenchmarkLogger
+    from .core.visualizer import BenchmarkVisualizer
+    from .core.experiment_class import BenchmarkExperiment
+    from .core.suite import BenchmarkSuite
 
     __all__ = [
         'BenchmarkLogger',
@@ -14,4 +14,3 @@ try:
     ]
 except ImportError as e:
     __all__ = []
-    
