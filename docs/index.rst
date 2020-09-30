@@ -54,9 +54,8 @@ or to compile the pdf version:
    :hidden:
    :maxdepth: 2
    :caption: Benchmarks Results:
-   :glob:
 
-   source/benchmarks/*
+   source/benchmarks/actor_critic.rst
 
 .. toctree::
    :hidden:
