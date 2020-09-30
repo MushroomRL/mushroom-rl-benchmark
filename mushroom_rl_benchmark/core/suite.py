@@ -1,6 +1,7 @@
-from mushroom_rl_benchmark import BenchmarkExperiment, BenchmarkLogger
-import mushroom_rl_benchmark.agent
+import mushroom_rl_benchmark.builders
 from mushroom_rl_benchmark.builders import EnvironmentBuilder
+from mushroom_rl_benchmark.core.experiment import BenchmarkExperiment
+from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 
 class BenchmarkSuite:
@@ -26,8 +27,6 @@ class BenchmarkSuite:
             self.agent_list.append(agent_name)
 
     def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
-
-        environment_name = ''
         separator = '.'
         if separator in environment:
             environment_name, environment_id = environment.split(separator)
@@ -45,11 +44,10 @@ class BenchmarkSuite:
         )
 
         try:
-            builder = getattr(mushroom_rl_benchmark.agent, '{}Builder'.format(agent_name))
+            builder = getattr(mushroom_rl_benchmark.builders, '{}Builder'.format(agent_name))
         except AttributeError as e: 
             logger.exception(e)
 
-        
         agent_builder = builder.default(**agent_builder_params)
         env_builder = EnvironmentBuilder(environment_name, environment_params)
 

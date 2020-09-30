@@ -9,13 +9,13 @@ from tqdm import tqdm, trange
 import multiprocessing
 from joblib import Parallel, delayed
 
-from mushroom_rl_benchmark import BenchmarkVisualizer
 from mushroom_rl_benchmark.utils import extract_arguments
 from mushroom_rl_benchmark.experiment import exec_run
 from mushroom_rl_benchmark.experiment.slurm import create_slurm_script, generate_slurm, make_arguments
+from mushroom_rl_benchmark.core.visualizer import BenchmarkVisualizer
+
 
 class BenchmarkExperiment:
-    
     def __init__(self, agent_builder, env_builder, logger):
         self.agent_builder = agent_builder
         self.env_builder = env_builder

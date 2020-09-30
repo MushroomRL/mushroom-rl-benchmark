@@ -7,7 +7,7 @@ from pathlib import Path
 from mushroom_rl_benchmark.utils import get_mean_and_confidence
 from mushroom_rl.core import Core
 
-from mushroom_rl_benchmark import BenchmarkLogger
+from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 
 class BenchmarkVisualizer:

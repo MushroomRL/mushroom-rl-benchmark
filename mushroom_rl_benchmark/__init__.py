@@ -1,10 +1,7 @@
 __version__ = '1.0.0'
 
 try:
-    from .core.logger import BenchmarkLogger
-    from .core.visualizer import BenchmarkVisualizer
-    from .core.experiment_class import BenchmarkExperiment
-    from .core.suite import BenchmarkSuite
+    from .core import BenchmarkLogger, BenchmarkVisualizer, BenchmarkExperiment, BenchmarkSuite
 
     __all__ = [
         'BenchmarkLogger',
