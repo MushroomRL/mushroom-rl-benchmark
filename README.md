@@ -48,42 +48,43 @@ Go to an python environment, where you have mushroom-rl and mushroom-rl-benchmar
 
 The script for starting the benchmarks takes following arguments:
 
-    usage: benchmark.py [-h] -e ENV [-s] [-t] [-f]
-
+    usage: benchmark.py [-h] -e ENV [-s] [-t] [-r]
+    
     optional arguments:
-    -h, --help         show this help message and exit
+      -h, --help         show this help message and exit
+    
+    benchmark parameters:
+      -e ENV, --env ENV  Environment to benchmark.
+      -s, --slurm        Flag to use of SLURM.
+      -t, --test         Flag to test the script and NOT execute the benchmark.
+      -r, --reduced      Flag to run a reduced version of the benchmark.
 
-    benchmark_script:
-    -e ENV, --env ENV  Select an environment for the benchmark.
-    -s, --slurm        Flag to signalize the usage of SLURM.
-    -t, --test         Flag go signalize that you want to test the script and
-                        NOT execute the benchmark.
-    -f, --full         Flag to indicate that you want to run the full benchmark.
 
 The agent and environment parameters used for benchmarking the agents on an environment are located in
 
-    benchmark_scripts/env/*
+    cfg/env/*
 
 The suite and run parameters used for local, slurm and full_slurm benchmarks are located in
 
-    benchmark_scripts/params_local.yaml
-    benchmark_scripts/params_slurm.yaml
-    benchmark_scripts/params_slurm_full.yaml
+    cfg/params_local_reduced.yaml
+    cfg/params_slurm_reduced.yaml
+    cfg/params_local.yaml
+    cfg/params_slurm.yaml
 
-### Execute locally
+### Execute reduced benchmark locally
 
-To run locally call the script like this:
+To run a reduced benchmark locally call the script like this:
 
-    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> [-t]
+    $ ./benchmark.py -e <EnvironmentName> -r
 
-### Execute on the cluster
+### Execute reduced benchmark on the cluster
 
-To run locally call the script like this:
+To run a reduced benchmark on the cluster call the script like this:
 
-    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> -s [-t]
+    $ ./benchmark.py -e <EnvironmentName> -s -r
 
 ### Execute the full benchmark on the cluster
 
 To run locally call the script like this:
 
-    $ python benchmark_scripts/benchmark.py -e <EnvironmentName> -s -f [-t]
+    $ ./benchmark.py -e <EnvironmentName> -s

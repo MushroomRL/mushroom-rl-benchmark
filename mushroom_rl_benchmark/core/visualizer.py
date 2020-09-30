@@ -54,7 +54,7 @@ class BenchmarkVisualizer:
         else:
             return self.data['Es']
 
-    def get_report(self, color='red', facecolor='blue', alpha=0.4, grid=True):
+    def get_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
 
         plot_cnt = self.plot_counter
         self.plot_counter += 1
@@ -92,7 +92,7 @@ class BenchmarkVisualizer:
 
         return fig
 
-    def save_report(self, file_name='report_plot', color='red', facecolor='blue', alpha=0.4, grid=True):
+    def save_report(self, file_name='report_plot', color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
         """
@@ -100,7 +100,7 @@ class BenchmarkVisualizer:
         self.logger.save_figure(fig, file_name)
         plt.close(fig)
     
-    def show_report(self, color='red', facecolor='blue', alpha=0.4, grid=True):
+    def show_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to show a report of the training metrics from a performend experiment.
         """
@@ -110,7 +110,7 @@ class BenchmarkVisualizer:
         plt.close(fig)
 
     @staticmethod
-    def plot_mean_conf(data, ax, color='red', facecolor='blue', alpha=0.4, grid=True):
+    def plot_mean_conf(data, ax, color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to plot mean and confidence interval for data on pyplot axes.
         """
