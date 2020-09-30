@@ -24,7 +24,7 @@ How to run a benchmark?
 -----------------------
 
 A benchmark can be executed like shown in the following code snippet. `XYZBuilder` is a placeholder for an
- AgentBuilder. To benchmark a custom algorithm, simply create a new AgentBuilder for you algorithm implementation.
+AgentBuilder. To benchmark a custom algorithm, simply create a new AgentBuilder for you algorithm implementation.
 
 .. code:: python
 
