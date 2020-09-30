@@ -12,6 +12,6 @@ run_params:
   aggregation_job: false
   memory: 4000
 suite_params:
-  #log_dir: paper_logs_full
-  log_id: full_benchmark_3.1
+  log_dir: logs
+  log_id: full_benchmark
   use_timestamp: false

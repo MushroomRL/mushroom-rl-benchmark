@@ -11,8 +11,8 @@ run_params:
   demo: false
   memory: 4000
 suite_params: 
-  log_dir: paper_logs_cluster
-  #log_id: run_
+  log_dir: logs
+  log_id: small_benchmark
   use_timestamp: true
     
 

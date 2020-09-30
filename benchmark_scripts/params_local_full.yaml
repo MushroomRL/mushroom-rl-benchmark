@@ -6,6 +6,6 @@ run_params:
   n_episodes_test: 10
   max_concurrent_runs: 5
 suite_params:
-  log_dir: paper_logs_full
-  log_id: full_benchmark_3.0
+  log_dir: logs
+  log_id: full_benchmark
   use_timestamp: false

@@ -5,6 +5,6 @@ run_params:
   n_steps: 15000
   n_episodes_test: 5
 suite_params:
-  log_dir: paper_logs
-  log_id: round1
+  log_dir: logs
+  log_id: small_benchmark
   use_timestamp: false
