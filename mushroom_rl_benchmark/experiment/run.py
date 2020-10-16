@@ -12,6 +12,21 @@ from mushroom_rl_benchmark.utils import be_range, get_init_states
 
 def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None,
              quiet=True):
+    """
+    Function that handles the execution of an experiment run.
+
+    Args:
+        agent_builder (AgentBuilder): agent builder to spawn an agent
+        env_builder (EnvironmentBuilder): environment builder to spawn an environment
+        n_epochs (int): number of epochs
+        n_steps (int): number of steps per epoch
+
+    Kwargs:
+        n_steps_test (int): number of steps for testing (Default: None)
+        n_episodes_test (int): number of episodes for testing (Default: None)
+        seed (int): the seed
+        quiet (bool): select if run should be executed verbous (Default: True)
+    """
     if seed is not None:
         print('SEED', seed)
         np.random.seed(seed)
@@ -95,6 +110,14 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
 
 
 def compute_metrics(core, eval_params, agent_builder, cmp_E):
+    """
+    Function to compute the metrics.
+
+    Args:
+        eval_params (dict): parameters for running the evaluation
+        agent_builder (AgentBuilder): the agent builder
+        cmp_E (bool): select if policy entropy should be computed
+    """
     dataset = core.evaluate(**eval_params)
 
     # Compute J
@@ -121,6 +144,19 @@ def compute_metrics(core, eval_params, agent_builder, cmp_E):
 
 
 def print_metrics(epoch, J, R, Q, E, start=False):
+    """
+    Function that pretty prints the metrics on the standard output.
+
+    Args:
+        epoch (int): the current epoch
+        J (float): the current value of J
+        R (float): the current value of R
+        Q (float): the current value of Q
+        E (float): the current value of E (Set None if not defined)
+
+    Kwargs:
+        start (bool): print at the start or end of an epoch
+    """
     if E is None:
         tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
         tqdm.write('J: {}, R: {}, Q: {}'.format(J, R, Q))

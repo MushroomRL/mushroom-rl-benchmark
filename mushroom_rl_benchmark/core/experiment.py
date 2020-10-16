@@ -16,7 +16,21 @@ from mushroom_rl_benchmark.core.visualizer import BenchmarkVisualizer
 
 
 class BenchmarkExperiment:
+    """
+    Class to create and run an experiment using MushroomRL
+    """
     def __init__(self, agent_builder, env_builder, logger):
+        """
+        Constructor.
+
+        Args:
+            agent_builder (AgentBuilder): instance of a specific agent builder
+            env_builder (EnvironmentBuilder): instance of an environment builder
+            logger (BenchmarkLogger): instance of a benchmark logger
+
+        Returns:
+            benchmark_experiment: instance of a benchmark experiment
+        """
         self.agent_builder = agent_builder
         self.env_builder = env_builder
         self.logger = logger
@@ -31,6 +45,13 @@ class BenchmarkExperiment:
         self.stats = dict(best_J=float("-inf"))
 
     def run(self, exec_type='sequential', **run_params):
+        """
+        Execute the experiment.
+
+        Args:
+            exec_type (str): type of executing the experiment [sequential|parallel|slurm] (Default: sequential)
+            **run_params (dict): parameters for the selected execution type
+        """
         try:
             run_fn = getattr(self, 'run_{}'.format(exec_type))
         except AttributeError as e: 
@@ -40,6 +61,15 @@ class BenchmarkExperiment:
         run_fn(**run_params)
 
     def run_sequential(self, n_runs, n_runs_completed=0, save_plot=True, **run_params):
+        """
+        Execute the experiment sequential.
+
+        Args:
+            n_runs (int): number of total runs of the experiment
+            n_runs_completed (int): number of completed runs of the experiment
+            save_plot (bool): select if a plot of the experiment should be saved to the log directory
+            **run_params (dict): parameters for executing a benchmark run
+        """
         self.start_timer()
         
         self.save_builders()
@@ -78,6 +108,17 @@ class BenchmarkExperiment:
             self.save_plot()
 
     def run_parallel(self, n_runs, n_runs_completed=0, threading=False, save_plot=True, max_concurrent_runs=None, **run_params):
+        """
+        Execute the experiment in parallel threads.
+
+        Args:
+            n_runs (int): number of total runs of the experiment
+            n_runs_completed (int): number of completed runs of the experiment
+            threading (bool): select to use threads instead of processes
+            save_plot (bool): select if a plot of the experiment should be saved to the log directory
+            max_concurrent_runs (int): maximum number of concurrent runs (Default: number of cores)
+            **run_params (dict): parameters for executing a benchmark run
+        """
         self.start_timer()
         self.save_builders()
         
@@ -162,9 +203,19 @@ class BenchmarkExperiment:
         if save_plot:
             self.save_plot()
 
-    def run_slurm(self, n_runs, n_runs_completed=0, aggregate_hours=3, aggregate_minutes=0, aggregate_seconds=0, demo=False, aggregation_job=True, **run_params):
+    def run_slurm(self, n_runs, n_runs_completed=0, aggregation_job=True, aggregate_hours=3, aggregate_minutes=0, aggregate_seconds=0, demo=False, **run_params):
         """
-        Creates slurm script and schedules runs as sbatch
+        Execute the experiment with SLURM.
+
+        Args:
+            n_runs (int): number of total runs of the experiment
+            n_runs_completed (int): number of completed runs of the experiment
+            aggregation_job (bool): select if an aggregation job should be scheduled
+            aggregate_hours (int): maximum number of hours for the aggregation job (Default: 3)
+            aggregate_minutes (int): maximum number of minutes for the aggregation job (Default: 0)
+            aggregate_seconds (int): maximum number of seconds for the aggregation job (Default: 0)
+            demo (bool): select if the experiment should be run in demo mode
+            **run_params (dict): parameters for executing a benchmark run
         """
 
         exec_params = extract_arguments(run_params, exec_run)
@@ -236,6 +287,9 @@ class BenchmarkExperiment:
                 self.logger.info('No aggregation job scheduled.')
     
     def reset(self):
+        '''
+        Reset the intermal state of the experiment.
+        '''
         self.Js = list()
         self.Qs = list()
         self.Rs = list()
@@ -245,50 +299,83 @@ class BenchmarkExperiment:
         '''
         Resume an experiment from disk
         '''
-        pass
+        raise NotImplementedError('This method was not yet implemented.')
 
     def start_timer(self):
+        """
+        Start the timer.
+        """
         self.start_time = time.time()
 
     def stop_timer(self):
+        """
+        Stop the timer.
+        """
         self.stop_time = time.time()
         self.set_and_save_stats(
             execution_time_sec=(self.stop_time - self.start_time)
         )
 
     def save_builders(self):
+        """
+        Save agent and environment builder to the log directory.
+        """
         self.logger.save_agent_builder(self.agent_builder)
         self.logger.save_environment_builder(self.env_builder)
 
     def extend_and_save_Js(self, Js):
+        """
+        Extend Js with another datapoint and save the current state to the log directory.
+        """
         self.Js.extend(Js)
         self.logger.save_Js(self.Js)
 
     def extend_and_save_Rs(self, Rs):
+        """
+        Extend Rs with another datapoint and save the current state to the log directory.
+        """
         self.Rs.extend(Rs)
         self.logger.save_Rs(self.Rs)
 
     def extend_and_save_Qs(self, Qs):
+        """
+        Extend Qs with another datapoint and save the current state to the log directory.
+        """
         self.Qs.extend(Qs)
         self.logger.save_Qs(self.Qs)
 
     def extend_and_save_policy_entropies(self, policy_entropies):
+        """
+        Extend Es with another datapoint and save the current state to the log directory.
+        """
         self.policy_entropies.extend(policy_entropies)
         self.logger.save_policy_entropies(self.policy_entropies)
 
     def set_and_save_config(self, **settings):
+        """
+        Save the experiment configuration to the log directory.
+        """
         self.config.update(settings)
         self.logger.save_config(self.config)
 
     def set_and_save_stats(self, **info):
+        """
+        Save the run statistics to the log directory.
+        """
         self.stats.update(info)
         self.logger.save_stats(self.stats)
 
     def save_plot(self):
+        """
+        Save the result plot to the log directory.
+        """
         visualizer = BenchmarkVisualizer(self.logger)
         visualizer.save_report()
     
     def show_plot(self):
+        """
+        Display the result plot.
+        """
         visualizer = BenchmarkVisualizer(self.logger)
         visualizer.show_report()
 

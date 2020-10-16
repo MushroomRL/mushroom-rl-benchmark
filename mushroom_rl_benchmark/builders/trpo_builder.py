@@ -11,17 +11,31 @@ from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 class TRPOBuilder(AgentBuilder):
     """
-    Builder for Trust Region Policy optimization algorithm (TRPO).
+    AgentBuilder for Trust Region Policy optimization algorithm (TRPO).
     """
 
     def __init__(self, policy_params, critic_params, alg_params, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor]):
+        """
+        Constructor.
+
+        Args:
+            policy_params (dict): parameters for the policy
+            critic_params (dict): parameters for the critic
+            alg_params (dict): parameters for the algorithm
+
+        Kwargs:
+            n_steps_per_fit (int): number of steps per fit (Default: 3000)
+            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
+
+        Returns:
+            trpo_builder: AgentBuilder for TRPO
+        """
         self.policy_params = policy_params
         self.critic_params = critic_params
         self.alg_params = alg_params
         super().__init__(n_steps_per_fit, preprocessors=preprocessors)
 
     def build(self, mdp_info):
-        #print(self.policy_params)
         policy = GaussianTorchPolicy(
             Network,
             mdp_info.observation_space.shape,
@@ -29,21 +43,10 @@ class TRPOBuilder(AgentBuilder):
             **self.policy_params)
         self.critic_params["input_shape"] = mdp_info.observation_space.shape
         self.alg_params['critic_params'] = self.critic_params
-        #print(self.alg_params)
         return TRPO(mdp_info, policy, **self.alg_params)
 
     def compute_Q(self, agent, states):
         return agent._V(states).mean()
-
-    def random_init(self, trial):
-        n_features = trial.suggest_categorical('n_features', [32, 64])
-        max_kl = trial.suggest_loguniform('max_kl', 1e-5, 1e-2)
-        critic_lr = trial.suggest_loguniform('critic_lr', 1e-5, 1e-2)
-
-        self.policy_params['n_features'] = n_features
-        self.alg_params['max_kl'] = max_kl
-        self.critic_params['n_features'] = n_features
-        self.critic_params['optimizer']['params']['lr'] = critic_lr
     
     @classmethod
     def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, lam=.95, n_features=32, critic_fit_params=None, n_steps_per_fit=3000, n_epochs_cg=100, preprocessors=[StandardizationPreprocessor], use_cuda=False):

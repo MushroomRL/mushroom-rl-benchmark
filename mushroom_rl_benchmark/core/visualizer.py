@@ -11,10 +11,23 @@ from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 
 class BenchmarkVisualizer:
+    """
+    Class to handle all visualizations of the experiment.
+    """
 
     plot_counter = 0
 
     def __init__(self, logger, data=None, has_entropy=None, id=1):
+        """
+        Constructor.
+
+        Args:
+            logger
+
+        Kwargs:
+            data (dict): dictionary with data points for visualization (Default: None)
+            has_entropy (bool): select if entropy is available for the algorithm (Default: None)
+        """
         self.logger = logger
         self.data = data
         self.id = id
@@ -28,33 +41,51 @@ class BenchmarkVisualizer:
 
     @property
     def is_data_persisted(self):
+        """
+        Check if data was passed as dictionary or should be read from log directory.
+        """
         return self.data is None
     
     def get_Js(self):
+        """
+        Get Js from dictionary or log directory.
+        """
         if self.is_data_persisted:
             return self.logger.load_Js()
         else:
             return self.data['Js']
     
     def get_Rs(self):
+        """
+        Get Rs from dictionary or log directory.
+        """
         if self.is_data_persisted:
             return self.logger.load_Rs()
         else:
             return self.data['Rs']
     
     def get_Qs(self):
+        """
+        Get Qs from dictionary or log directory.
+        """
         if self.is_data_persisted:
             return self.logger.load_Qs()
         else:
             return self.data['Qs']
     
     def get_Es(self):
+        """
+        Get Es from dictionary or log directory.
+        """
         if self.is_data_persisted:
             return self.logger.load_policy_entropies()
         else:
             return self.data['Es']
 
     def get_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
+        """
+        Create report plot with matplotlib.
+        """
 
         plot_cnt = self.plot_counter
         self.plot_counter += 1

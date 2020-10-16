@@ -11,6 +11,10 @@ from mushroom_rl.algorithms import Agent
 
 
 class BenchmarkLogger:
+    """
+    Class to handle all interactions with the log directory.
+    """
+
     file_Js = 'Js.pkl'
     file_Rs = 'Rs.pkl'
     file_Qs = 'Qs.pkl'
@@ -23,6 +27,14 @@ class BenchmarkLogger:
     file_stats = 'stats.json'
 
     def __init__(self, log_dir=None, log_id=None, use_timestamp=True):
+        """
+        Constructor.
+
+        Kwargs:
+            log_dir (str): path to the log directory (Default: ./logs or /work/scratch/$USER)
+            log_id (str): log id (Default: benchmark[_YY-mm-ddTHH:MM:SS.zzz])
+            use_timestamp (bool): select if a timestamp should be appended to the log id
+        """
 
         self.log_dir = ''
         self.log_id = ''
@@ -73,7 +85,7 @@ class BenchmarkLogger:
         if log_id is None:
             log_id = 'benchmark'
         if use_timestamp:
-            log_id += '_{}'.format(datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z"))
+            log_id += '_{}'.format(datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%z"))
         path = os.path.join(self.log_dir, log_id, '')
         if not os.path.exists(path):
             Path(path).mkdir(parents=True, exist_ok=True)
@@ -88,15 +100,39 @@ class BenchmarkLogger:
         return os.path.join(self.log_dir, self.log_id, filename)
 
     def info(self, message):
+        """
+        Log info message.
+
+        Args:
+            message (str): message string
+        """
         self.log.info(message)
     
     def warning(self, message):
+        """
+        Log warning message.
+
+        Args:
+            message (str): message string
+        """
         self.log.warning(message)
     
     def exception(self, message):
+        """
+        Log exception message.
+
+        Args:
+            message (str): message string
+        """
         self.log.exception(message)
     
     def critical(self, message):
+        """
+        Log critical message.
+
+        Args:
+            message (str): message string
+        """
         self.log.critical(message)
 
     def save_Js(self, Js):

@@ -6,7 +6,14 @@ from mushroom_rl_benchmark import BenchmarkLogger, BenchmarkVisualizer
 from mushroom_rl_benchmark.experiment.slurm import read_arguments_aggregate
 
 
-def run(res_dir, res_id):
+def run(res_dir, res_id)
+    """
+    Function to aggregate the benchmark results from running in SLURM mode.
+
+    Args:
+        res_dir (str): path to the result directory
+        res_id (str): log id of the result directory
+    """
     work_dir = Path(res_dir, res_id)
 
     # check if results are aggregated

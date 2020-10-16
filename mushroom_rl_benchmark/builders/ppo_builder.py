@@ -11,10 +11,26 @@ from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 class PPOBuilder(AgentBuilder):
     """
-    Builder for Proximal Policy Optimization algorithm (PPO).
+    AgentBuilder for Proximal Policy Optimization algorithm (PPO).
     """
 
     def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor]):
+        """
+        Constructor.
+
+        Args:
+            policy_params (dict): parameters for the policy
+            actor_optimizer (dict): parameters for the actor optimizer
+            critic_params (dict): parameters for the critic
+            alg_params (dict): parameters for the algorithm
+
+        Kwargs:
+            n_steps_per_fit (int): number of steps per fit (Default: 3000)
+            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
+
+        Returns:
+            ppo_builder: AgentBuilder for PPO
+        """
         self.policy_params = policy_params
         self.actor_optimizer = actor_optimizer
         self.critic_params = critic_params
@@ -34,16 +50,6 @@ class PPOBuilder(AgentBuilder):
 
     def compute_Q(self, agent, states):
         return agent._V(states).mean()
-
-    def random_init(self, trial):
-        n_features = trial.suggest_categorical('n_features', [32, 64])
-        actor_lr = trial.suggest_loguniform('actor_lr', 1e-5, 1e-2)
-        critic_lr = trial.suggest_loguniform('critic_lr', 1e-5, 1e-2)
-
-        self.policy_params['n_features'] = n_features
-        self.actor_optimizer['params']['lr'] = actor_lr
-        self.critic_params['n_features'] = n_features
-        self.critic_params['optimizer']['params']['lr'] = critic_lr
     
     @classmethod
     def default(cls, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None, critic_network=Network, lam=.95, n_features=32, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor], use_cuda=False):
