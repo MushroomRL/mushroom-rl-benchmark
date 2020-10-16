@@ -11,10 +11,27 @@ from mushroom_rl_benchmark.builders.network import TD3ActorNetwork as ActorNetwo
 
 class TD3Builder(AgentBuilder):
     """
-    Builder for Twin Delayed DDPG algorithm (TD3).
+    AgentBuilder for Twin Delayed DDPG algorithm (TD3).
     """
 
-    def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=1): #undefined parameters to default value
+    def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=1):
+        """
+        Constructor.
+
+        Args:
+            policy_class (Policy): policy class
+            policy_params (dict): parameters for the policy
+            actor_params (dict): parameters for the actor
+            actor_optimizer (dict): parameters for the actor optimizer
+            critic_params (dict): parameters for the critic
+            alg_params (dict): parameters for the algorithm
+
+        Kwargs:
+            n_steps_per_fit (int): number of steps per fit (Default: 1)
+
+        Returns:
+            td3_builder: AgentBuilder for TD3
+        """
         self.policy_class = policy_class
         self.policy_params = policy_params
         self.actor_params = actor_params
@@ -38,16 +55,6 @@ class TD3Builder(AgentBuilder):
         actions = agent._actor_approximator(states)
         q_max = agent._critic_approximator(states, actions)
         return q_max.mean()
-
-    def random_init(self, trial):
-        n_features = trial.suggest_categorical('n_features', [32, 64])
-        actor_lr = trial.suggest_loguniform('actor_lr', 1e-5, 1e-2)
-        critic_lr = trial.suggest_loguniform('critic_lr', 1e-5, 1e-2)
-
-        self.actor_params['n_features'] = n_features
-        self.actor_optimizer['params']['lr'] = actor_lr
-        self.critic_params['n_features'] = n_features
-        self.critic_params['optimizer']['params']['lr'] = critic_lr
     
     @classmethod
     def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork, initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], use_cuda=False):

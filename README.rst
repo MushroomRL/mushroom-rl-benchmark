@@ -65,7 +65,7 @@ Launch predefined benchmarks
 Requirements
 ------------
 
-Whe provide a simple script `benchmark.py` to easiy run benchmarks from configuration files.
+We provide a simple script `benchmark.py` to easily run benchmarks from configuration files.
 You must have both mushroom-rl and mushroom-rl-benchmark packages installed.
 
 The script for starting the benchmarks takes following arguments:

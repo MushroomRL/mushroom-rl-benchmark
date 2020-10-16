@@ -11,10 +11,28 @@ from mushroom_rl_benchmark.builders.network import SACActorNetwork as ActorNetwo
 
 class SACBuilder(AgentBuilder):
     """
-    Builder Soft Actor-Critic algorithm (SAC).
+    AgentBuilder Soft Actor-Critic algorithm (SAC).
     """
 
     def __init__(self, actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params, n_q_samples=100, n_steps_per_fit=1, preprocessors=[StandardizationPreprocessor]):
+        """
+        Constructor.
+
+        Args:
+            actor_mu_params (dict): parameters for actor mu
+            actor_sigma_params (dict): parameters for actor sigma
+            actor_optimizer (dict): parameters for the actor optimizer
+            critic_params (dict): parameters for the critic
+            alg_params (dict): parameters for the algorithm
+
+        Kwargs:
+            n_q_samples (int): number of samples to compute value function (Default: 100)
+            n_steps_per_fit (int): number of steps per fit (Default: 1)
+            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
+
+        Returns:
+            sac_builder: AgentBuilder for SAC
+        """
         self.actor_mu_params = actor_mu_params
         self.actor_sigma_params = actor_sigma_params
         self.actor_optimizer = actor_optimizer
@@ -43,17 +61,6 @@ class SACBuilder(AgentBuilder):
             a = np.array([agent.policy.draw_action(state) for i in range(self.n_q_samples)])
             Qs.append(agent._critic_approximator(s, a).mean())
         return np.array(Qs).mean()
-
-    def random_init(self, trial):
-        n_features = trial.suggest_categorical('n_features', [32, 64])
-        actor_lr = trial.suggest_loguniform('actor_lr', 1e-5, 1e-2)
-        critic_lr = trial.suggest_loguniform('critic_lr', 1e-5, 1e-2)
-
-        self.actor_mu_params['n_features'] = n_features
-        self.actor_sigma_params['n_features'] = n_features
-        self.actor_optimizer['params']['lr'] = actor_lr
-        self.critic_params['n_features'] = n_features
-        self.critic_params['optimizer']['params']['lr'] = critic_lr
     
     @classmethod
     def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork, initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100, preprocessors=[StandardizationPreprocessor], target_entropy=None, use_cuda=False):

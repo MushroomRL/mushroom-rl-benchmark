@@ -2,6 +2,16 @@ import os
 
 
 def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params):
+    """
+    Function to create a slurm script in a specific directory
+
+    Args:
+        slurm_path (str): path to locate the slurm script
+
+    Kwargs:
+        slurm_script_name (str): name of the slurm script (Default: slurm.sh)
+        **slurm_params (dict): parameters for generating the slurm file content
+    """
     code = generate_slurm(**slurm_params)
 
     os.makedirs(slurm_path, exist_ok=True)
@@ -13,7 +23,24 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
     return slurm_path
 
 
-def generate_slurm(exp_name, exp_dir_slurm, python_file, n_exp=1, max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0, project_name=None):
+def generate_slurm(exp_name, exp_dir_slurm, python_file, project_name=None, n_exp=1, max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0):
+    """
+    Function to generate the slurm file content.
+
+    Args:
+        exp_name (str): name of the experiment
+        exp_dir_slurm (str): directory where the slurm log files are located
+        python_file (str): path to the python file that should be executed
+    
+    Kwargs:
+        project_name (str): name of the slurm project (Default: None)
+        n_exp (int): number of experiments in the slurm array (Default: 1)
+        max_concurrent_runs (int): maximum number of runs that should be executed in parallel on the SLURM cluster (Default: None)
+        memory (int): memory limit in mega bytes (MB) for the slurm jobs (Default: 2000)
+        hours (int): maximum number of execution hours for the slurm jobs (Default: 24)
+        minutes (int): maximum number of execution minutes for the slurm jobs (Default: 0)
+        seconds (int): maximum number of execution seconds for the slurm jobs (Default: 0)
+    """
     duration = to_duration(hours, minutes, seconds) 
     code = """\
 #!/usr/bin/env bash
