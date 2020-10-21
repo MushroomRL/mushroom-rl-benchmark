@@ -2,11 +2,20 @@ import argparse
 
 
 def make_arguments(**params):
+    """
+    Create a script argument string from dictionary
+    """
     param_strings = ["--{} '{}'".format(key, params[key]) for key in params.keys()]
     return ' '.join(param_strings)
 
 
 def read_arguments_run(arg_string=None):
+    """
+    Parse the arguments for the run script.
+
+    Kwargs:
+        arg_string (str): pass the argument string (Default: None)
+    """
     parser = argparse.ArgumentParser()
 
     arg_test = parser.add_argument_group('mushroom_rl_benchmark')
@@ -29,6 +38,12 @@ def read_arguments_run(arg_string=None):
 
 
 def read_arguments_aggregate(arg_string=None):
+    """
+    Parse the arguments for the aggregate script.
+
+    Kwargs:
+        arg_string (str): pass the argument string (Default: None)
+    """
     parser = argparse.ArgumentParser()
 
     arg_test = parser.add_argument_group('mushroom_rl_benchmark')
