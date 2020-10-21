@@ -6,11 +6,16 @@ We provide the benchmarks for the following Deep Actor-Critic algorithms:
 - **A2C**
 - **PPO**
 - **TRPO**
+- **SAC**
+- **DDPG**
+- **TD3**
+
 
 We consider the following environments in the benchmark:
 
 - Gym environment:
     - Pendulum-v0
+    - LunarLanderContinuous-v2
 - Mujoco environments:
     - Hopper-v3
     - Walker2d-v3
