@@ -33,8 +33,6 @@ def generate_slurm(exp_name, exp_dir_slurm, python_file, project_name=None, n_ex
         exp_name (str): name of the experiment
         exp_dir_slurm (str): directory where the slurm log files are located
         python_file (str): path to the python file that should be executed
-    
-    Kwargs:
         project_name (str): name of the slurm project (Default: None)
         n_exp (int): number of experiments in the slurm array (Default: 1)
         max_concurrent_runs (int): maximum number of runs that should be executed in parallel on the SLURM cluster (Default: None)
@@ -42,6 +40,10 @@ def generate_slurm(exp_name, exp_dir_slurm, python_file, project_name=None, n_ex
         hours (int): maximum number of execution hours for the slurm jobs (Default: 24)
         minutes (int): maximum number of execution minutes for the slurm jobs (Default: 0)
         seconds (int): maximum number of execution seconds for the slurm jobs (Default: 0)
+    
+    Returns:
+        The slurm script as string.
+        
     """
     duration = to_duration(hours, minutes, seconds) 
     code = """\
