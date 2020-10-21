@@ -12,11 +12,12 @@ class BenchmarkSuite:
         """
         Constructor.
 
-        Kwargs:
+        Args:
             log_dir (str): path to the log directory (Default: ./logs or /work/scratch/$USER)
             log_id (str): log id (Default: benchmark[_YY-mm-ddTHH:MM:SS.zzz])
             use_timestamp (bool): select if a timestamp should be appended to the log id
-            **run_params (dict): parameters that are passed to the run method of the experiment
+            **run_params: parameters that are passed to the run method of the experiment
+        
         """
         self.experiment_structure = dict()
         self.environment_list = []

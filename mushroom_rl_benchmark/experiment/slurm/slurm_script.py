@@ -7,10 +7,12 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
 
     Args:
         slurm_path (str): path to locate the slurm script
-
-    Kwargs:
         slurm_script_name (str): name of the slurm script (Default: slurm.sh)
-        **slurm_params (dict): parameters for generating the slurm file content
+        **slurm_params: parameters for generating the slurm file content
+        
+    Returns:
+        The path to the slurm script.
+        
     """
     code = generate_slurm(**slurm_params)
 
