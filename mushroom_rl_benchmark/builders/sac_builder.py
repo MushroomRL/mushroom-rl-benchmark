@@ -3,7 +3,6 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import SAC
-from mushroom_rl.utils.preprocessors import StandardizationPreprocessor
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 from mushroom_rl_benchmark.builders.network import SACActorNetwork as ActorNetwork, SACCriticNetwork as CriticNetwork
@@ -14,7 +13,8 @@ class SACBuilder(AgentBuilder):
     AgentBuilder Soft Actor-Critic algorithm (SAC).
     """
 
-    def __init__(self, actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params, n_q_samples=100, n_steps_per_fit=1, preprocessors=[StandardizationPreprocessor]):
+    def __init__(self, actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
+                 n_q_samples=100, n_steps_per_fit=1, preprocessors=None):
         """
         Constructor.
 
@@ -50,7 +50,8 @@ class SACBuilder(AgentBuilder):
 
         critic_input_shape = (actor_input_shape[0] + mdp_info.action_space.shape[0],)
         self.critic_params["input_shape"] = critic_input_shape
-        sac = SAC(mdp_info, self.actor_mu_params, self.actor_sigma_params, self.actor_optimizer, self.critic_params, **self.alg_params)
+        sac = SAC(mdp_info, self.actor_mu_params, self.actor_sigma_params, self.actor_optimizer, self.critic_params,
+                  **self.alg_params)
         print("TARGET_ENTROPY", sac._target_entropy)
         return sac
 
@@ -63,7 +64,9 @@ class SACBuilder(AgentBuilder):
         return np.array(Qs).mean()
     
     @classmethod
-    def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork, initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100, preprocessors=[StandardizationPreprocessor], target_entropy=None, use_cuda=False):
+    def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork,
+                initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100,
+                preprocessors=None, target_entropy=None, use_cuda=False):
 
         actor_mu_params = dict(network=actor_network,
                             n_features=n_features,
@@ -93,4 +96,5 @@ class SACBuilder(AgentBuilder):
             critic_fit_params=None,
             target_entropy=target_entropy)
 
-        return cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
+        return cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
+                   preprocessors=preprocessors)

@@ -1,11 +1,6 @@
 ---
-run_params:
-  n_runs: 25
-  n_epochs: 100
-  n_steps: 30000
-  n_episodes_test: 10
-  max_concurrent_runs: 5
 suite_params:
   log_dir: logs
-  log_id: full_benchmark
+  log_id: benchmark
   use_timestamp: false
+  max_concurrent_runs: 5

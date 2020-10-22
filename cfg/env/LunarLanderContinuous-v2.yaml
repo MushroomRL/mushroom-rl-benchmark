@@ -1,4 +1,14 @@
 ---
+run_params:
+  n_runs: 25
+  n_epochs: 10
+  n_steps: 30000
+  n_episodes_test: 10
+env_params:
+  name: Gym.LunarLanderContinuous-v2
+  params:
+    horizon: 1000
+    gamma: 0.99
 agent_params:
   A2C:
     actor_lr: 7.0e-4
@@ -10,27 +20,24 @@ agent_params:
   PPO:
     actor_lr: 3.0e-4
     critic_lr: 3.0e-3
-  # DDPG:
-  #   actor_lr: 1.0e-5
-  #   critic_lr: 5.0e-5
-  #   initial_replay_size: 50000 
-  #   max_replay_size: 500000
-  #   n_features: 80
-  # TD3:
-  #   actor_lr: 1.0e-3
-  #   critic_lr: 1.0e-5
-  #   initial_replay_size: 500 
-  #   max_replay_size: 5000
-  #   n_features: 80
-  # SAC:
-  #   actor_lr: 3.0e-4
-  #   critic_lr: 3.0e-4
-  #   warmup_transitions: 3000
-  #   initial_replay_size: 2000 
-  #   max_replay_size: 500000
-env_params:
-  name: Gym.LunarLanderContinuous-v2
-  params: 
-    horizon: 1000
-    gamma: 0.99
+  DDPG:
+    actor_lr: 1.0e-4
+    critic_lr: 1.0e-3
+    batch_size: 64
+    initial_replay_size: 128
+    max_replay_size: 1000000
+    n_features: [ 64, 64 ]
+  TD3:
+    actor_lr: 1.0e-4
+    critic_lr: 1.0e-3
+    batch_size: 64
+    initial_replay_size: 128
+    max_replay_size: 100000
+    n_features: [64, 64]
+  SAC:
+    actor_lr: 5.0e-5
+    critic_lr: 3.0e-4
+    warmup_transitions: 128
+    initial_replay_size: 128
+    max_replay_size: 500000
     

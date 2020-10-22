@@ -1,4 +1,14 @@
 ---
+run_params:
+  n_runs: 25
+  n_epochs: 10
+  n_steps: 30000
+  n_episodes_test: 10
+env_params:
+  name: Gym.Pendulum-v0
+  params:
+    horizon: 200
+    gamma: 0.99
 agent_params:
   A2C:
     actor_lr: 7.0e-4
@@ -30,8 +40,3 @@ agent_params:
     warmup_transitions: 128
     initial_replay_size: 128
     max_replay_size: 500000
-env_param:
-  name: Gym.Pendulum-v0
-  params:
-    horizon: 200
-    gamma: 0.99

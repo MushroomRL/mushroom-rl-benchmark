@@ -15,7 +15,7 @@ def get_args():
                           help='Flag to use of SLURM.')
     arg_test.add_argument("-t", "--test", action='store_true',
                           help='Flag to test the script and NOT execute the benchmark.')
-    arg_test.add_argument("-r", "--reduced", action='store_true',
+    arg_test.add_argument("-d", "--demo", action='store_true',
                           help='Flag to run a reduced version of the benchmark.')
 
     args = vars(parser.parse_args())
@@ -23,11 +23,14 @@ def get_args():
 
 
 if __name__ == '__main__':
-    env_id, use_slurm, test, reduced_experiment = get_args()
+    env_id, use_slurm, test, demo = get_args()
     cfg_dir = Path(__file__).parent / 'cfg'
     config_file = cfg_dir / 'env' / (env_id + '.yaml')
 
-    agent_data, env_data = yaml.safe_load(open(config_file, 'r')).values()
+    yaml_file = yaml.safe_load(open(config_file, 'r'))
+    run_params = yaml_file['run_params']
+    env_data = yaml_file['env_params']
+    agent_data = yaml_file['agent_params']
 
     agents = agent_data.keys()
     agents_params = agent_data.values()
@@ -38,16 +41,20 @@ if __name__ == '__main__':
     print('Environment:', env)
     print('Agents:', str(list(agents)))
     print('Using SLURM:', use_slurm)
-    print('Runing FULL:', reduced_experiment)
+    print('Runing FULL:', not demo)
     print()
 
+    if demo:
+        run_params['n_runs'] = 4
+        run_params['n_epochs'] = 10
+        run_params['n_steps'] = 15000
+        run_params['n_episodes_test'] = 5
+
     exec_type = 'slurm' if use_slurm else 'parallel'
-    slurm_conf = 'params_slurm.yaml' if not reduced_experiment else 'params_slurm_reduced.yaml'
-    local_conf = 'params_local.yaml' if not reduced_experiment else 'params_local_reduced.yaml'
-    param_file = slurm_conf if use_slurm else local_conf
+    param_file = 'params_slurm.yaml' if use_slurm else 'params_local.yaml'
 
-    run_params, suite_params = yaml.safe_load(open(cfg_dir / param_file, 'r')).values()
-
+    suite_params = yaml.safe_load(open(cfg_dir / param_file, 'r'))['suite_params']
+    
     suite = BenchmarkSuite(
         **suite_params,
         **run_params)

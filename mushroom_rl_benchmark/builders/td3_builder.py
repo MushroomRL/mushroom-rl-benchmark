@@ -14,7 +14,8 @@ class TD3Builder(AgentBuilder):
     AgentBuilder for Twin Delayed DDPG algorithm (TD3).
     """
 
-    def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=1):
+    def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params,
+                 n_steps_per_fit=1):
         """
         Constructor.
 
@@ -49,7 +50,8 @@ class TD3Builder(AgentBuilder):
         critic_input_shape = (actor_input_shape[0] + mdp_info.action_space.shape[0],)
         self.critic_params["input_shape"] = critic_input_shape
         self.critic_params["action_shape"] = mdp_info.action_space.shape
-        return TD3(mdp_info, self.policy_class, self.policy_params, self.actor_params, self.actor_optimizer, self.critic_params, **self.alg_params)
+        return TD3(mdp_info, self.policy_class, self.policy_params, self.actor_params, self.actor_optimizer,
+                   self.critic_params, **self.alg_params)
 
     def compute_Q(self, agent, states):
         actions = agent._actor_approximator(states)
@@ -57,7 +59,8 @@ class TD3Builder(AgentBuilder):
         return q_max.mean()
     
     @classmethod
-    def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork, initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], use_cuda=False):
+    def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork,
+                initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], use_cuda=False):
         
         policy_class = OrnsteinUhlenbeckPolicy
         policy_params = dict(

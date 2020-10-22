@@ -3,7 +3,6 @@ import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import TRPO
 from mushroom_rl.policy import GaussianTorchPolicy
-from mushroom_rl.utils.preprocessors import StandardizationPreprocessor
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
@@ -14,7 +13,8 @@ class TRPOBuilder(AgentBuilder):
     AgentBuilder for Trust Region Policy optimization algorithm (TRPO).
     """
 
-    def __init__(self, policy_params, critic_params, alg_params, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor]):
+    def __init__(self, policy_params, critic_params, alg_params, n_steps_per_fit=3000,
+                 preprocessors=None):
         """
         Constructor.
 
@@ -49,7 +49,9 @@ class TRPOBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, lam=.95, n_features=32, critic_fit_params=None, n_steps_per_fit=3000, n_epochs_cg=100, preprocessors=[StandardizationPreprocessor], use_cuda=False):
+    def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, lam=.95, n_features=32,
+                critic_fit_params=None, n_steps_per_fit=3000, n_epochs_cg=100,
+                preprocessors=None, use_cuda=False):
 
         policy_params = dict(
             std_0=1.,
@@ -77,4 +79,5 @@ class TRPOBuilder(AgentBuilder):
             critic_fit_params=critic_fit_params,
             quiet=True)
 
-        return cls(policy_params, critic_params, alg_params, n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
+        return cls(policy_params, critic_params, alg_params,
+                   n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)

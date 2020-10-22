@@ -3,7 +3,6 @@ import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import PPO
 from mushroom_rl.policy import GaussianTorchPolicy
-from mushroom_rl.utils.preprocessors import StandardizationPreprocessor
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
@@ -14,7 +13,8 @@ class PPOBuilder(AgentBuilder):
     AgentBuilder for Proximal Policy Optimization algorithm (PPO).
     """
 
-    def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor]):
+    def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=3000,
+                 preprocessors=None):
         """
         Constructor.
 
@@ -52,7 +52,8 @@ class PPOBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None, critic_network=Network, lam=.95, n_features=32, n_steps_per_fit=3000, preprocessors=[StandardizationPreprocessor], use_cuda=False):
+    def default(cls, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None, critic_network=Network, lam=.95,
+                n_features=32, n_steps_per_fit=3000, preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=1.,
@@ -81,4 +82,5 @@ class PPOBuilder(AgentBuilder):
             critic_fit_params=critic_fit_params,
             quiet=True)
 
-        return cls(policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
+        return cls(policy_params, actor_optimizer, critic_params, alg_params,
+                   n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)

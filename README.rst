@@ -72,7 +72,7 @@ The script for starting the benchmarks takes following arguments:
 
 ::
 
-    usage: benchmark.py [-h] -e ENV [-s] [-t] [-r]
+    usage: benchmark.py [-h] -e ENV [-s] [-t] [-d]
     
     optional arguments:
       -h, --help         show this help message and exit
@@ -81,7 +81,7 @@ The script for starting the benchmarks takes following arguments:
       -e ENV, --env ENV  Environment to benchmark.
       -s, --slurm        Flag to use of SLURM.
       -t, --test         Flag to test the script and NOT execute the benchmark.
-      -r, --reduced      Flag to run a reduced version of the benchmark.
+      -d, --demo         Flag to run a reduced version of the benchmark.
 
 
 The agent and environment parameters used for benchmarking the agents on an environment are located in
@@ -106,13 +106,13 @@ To run a reduced benchmark locally call the script like this:
 
 .. code:: shell
 
-    $ ./benchmark.py -e <EnvironmentName> -r
+    $ ./benchmark.py -e <EnvironmentName> -d
 
 To run a reduced benchmark on a SLURM cluster call the script like this:
 
 .. code:: shell
 
-    $ ./benchmark.py -e <EnvironmentName> -s -r
+    $ ./benchmark.py -e <EnvironmentName> -s -d
 
 To run the full benchmark on a SLURM cluster call the script like this:
 

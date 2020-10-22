@@ -1,18 +1,25 @@
 ---
+run_params:
+  n_runs: 25
+  n_epochs: 50
+  n_steps: 30000
+  n_episodes_test: 10
+env_params:
+  name: Gym.HopperBulletEnv-v0
+  params:
+    horizon: 1000
+    gamma: 0.99
 agent_params:
   A2C:
     actor_lr: 7.0e-4
     critic_lr: 7.0e-4
-    preprocessors: 
   TRPO:
     max_kl: 1.0e-2
     critic_lr: 3.0e-3
     n_steps_per_fit: 3000
-    preprocessors: 
   PPO:
     actor_lr: 3.0e-4
     critic_lr: 3.0e-4
-    preprocessors: 
   DDPG:
     actor_lr: 1.0e-4
     critic_lr: 1.0e-3
@@ -33,11 +40,4 @@ agent_params:
     warmup_transitions: 10000
     initial_replay_size: 5000
     max_replay_size: 500000
-  #   target_entropy: -2
-  #   preprocessors: 
-env_params:
-  name: Gym.HopperBulletEnv-v0
-  params: 
-    horizon: 1000
-    gamma: 0.99
     

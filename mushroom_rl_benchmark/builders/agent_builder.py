@@ -5,7 +5,8 @@ class AgentBuilder:
     """
     Base class to spawn instances of a MushroomRL agent
     """
-    def __init__(self, n_steps_per_fit, compute_policy_entropy=True, compute_entropy_with_states=False, preprocessors=None):
+    def __init__(self, n_steps_per_fit, compute_policy_entropy=True, compute_entropy_with_states=False,
+                 preprocessors=None):
         """
         Initialize AgentBuilder
         """

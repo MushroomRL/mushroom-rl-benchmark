@@ -3,7 +3,6 @@ import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import A2C
 from mushroom_rl.policy import GaussianTorchPolicy
-from mushroom_rl.utils.preprocessors import StandardizationPreprocessor
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 from mushroom_rl_benchmark.builders.network import A2CNetwork as Network
@@ -14,7 +13,8 @@ class A2CBuilder(AgentBuilder):
     AgentBuilder for Advantage Actor Critic algorithm (A2C).
     """
 
-    def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=5, preprocessors=[StandardizationPreprocessor]):
+    def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=5,
+                 preprocessors=None):
         """
         Constructor.
 
@@ -52,7 +52,8 @@ class A2CBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, actor_lr=7e-4, critic_lr=7e-4, critic_network=Network, n_features=64, preprocessors=[StandardizationPreprocessor], use_cuda=False):
+    def default(cls, actor_lr=7e-4, critic_lr=7e-4, critic_network=Network, n_features=64,
+                preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=1.,

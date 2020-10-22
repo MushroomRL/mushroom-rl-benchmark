@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class TRPONetwork(nn.Module):
     def __init__(self, input_shape, output_shape, n_features, **kwargs):
         super(TRPONetwork, self).__init__()
