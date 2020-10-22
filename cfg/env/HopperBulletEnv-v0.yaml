@@ -13,24 +13,26 @@ agent_params:
     actor_lr: 3.0e-4
     critic_lr: 3.0e-4
     preprocessors: 
-  # DDPG: 
-  #   actor_lr: 1.0e-5
-  #   critic_lr: 1.0e-4
-  #   initial_replay_size: 50000 
-  #   max_replay_size: 500000
-  # TD3:
-  #   actor_lr: 1.0e-4
-  #   critic_lr: 1.0e-3
-  #   batch_size: 64
-  #   initial_replay_size: 5000
-  #   max_replay_size: 500000
-  #   n_features: [400, 300]
-  # SAC:
-  #   actor_lr: 3.0e-4
-  #   critic_lr: 3.0e-4
-  #   warmup_transitions: 100
-  #   initial_replay_size: 65
-  #   max_replay_size: 50000
+  DDPG:
+    actor_lr: 1.0e-4
+    critic_lr: 1.0e-3
+    batch_size: 128
+    initial_replay_size: 5000
+    max_replay_size: 1000000
+    n_features: [ 400, 300 ]
+  TD3:
+    actor_lr: 1.0e-4
+    critic_lr: 1.0e-3
+    batch_size: 128
+    initial_replay_size: 5000
+    max_replay_size: 1000000
+    n_features: [400, 300]
+  SAC:
+    actor_lr: 5.0e-5
+    critic_lr: 3.0e-4
+    warmup_transitions: 10000
+    initial_replay_size: 5000
+    max_replay_size: 500000
   #   target_entropy: -2
   #   preprocessors: 
 env_params:
