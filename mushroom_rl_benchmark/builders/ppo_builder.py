@@ -79,8 +79,7 @@ class PPOBuilder(AgentBuilder):
             batch_size=64,
             eps_ppo=.2,
             lam=lam,
-            critic_fit_params=critic_fit_params,
-            quiet=True)
+            critic_fit_params=critic_fit_params)
 
         return cls(policy_params, actor_optimizer, critic_params, alg_params,
                    n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
