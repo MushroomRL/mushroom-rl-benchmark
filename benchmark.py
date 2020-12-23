@@ -13,6 +13,8 @@ def get_args():
                           help='Environment to benchmark.')
     arg_test.add_argument("-s", "--slurm", action='store_true',
                           help='Flag to use of SLURM.')
+    arg_test.add_argument("-q", "--sequential", action='store_true',
+                          help='Flag to run a the benchmark sequentially.')
     arg_test.add_argument("-t", "--test", action='store_true',
                           help='Flag to test the script and NOT execute the benchmark.')
     arg_test.add_argument("-d", "--demo", action='store_true',
@@ -23,9 +25,11 @@ def get_args():
 
 
 if __name__ == '__main__':
-    env_id, use_slurm, test, demo = get_args()
+    env_id, use_slurm, sequential, test, demo = get_args()
     cfg_dir = Path(__file__).parent / 'cfg'
     config_file = cfg_dir / 'env' / (env_id + '.yaml')
+
+    assert not (use_slurm and sequential)
 
     yaml_file = yaml.safe_load(open(config_file, 'r'))
     run_params = yaml_file['run_params']
@@ -51,6 +55,7 @@ if __name__ == '__main__':
         run_params['n_episodes_test'] = 5
 
     exec_type = 'slurm' if use_slurm else 'parallel'
+    exec_type = 'sequential' if sequential else 'parallel'
     param_file = 'params_slurm.yaml' if use_slurm else 'params_local.yaml'
 
     suite_params = yaml.safe_load(open(cfg_dir / param_file, 'r'))['suite_params']

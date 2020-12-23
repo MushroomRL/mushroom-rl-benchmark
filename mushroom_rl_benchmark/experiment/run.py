@@ -11,7 +11,7 @@ from mushroom_rl_benchmark.utils import be_range, get_init_states
 
 
 def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None,
-             quiet=True):
+             quiet=True, **kwargs):
     """
     Function that handles the execution of an experiment run.
 
