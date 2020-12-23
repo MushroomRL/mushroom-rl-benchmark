@@ -9,10 +9,11 @@ def get_mean_and_confidence(data):
     Compute the mean and 95% confidence interval
 
     Args:
-        data (np.ndarray): Array of experiment data of shape (n_runs, n_epochs)
+        data (np.ndarray): Array of experiment data of shape (n_runs, n_epochs).
 
     Returns:
-        The mean of the dataset at each epoch along with the confidence interval
+        The mean of the dataset at each epoch along with the confidence interval.
+
     """
     mean = np.mean(data, axis=0)
     se = st.sem(data, axis=0)
@@ -26,7 +27,8 @@ def get_init_states(dataset):
     Get the initial states of a MushroomRL dataset
 
     Args:
-        dataset (Dataset): a MushroomRL dataset
+        dataset (Dataset): a MushroomRL dataset.
+
     """
     pick = True
     x_0 = list()
@@ -49,8 +51,9 @@ def extract_arguments(args, method):
     Extract the arguments from a dictionary that fit to a methods parameters.
 
     Args:
-        args (dict): dictionary of arguments
-        method (function): method for which the arguments should be extracted
+        args (dict): dictionary of arguments;
+        method (function): method for which the arguments should be extracted.
+
     """
     intersection = lambda list1, list2: [x for x in list1 if x in list2]
     filterByKey = lambda keys, data: {x: data[x] for x in keys if x in data }

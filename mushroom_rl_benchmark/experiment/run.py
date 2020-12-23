@@ -16,14 +16,14 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     Function that handles the execution of an experiment run.
 
     Args:
-        agent_builder (AgentBuilder): agent builder to spawn an agent
-        env_builder (EnvironmentBuilder): environment builder to spawn an environment
-        n_epochs (int): number of epochs
-        n_steps (int): number of steps per epoch
-        n_steps_test (int, None): number of steps for testing
-        n_episodes_test (int, None): number of episodes for testing
-        seed (int, None): the seed
-        quiet (bool, True): select if run should print execution information
+        agent_builder (AgentBuilder): agent builder to spawn an agent;
+        env_builder (EnvironmentBuilder): environment builder to spawn an environment;
+        n_epochs (int): number of epochs;
+        n_steps (int): number of steps per epoch;
+        n_steps_test (int, None): number of steps for testing;
+        n_episodes_test (int, None): number of episodes for testing;
+        seed (int, None): the seed;
+        quiet (bool, True): select if run should print execution information.
 
     """
     if seed is not None:
@@ -113,9 +113,10 @@ def compute_metrics(core, eval_params, agent_builder, cmp_E):
     Function to compute the metrics.
 
     Args:
-        eval_params (dict): parameters for running the evaluation
-        agent_builder (AgentBuilder): the agent builder
-        cmp_E (bool): select if policy entropy should be computed
+        eval_params (dict): parameters for running the evaluation;
+        agent_builder (AgentBuilder): the agent builder;
+        cmp_E (bool): select if policy entropy should be computed.
+
     """
     dataset = core.evaluate(**eval_params)
 
@@ -148,11 +149,11 @@ def print_metrics(epoch, J, R, Q, E, start=False):
 
     Args:
         epoch (int): the current epoch
-        J (float): the current value of J
-        R (float): the current value of R
-        Q (float): the current value of Q
-        E (float): the current value of E (Set None if not defined)
-        start (bool, False): print at the start or end of an epoch
+        J (float): the current value of J;
+        R (float): the current value of R;
+        Q (float): the current value of Q;
+        E (float): the current value of E (Set None if not defined);
+        start (bool, False): print at the start or end of an epoch.
 
     """
     if E is None:

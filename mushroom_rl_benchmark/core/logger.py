@@ -30,10 +30,12 @@ class BenchmarkLogger:
         """
         Constructor.
 
-        Kwargs:
-            log_dir (str): path to the log directory (Default: ./logs or /work/scratch/$USER)
-            log_id (str): log id (Default: benchmark[_YY-mm-ddTHH:MM:SS.zzz])
-            use_timestamp (bool): select if a timestamp should be appended to the log id
+        Args:
+            log_dir (str, None): path to the log directory, if not specified defaults to ./logs or to
+                /work/scratch/$USER if the second directory exists;
+            log_id (str, None): log id, if not specified defaults to: benchmark[_YY-mm-ddTHH:MM:SS.zzz]);
+            use_timestamp (bool, True): select if a timestamp should be appended to the log id.
+
         """
 
         self.log_dir = ''
@@ -105,6 +107,7 @@ class BenchmarkLogger:
 
         Args:
             message (str): message string
+
         """
         self.log.info(message)
     
@@ -114,6 +117,7 @@ class BenchmarkLogger:
 
         Args:
             message (str): message string
+
         """
         self.log.warning(message)
     
@@ -123,6 +127,7 @@ class BenchmarkLogger:
 
         Args:
             message (str): message string
+
         """
         self.log.exception(message)
     
@@ -132,6 +137,7 @@ class BenchmarkLogger:
 
         Args:
             message (str): message string
+
         """
         self.log.critical(message)
 
@@ -249,6 +255,7 @@ class BenchmarkLogger:
     def from_path(cls, path):
         """
         Method to create a BenchmarkLogger from a path.
+
         """
         path = Path(path)
         return cls(path.parent, path.name, False)

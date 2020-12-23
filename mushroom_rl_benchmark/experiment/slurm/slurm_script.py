@@ -6,9 +6,9 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
     Function to create a slurm script in a specific directory
 
     Args:
-        slurm_path (str): path to locate the slurm script
-        slurm_script_name (str): name of the slurm script (Default: slurm.sh)
-        **slurm_params: parameters for generating the slurm file content
+        slurm_path (str): path to locate the slurm script;
+        slurm_script_name (str, slurm.sh): name of the slurm script;
+        **slurm_params: parameters for generating the slurm file content.
         
     Returns:
         The path to the slurm script.
@@ -25,21 +25,23 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
     return slurm_path
 
 
-def generate_slurm(exp_name, exp_dir_slurm, python_file, project_name=None, n_exp=1, max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0):
+def generate_slurm(exp_name, exp_dir_slurm, python_file, project_name=None, n_exp=1,
+                   max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0):
     """
     Function to generate the slurm file content.
 
     Args:
-        exp_name (str): name of the experiment
-        exp_dir_slurm (str): directory where the slurm log files are located
-        python_file (str): path to the python file that should be executed
-        project_name (str): name of the slurm project (Default: None)
-        n_exp (int): number of experiments in the slurm array (Default: 1)
-        max_concurrent_runs (int): maximum number of runs that should be executed in parallel on the SLURM cluster (Default: None)
-        memory (int): memory limit in mega bytes (MB) for the slurm jobs (Default: 2000)
-        hours (int): maximum number of execution hours for the slurm jobs (Default: 24)
-        minutes (int): maximum number of execution minutes for the slurm jobs (Default: 0)
-        seconds (int): maximum number of execution seconds for the slurm jobs (Default: 0)
+        exp_name (str): name of the experiment;
+        exp_dir_slurm (str): directory where the slurm log files are located;
+        python_file (str): path to the python file that should be executed;
+        project_name (str, None): name of the slurm project;
+        n_exp (int, 1): number of experiments in the slurm array;
+        max_concurrent_runs (int, None): maximum number of runs that should be executed
+            in parallel on the SLURM cluster;
+        memory (int, 2000): memory limit in mega bytes (MB) for the slurm jobs;
+        hours (int, 24): maximum number of execution hours for the slurm jobs;
+        minutes (int, 0): maximum number of execution minutes for the slurm jobs;
+        seconds (int, 0): maximum number of execution seconds for the slurm jobs.
     
     Returns:
         The slurm script as string.

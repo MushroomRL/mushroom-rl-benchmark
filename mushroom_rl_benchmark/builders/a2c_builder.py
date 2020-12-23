@@ -10,7 +10,8 @@ from mushroom_rl_benchmark.builders.network import A2CNetwork as Network
 
 class A2CBuilder(AgentBuilder):
     """
-    AgentBuilder for Advantage Actor Critic algorithm (A2C).
+    AgentBuilder for Advantage Actor Critic algorithm (A2C)
+
     """
 
     def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=5,
@@ -19,17 +20,13 @@ class A2CBuilder(AgentBuilder):
         Constructor.
 
         Args:
-            policy_params (dict): parameters for the policy
-            actor_optimizer (dict): parameters for the actor optimizer
-            critic_params (dict): parameters for the critic
-            alg_params (dict): parameters for the algorithm
+            policy_params (dict): parameters for the policy;
+            actor_optimizer (dict): parameters for the actor optimizer;
+            critic_params (dict): parameters for the critic;
+            alg_params (dict): parameters for the algorithm;
+            n_steps_per_fit (int, 5): number of steps per fit;
+            preprocessors (list, None): list of preprocessors.
 
-        Kwargs:
-            n_steps_per_fit (int): number of steps per fit (Default: 5)
-            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
-
-        Returns:
-            a2c_builder: AgentBuilder for A2C
         """
         self.policy_params = policy_params
         self.actor_optimizer = actor_optimizer

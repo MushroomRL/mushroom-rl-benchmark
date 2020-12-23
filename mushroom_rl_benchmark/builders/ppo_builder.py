@@ -10,7 +10,8 @@ from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 class PPOBuilder(AgentBuilder):
     """
-    AgentBuilder for Proximal Policy Optimization algorithm (PPO).
+    AgentBuilder for Proximal Policy Optimization algorithm (PPO)
+
     """
 
     def __init__(self, policy_params, actor_optimizer, critic_params, alg_params, n_steps_per_fit=3000,
@@ -19,17 +20,13 @@ class PPOBuilder(AgentBuilder):
         Constructor.
 
         Args:
-            policy_params (dict): parameters for the policy
-            actor_optimizer (dict): parameters for the actor optimizer
-            critic_params (dict): parameters for the critic
-            alg_params (dict): parameters for the algorithm
+            policy_params (dict): parameters for the policy;
+            actor_optimizer (dict): parameters for the actor optimizer;
+            critic_params (dict): parameters for the critic;
+            alg_params (dict): parameters for the algorithm;
+            n_steps_per_fit (int, 3000): number of steps per fit;
+            preprocessors (list, None): list of preprocessors.
 
-        Kwargs:
-            n_steps_per_fit (int): number of steps per fit (Default: 3000)
-            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
-
-        Returns:
-            ppo_builder: AgentBuilder for PPO
         """
         self.policy_params = policy_params
         self.actor_optimizer = actor_optimizer

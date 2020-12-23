@@ -11,7 +11,8 @@ from mushroom_rl_benchmark.builders.network import DDPGActorNetwork as ActorNetw
 
 class DDPGBuilder(AgentBuilder):
     """
-    AgentBuilder for Deep Deterministic Policy Gradient algorithm (DDPG).
+    AgentBuilder for Deep Deterministic Policy Gradient algorithm (DDPG)
+
     """
 
     def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params,
@@ -20,18 +21,14 @@ class DDPGBuilder(AgentBuilder):
         Constructor.
 
         Args:
-            policy_class (Policy): policy class
-            policy_params (dict): parameters for the policy
-            actor_params (dict): parameters for the actor
-            actor_optimizer (dict): parameters for the actor optimizer
-            critic_params (dict): parameters for the critic
-            alg_params (dict): parameters for the algorithm
+            policy_class (Policy): policy class;
+            policy_params (dict): parameters for the policy;
+            actor_params (dict): parameters for the actor;
+            actor_optimizer (dict): parameters for the actor optimizer;
+            critic_params (dict): parameters for the critic;
+            alg_params (dict): parameters for the algorithm;
+            n_steps_per_fit (int, 1): number of steps per fit.
 
-        Kwargs:
-            n_steps_per_fit (int): number of steps per fit (Default: 1)
-
-        Returns:
-            ddpg_builder: AgentBuilder for DDPG
         """
         self.policy_class = policy_class
         self.policy_params = policy_params

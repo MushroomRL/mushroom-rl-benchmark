@@ -10,7 +10,8 @@ from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 class TRPOBuilder(AgentBuilder):
     """
-    AgentBuilder for Trust Region Policy optimization algorithm (TRPO).
+    AgentBuilder for Trust Region Policy optimization algorithm (TRPO)
+
     """
 
     def __init__(self, policy_params, critic_params, alg_params, n_steps_per_fit=3000,
@@ -19,16 +20,12 @@ class TRPOBuilder(AgentBuilder):
         Constructor.
 
         Args:
-            policy_params (dict): parameters for the policy
-            critic_params (dict): parameters for the critic
-            alg_params (dict): parameters for the algorithm
+            policy_params (dict): parameters for the policy;
+            critic_params (dict): parameters for the critic;
+            alg_params (dict): parameters for the algorithm;
+            n_steps_per_fit (int, 3000): number of steps per fit;
+            preprocessors (list, None): list of preprocessors.
 
-        Kwargs:
-            n_steps_per_fit (int): number of steps per fit (Default: 3000)
-            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
-
-        Returns:
-            trpo_builder: AgentBuilder for TRPO
         """
         self.policy_params = policy_params
         self.critic_params = critic_params

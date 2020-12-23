@@ -13,6 +13,7 @@ from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 class BenchmarkVisualizer:
     """
     Class to handle all visualizations of the experiment.
+
     """
 
     plot_counter = 0
@@ -22,11 +23,10 @@ class BenchmarkVisualizer:
         Constructor.
 
         Args:
-            logger
+            logger (BenchmarkLogger): logger to be used;
+            data (dict, None): dictionary with data points for visualization;
+            has_entropy (bool, None): select if entropy is available for the algorithm.
 
-        Kwargs:
-            data (dict): dictionary with data points for visualization (Default: None)
-            has_entropy (bool): select if entropy is available for the algorithm (Default: None)
         """
         self.logger = logger
         self.data = data
@@ -43,12 +43,14 @@ class BenchmarkVisualizer:
     def is_data_persisted(self):
         """
         Check if data was passed as dictionary or should be read from log directory.
+
         """
         return self.data is None
     
     def get_Js(self):
         """
         Get Js from dictionary or log directory.
+
         """
         if self.is_data_persisted:
             return self.logger.load_Js()
@@ -58,6 +60,7 @@ class BenchmarkVisualizer:
     def get_Rs(self):
         """
         Get Rs from dictionary or log directory.
+
         """
         if self.is_data_persisted:
             return self.logger.load_Rs()
@@ -67,6 +70,7 @@ class BenchmarkVisualizer:
     def get_Qs(self):
         """
         Get Qs from dictionary or log directory.
+
         """
         if self.is_data_persisted:
             return self.logger.load_Qs()
@@ -76,6 +80,7 @@ class BenchmarkVisualizer:
     def get_Es(self):
         """
         Get Es from dictionary or log directory.
+
         """
         if self.is_data_persisted:
             return self.logger.load_policy_entropies()
@@ -85,6 +90,7 @@ class BenchmarkVisualizer:
     def get_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Create report plot with matplotlib.
+
         """
 
         plot_cnt = self.plot_counter
@@ -126,6 +132,7 @@ class BenchmarkVisualizer:
     def save_report(self, file_name='report_plot', color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
+
         """
         fig = self.get_report(color=color, facecolor=facecolor, alpha=alpha, grid=grid)
         self.logger.save_figure(fig, file_name)
@@ -134,6 +141,7 @@ class BenchmarkVisualizer:
     def show_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to show a report of the training metrics from a performend experiment.
+
         """
         matplotlib.use(default_backend)
         fig = self.get_report(color=color, facecolor=facecolor, alpha=alpha, grid=grid)
@@ -144,6 +152,7 @@ class BenchmarkVisualizer:
     def plot_mean_conf(data, ax, color='blue', facecolor='blue', alpha=0.4, grid=True):
         """
         Method to plot mean and confidence interval for data on pyplot axes.
+
         """
         mean, conf = get_mean_and_confidence(np.array(data))
         upper_bound = mean + conf
@@ -157,6 +166,7 @@ class BenchmarkVisualizer:
     def show_agent(self, episodes=5, mdp_render=False):
         """
         Method to run and visualize the best builders in the environment.
+
         """
         matplotlib.use(default_backend)
         mdp = self.logger.load_environment_builder().build()
@@ -170,6 +180,7 @@ class BenchmarkVisualizer:
     def from_path(cls, path):
         """
         Method to create a BenchmarkVisualizer from a path.
+
         """
         path = Path(path)
         return cls(BenchmarkLogger(path.parent, path.name, False))

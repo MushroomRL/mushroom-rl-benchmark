@@ -5,14 +5,16 @@ import mushroom_rl.environments
 class EnvironmentBuilder:
     """
     Class to spawn instances of a MushroomRL environment
+
     """
     def __init__(self, env_name, env_params):
         """
         Constructor
 
         Args:
-            env_name: name of the environment to build
-            env_params: required parameters to build the specified environment
+            env_name: name of the environment to build;
+            env_params: required parameters to build the specified environment.
+
         """
         self.env_name = env_name
         self.env_params = env_params
@@ -20,6 +22,7 @@ class EnvironmentBuilder:
     def build(self):
         """
         Build and return an environment
+
         """
         environment = getattr(mushroom_rl.environments, self.env_name)
         return environment(*self.env_params.values())
@@ -27,5 +30,6 @@ class EnvironmentBuilder:
     def copy(self):
         """
         Create a deepcopy of the environment_builder and return it
+
         """
         return deepcopy(self)

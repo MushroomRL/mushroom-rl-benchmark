@@ -4,11 +4,13 @@ from copy import deepcopy
 class AgentBuilder:
     """
     Base class to spawn instances of a MushroomRL agent
+
     """
     def __init__(self, n_steps_per_fit, compute_policy_entropy=True, compute_entropy_with_states=False,
                  preprocessors=None):
         """
         Initialize AgentBuilder
+
         """
         self.set_n_steps_per_fit(n_steps_per_fit)
         self.set_preprocessors(preprocessors)
@@ -20,13 +22,15 @@ class AgentBuilder:
         Set n_steps_per_fit for the specific AgentBuilder
 
         Args:
-            n_steps_per_fit: number of steps per fit
+            n_steps_per_fit: number of steps per fit.
+
         """
         self._n_steps_per_fit = n_steps_per_fit
 
     def get_n_steps_per_fit(self):
         """
         Get n_steps_per_fit for the specific AgentBuilder
+
         """
         return self._n_steps_per_fit
 
@@ -35,31 +39,39 @@ class AgentBuilder:
         Set preprocessor for the specific AgentBuilder
 
         Args:
-            preprocessors: list of preprocessor classes
+            preprocessors: list of preprocessor classes.
+
         """
         self._preprocessors = preprocessors if preprocessors is not None else list()
 
     def get_preprocessors(self):
         """
         Get preprocessors for the specific AgentBuilder
+
         """
         return self._preprocessors
 
     def copy(self):
         """
         Create a deepcopy of the AgentBuilder and return it
+
         """
         return deepcopy(self)
 
-    def build(self):
+    def build(self, mdp_info):
         """
         Build and return the AgentBuilder
+
+        Args:
+            mdp_info (MDPInfo): information about the environment.
+
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
 
     def compute_Q(self, agent, states):
         """
         Compute the Q Value for an AgentBuilder
+
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
     
@@ -67,5 +79,6 @@ class AgentBuilder:
     def default(cls):
         """
         Create a default initialization for the specific AgentBuilder and return it
+
         """
         raise NotImplementedError('AgentBuilder is an abstract class')

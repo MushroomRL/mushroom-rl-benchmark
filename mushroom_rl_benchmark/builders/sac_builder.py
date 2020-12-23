@@ -10,7 +10,7 @@ from mushroom_rl_benchmark.builders.network import SACActorNetwork as ActorNetwo
 
 class SACBuilder(AgentBuilder):
     """
-    AgentBuilder Soft Actor-Critic algorithm (SAC).
+    AgentBuilder Soft Actor-Critic algorithm (SAC)
     """
 
     def __init__(self, actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
@@ -19,19 +19,15 @@ class SACBuilder(AgentBuilder):
         Constructor.
 
         Args:
-            actor_mu_params (dict): parameters for actor mu
-            actor_sigma_params (dict): parameters for actor sigma
-            actor_optimizer (dict): parameters for the actor optimizer
-            critic_params (dict): parameters for the critic
-            alg_params (dict): parameters for the algorithm
+            actor_mu_params (dict): parameters for actor mu;
+            actor_sigma_params (dict): parameters for actor sigma;
+            actor_optimizer (dict): parameters for the actor optimizer;
+            critic_params (dict): parameters for the critic;
+            alg_params (dict): parameters for the algorithm;
+            n_q_samples (int, 100): number of samples to compute value function;
+            n_steps_per_fit (int, 1): number of steps per fit;
+            preprocessors (list, None): list of preprocessors.
 
-        Kwargs:
-            n_q_samples (int): number of samples to compute value function (Default: 100)
-            n_steps_per_fit (int): number of steps per fit (Default: 1)
-            preprocessors (list): list of preprocessors (Default: [StandardizationPreprocessor])
-
-        Returns:
-            sac_builder: AgentBuilder for SAC
         """
         self.actor_mu_params = actor_mu_params
         self.actor_sigma_params = actor_sigma_params

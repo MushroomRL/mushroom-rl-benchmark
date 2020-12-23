@@ -34,6 +34,7 @@ class BenchmarkSuite:
             environment_builder_params (dict): parameters for the environment builder
             agent_name (str): name of the agent for the experiment
             agent_builder_params (dict): parameters for the agent builder
+
         """
         if environment_name in self.environment_list:
             if agent_name in self.experiment_structure[environment_name]:

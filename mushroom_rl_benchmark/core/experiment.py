@@ -25,12 +25,9 @@ class BenchmarkExperiment:
         Constructor.
 
         Args:
-            agent_builder (AgentBuilder): instance of a specific agent builder
-            env_builder (EnvironmentBuilder): instance of an environment builder
-            logger (BenchmarkLogger): instance of a benchmark logger
-
-        Returns:
-            benchmark_experiment: instance of a benchmark experiment
+            agent_builder (AgentBuilder): instance of a specific agent builder;
+            env_builder (EnvironmentBuilder): instance of an environment builder;
+            logger (BenchmarkLogger): instance of a benchmark logger.
 
         """
         self.agent_builder = agent_builder
@@ -51,8 +48,8 @@ class BenchmarkExperiment:
         Execute the experiment.
 
         Args:
-            exec_type (str, 'sequential'): type of executing the experiment [sequential|parallel|slurm]
-            **run_params: parameters for the selected execution type
+            exec_type (str, 'sequential'): type of executing the experiment [sequential|parallel|slurm];
+            **run_params: parameters for the selected execution type.
 
         """
         try:
@@ -68,10 +65,10 @@ class BenchmarkExperiment:
         Execute the experiment sequential.
 
         Args:
-            n_runs (int): number of total runs of the experiment
-            n_runs_completed (int): number of completed runs of the experiment
-            save_plot (bool): select if a plot of the experiment should be saved to the log directory
-            **run_params: parameters for executing a benchmark run
+            n_runs (int): number of total runs of the experiment;
+            n_runs_completed (int, 0): number of completed runs of the experiment;
+            save_plot (bool, True): select if a plot of the experiment should be saved to the log directory;
+            **run_params: parameters for executing a benchmark run.
 
         """
         self.start_timer()
@@ -117,12 +114,12 @@ class BenchmarkExperiment:
         Execute the experiment in parallel threads.
 
         Args:
-            n_runs (int): number of total runs of the experiment
-            n_runs_completed (int): number of completed runs of the experiment
-            threading (bool): select to use threads instead of processes
-            save_plot (bool): select if a plot of the experiment should be saved to the log directory
-            max_concurrent_runs (int): maximum number of concurrent runs (Default: number of cores)
-            **run_params: parameters for executing a benchmark run
+            n_runs (int): number of total runs of the experiment;
+            n_runs_completed (int, 0): number of completed runs of the experiment;
+            threading (bool, False): select to use threads instead of processes;
+            save_plot (bool, True): select if a plot of the experiment should be saved to the log directory;
+            max_concurrent_runs (int, None): maximum number of concurrent runs. By default it uses the number of cores;
+            **run_params: parameters for executing a benchmark run.
 
         """
         self.start_timer()
@@ -217,14 +214,14 @@ class BenchmarkExperiment:
         Execute the experiment with SLURM.
 
         Args:
-            n_runs (int): number of total runs of the experiment
-            n_runs_completed (int): number of completed runs of the experiment
-            aggregation_job (bool): select if an aggregation job should be scheduled
-            aggregate_hours (int): maximum number of hours for the aggregation job (Default: 3)
-            aggregate_minutes (int): maximum number of minutes for the aggregation job (Default: 0)
-            aggregate_seconds (int): maximum number of seconds for the aggregation job (Default: 0)
-            demo (bool): select if the experiment should be run in demo mode
-            **run_params: parameters for executing a benchmark run
+            n_runs (int): number of total runs of the experiment;
+            n_runs_completed (int, 0): number of completed runs of the experiment;
+            aggregation_job (bool, True): select if an aggregation job should be scheduled;
+            aggregate_hours (int, 3): maximum number of hours for the aggregation job;
+            aggregate_minutes (int, 0): maximum number of minutes for the aggregation job;
+            aggregate_seconds (int, 0): maximum number of seconds for the aggregation job;
+            demo (bool, False): select if the experiment should be run in demo mode;
+            **run_params: parameters for executing a benchmark run.
 
         """
 

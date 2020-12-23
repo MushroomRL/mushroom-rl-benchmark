@@ -15,7 +15,7 @@ def read_arguments_run(arg_string=None):
     Parse the arguments for the run script.
 
     Args:
-        arg_string (str, None): pass the argument string
+        arg_string (str, None): pass the argument string.
 
     """
     parser = argparse.ArgumentParser()
@@ -44,7 +44,7 @@ def read_arguments_aggregate(arg_string=None):
     Parse the arguments for the aggregate script.
 
     Args:
-        arg_string (str, None): pass the argument string
+        arg_string (str, None): pass the argument string.
 
     """
     parser = argparse.ArgumentParser()
