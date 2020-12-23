@@ -6,7 +6,8 @@ from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 class BenchmarkSuite:
     """
-    Class to orchestrate the execution of multiple experiments. 
+    Class to orchestrate the execution of multiple experiments.
+
     """
     def __init__(self, log_dir=None, log_id=None, use_timestamp=True, **run_params):
         """
@@ -80,6 +81,7 @@ class BenchmarkSuite:
     def print_experiments(self):
         """
         Print the experiments in the suite.
+
         """
         for env, agents in self.experiment_structure.items():
             for agent, _ in agents.items():
@@ -88,6 +90,7 @@ class BenchmarkSuite:
     def run(self, exec_type='sequential'):
         """
         Run all experiments in the suite.
+
         """
         for environment, agents in self.experiment_structure.items():
             for agent, exp in agents.items():

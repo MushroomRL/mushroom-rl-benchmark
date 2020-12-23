@@ -49,6 +49,7 @@ class BenchmarkLogger:
         # Get get logger for benchmark
         self.log = logging.getLogger(log_id) # (self.get_log_id())
         self.log.setLevel(logging.DEBUG)
+        self.log.propagate = False
         
         # Create handlers for console and file
         fh = logging.FileHandler(self.get_path('console.log'))
