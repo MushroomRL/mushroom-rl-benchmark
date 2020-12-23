@@ -20,12 +20,11 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         env_builder (EnvironmentBuilder): environment builder to spawn an environment
         n_epochs (int): number of epochs
         n_steps (int): number of steps per epoch
+        n_steps_test (int, None): number of steps for testing
+        n_episodes_test (int, None): number of episodes for testing
+        seed (int, None): the seed
+        quiet (bool, True): select if run should print execution information
 
-    Kwargs:
-        n_steps_test (int): number of steps for testing (Default: None)
-        n_episodes_test (int): number of episodes for testing (Default: None)
-        seed (int): the seed
-        quiet (bool): select if run should be executed verbous (Default: True)
     """
     if seed is not None:
         print('SEED', seed)
@@ -153,9 +152,8 @@ def print_metrics(epoch, J, R, Q, E, start=False):
         R (float): the current value of R
         Q (float): the current value of Q
         E (float): the current value of E (Set None if not defined)
+        start (bool, False): print at the start or end of an epoch
 
-    Kwargs:
-        start (bool): print at the start or end of an epoch
     """
     if E is None:
         tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
