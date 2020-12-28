@@ -121,7 +121,10 @@ def compute_metrics(core, eval_params, agent_builder, cmp_E):
         cmp_E (bool): select if policy entropy should be computed.
 
     """
+
+    agent_builder.set_eval_mode(core.agent, True)
     dataset = core.evaluate(**eval_params)
+    agent_builder.set_eval_mode(core.agent, False)
 
     # Compute J
     J = np.mean(compute_J(dataset, core.mdp.info.gamma))

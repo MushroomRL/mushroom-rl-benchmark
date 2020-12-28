@@ -72,8 +72,26 @@ class AgentBuilder:
         """
         Compute the Q Value for an AgentBuilder
 
+        Args:
+            agent (Agent): the considered agent;
+            states (np.ndarray): the set of states over which we need
+                to compute the Q function.
+
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
+
+    def set_eval_mode(self, agent, eval):
+        """
+        Set the eval mode for the agent.
+        This function can be overwritten by any agent builder to setup
+        specific evaluation mode for the agent.
+
+        Args:
+            agent (Agent): the considered agent;
+            eval (bool): whether to set eval mode (true) or learn mode.
+
+        """
+        pass
     
     @classmethod
     def default(cls):
