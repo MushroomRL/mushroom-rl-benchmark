@@ -58,7 +58,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         logger.strong_line()
 
     best_agent = agent
-    J, R, Q, E = compute_metrics(core, eval_params, agent_builder, cmp_E)
+    J, R, Q, E = compute_metrics(core, eval_params, agent_builder, env_builder,
+                                 cmp_E)
     best_J, best_R, best_Q, best_E = J, R, Q, E
     epoch_Js = [J] # discounted reward
     epoch_Rs = [R] # total reward
@@ -77,7 +78,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
             logger.exception(e)
             sys.exit()
 
-        J, R, Q, E = compute_metrics(core, eval_params, agent_builder, cmp_E)
+        J, R, Q, E = compute_metrics(core, eval_params, agent_builder,
+                                     env_builder, cmp_E)
 
         epoch_Js.append(J)
         epoch_Rs.append(R)
@@ -111,20 +113,23 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     return result
 
 
-def compute_metrics(core, eval_params, agent_builder, cmp_E):
+def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
     """
     Function to compute the metrics.
 
     Args:
         eval_params (dict): parameters for running the evaluation;
         agent_builder (AgentBuilder): the agent builder;
+        env_builder (EnvironmentBuilder): environment builder to spawn an environment;
         cmp_E (bool): select if policy entropy should be computed.
 
     """
 
     agent_builder.set_eval_mode(core.agent, True)
+    env_builder.set_eval_mode(core.mdp, True)
     dataset = core.evaluate(**eval_params)
     agent_builder.set_eval_mode(core.agent, False)
+    env_builder.set_eval_mode(core.mdp, False)
 
     # Compute J
     J = np.mean(compute_J(dataset, core.mdp.info.gamma))

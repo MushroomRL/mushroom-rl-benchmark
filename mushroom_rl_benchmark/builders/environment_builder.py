@@ -1,6 +1,8 @@
 from copy import deepcopy
 import mushroom_rl.environments
 
+from mushroom_rl.environments import Atari
+
 
 class EnvironmentBuilder:
     """
@@ -26,6 +28,22 @@ class EnvironmentBuilder:
         """
         environment = getattr(mushroom_rl.environments, self.env_name)
         return environment(*self.env_params.values())
+
+    @staticmethod
+    def set_eval_mode(env, eval):
+        """
+        Make changes to the environment for evaluation mode.
+
+        Args:
+            env (Environment): the environment to change;
+            eval (bool): flag for activating evaluation mode.
+
+        """
+        if isinstance(env, Atari):
+            if eval:
+                env.set_episode_end(False)
+            else:
+                env.set_episode_end(True)
 
     def copy(self):
         """

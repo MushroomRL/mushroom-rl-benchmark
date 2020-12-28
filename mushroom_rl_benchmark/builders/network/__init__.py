@@ -6,6 +6,7 @@ from .td3_network import TD3ActorNetwork
 from .td3_network import TD3CriticNetwork
 from .sac_network import SACActorNetwork
 from .sac_network import SACCriticNetwork
+from .dqn_network import DQNNetwork
 
 __all__ = [
     'A2CNetwork',
@@ -15,5 +16,6 @@ __all__ = [
     'TD3ActorNetwork',
     'TD3CriticNetwork',
     'SACActorNetwork',
-    'SACCriticNetwork'
+    'SACCriticNetwork',
+    'DQNNetwork',
 ]

@@ -51,6 +51,8 @@ class BenchmarkSuite:
 
     def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
         separator = '.'
+        if environment_params is None:
+            environment_params = dict()
         if separator in environment:
             environment_name, environment_id = environment.split(separator)
             environment_params = dict(

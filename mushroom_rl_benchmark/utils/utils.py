@@ -3,6 +3,8 @@ from inspect import signature
 import scipy.stats as st
 from tqdm import trange
 
+from mushroom_rl.utils.frames import LazyFrames
+
 
 def get_mean_and_confidence(data):
     """
@@ -34,7 +36,10 @@ def get_init_states(dataset):
     x_0 = list()
     for d in dataset:
         if pick:
-            x_0.append(d[0])
+            if isinstance(d[0], LazyFrames):
+                x_0.append(np.array(d[0]))
+            else:
+                x_0.append(d[0])
         pick = d[-1]
     return np.array(x_0)
 
