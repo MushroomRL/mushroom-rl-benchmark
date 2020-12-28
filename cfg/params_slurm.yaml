@@ -9,4 +9,4 @@ suite_params:
   memory: 4000
   log_dir: logs
   log_id: benchmark
-  use_timestamp: false
+  use_timestamp: true

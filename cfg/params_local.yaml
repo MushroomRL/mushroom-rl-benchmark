@@ -2,5 +2,5 @@
 suite_params:
   log_dir: logs
   log_id: benchmark
-  use_timestamp: false
+  use_timestamp: true
   max_concurrent_runs: 5

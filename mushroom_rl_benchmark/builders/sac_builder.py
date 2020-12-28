@@ -48,7 +48,6 @@ class SACBuilder(AgentBuilder):
         self.critic_params["input_shape"] = critic_input_shape
         sac = SAC(mdp_info, self.actor_mu_params, self.actor_sigma_params, self.actor_optimizer, self.critic_params,
                   **self.alg_params)
-        print("TARGET_ENTROPY", sac._target_entropy)
         return sac
 
     def compute_Q(self, agent, states):

@@ -4,15 +4,15 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pkgutil
 import subprocess
 
-import numpy as np
-from tqdm import tqdm, trange
+from tqdm import trange
 import multiprocessing
-from joblib import Parallel, delayed
+from joblib import delayed
 
 from mushroom_rl_benchmark.utils import extract_arguments
 from mushroom_rl_benchmark.experiment import exec_run
 from mushroom_rl_benchmark.experiment.slurm import create_slurm_script, generate_slurm, make_arguments
 from mushroom_rl_benchmark.core.visualizer import BenchmarkVisualizer
+from mushroom_rl_benchmark.utils.tqdm_parallel import TqdmParallel
 
 
 class BenchmarkExperiment:
@@ -86,7 +86,7 @@ class BenchmarkExperiment:
         cmp_E = self.agent_builder.compute_policy_entropy
 
         for run in trange(n_runs_completed, n_runs):
-            result = exec_run(self.agent_builder, self.env_builder, quiet=False, **run_params)
+            result = exec_run(self.agent_builder, self.env_builder, seed=run, quiet=False, **run_params)
             self.extend_and_save_Js([result['Js']])
             self.extend_and_save_Rs([result['Rs']])
             self.extend_and_save_Qs([result['Qs']])
@@ -118,18 +118,17 @@ class BenchmarkExperiment:
             n_runs_completed (int, 0): number of completed runs of the experiment;
             threading (bool, False): select to use threads instead of processes;
             save_plot (bool, True): select if a plot of the experiment should be saved to the log directory;
-            max_concurrent_runs (int, None): maximum number of concurrent runs. By default it uses the number of cores;
+            max_concurrent_runs (int, -1): maximum number of concurrent runs. By default it uses the number of cores;
             **run_params: parameters for executing a benchmark run.
 
         """
         self.start_timer()
         self.save_builders()
-        
-        if max_concurrent_runs is None:
-            n_cpu = multiprocessing.cpu_count()
-            max_concurrent_runs = n_runs if n_runs < n_cpu else n_cpu
 
-        self.logger.info('Number of used cores: {}'.format(max_concurrent_runs))
+        used_cores = max_concurrent_runs if max_concurrent_runs > 0 else multiprocessing.cpu_count()
+        used_cores = min(used_cores, n_runs)
+
+        self.logger.info('Number of used cores: {}'.format(used_cores))
 
         parallel_settings = dict()
         parallel_settings['n_jobs'] = max_concurrent_runs
@@ -150,57 +149,49 @@ class BenchmarkExperiment:
 
         self.logger.info('Starting experiment ...')
 
-        t = tqdm(total=n_runs)
-        with Parallel(**parallel_settings) as parallel:
-            remaining = n_runs
-            n_parallel = max_concurrent_runs
-            while remaining > 0:
-                if remaining < max_concurrent_runs:
-                    n_parallel = remaining
-                runs = parallel(
-                    delayed(exec_run)(self.agent_builder.copy(), self.env_builder.copy(),
-                                      seed=seed.item(), quiet=True, **run_params)
-                    for seed in np.random.randint(100000000, size=n_parallel)
-                )
-                
-                run_Js = list()
-                run_Rs = list()
-                run_Qs = list()
-                run_Es = list()
-                new_score = [float("-inf"), 0, 0, 0] # J, R, Q, E
-                new_agent = None
+        with TqdmParallel(**parallel_settings) as parallel:
+            runs = parallel(
+                (delayed(exec_run)(self.agent_builder.copy(), self.env_builder.copy(),
+                                  seed=seed, quiet=True, **run_params)
+                for seed in range(n_runs)),
+                total=n_runs
+            )
 
-                for run in runs:
-                    # Collect J, R, Q and E
-                    run_Js.append(run['Js'])
-                    run_Rs.append(run['Rs'])
-                    run_Qs.append(run['Qs'])
-                    if cmp_E:
-                        run_Es.append(run['Es'])
-                    
-                    # Check for best Agent (depends on J)
-                    if run['score'][0] > new_score[0]:
-                        new_score = run['score']
-                        new_agent = run['agent']
+            run_Js = list()
+            run_Rs = list()
+            run_Qs = list()
+            run_Es = list()
+            new_score = [float("-inf"), 0, 0, 0] # J, R, Q, E
+            new_agent = None
 
-                self.extend_and_save_Js(run_Js)
-                self.extend_and_save_Rs(run_Rs)
-                self.extend_and_save_Qs(run_Qs)
+            for run in runs:
+                # Collect J, R, Q and E
+                run_Js.append(run['Js'])
+                run_Rs.append(run['Rs'])
+                run_Qs.append(run['Qs'])
                 if cmp_E:
-                    self.extend_and_save_policy_entropies(run_Es)
+                    run_Es.append(run['Es'])
 
-                if new_score[0] > self.stats['best_J']:
-                    self.set_and_save_stats(
-                        best_J=new_score[0],
-                        best_R=new_score[1],
-                        best_Q=new_score[2])
-                    if cmp_E:
-                        self.set_and_save_stats(best_E=new_score[3])
-                    self.logger.save_best_agent(new_agent)
+                # Check for best Agent (depends on J)
+                if run['score'][0] > new_score[0]:
+                    new_score = run['score']
+                    new_agent = run['agent']
 
-                t.update(n_parallel)
-                remaining -= n_parallel
-                self.set_and_save_config(n_runs_completed=(n_runs-remaining))
+            self.extend_and_save_Js(run_Js)
+            self.extend_and_save_Rs(run_Rs)
+            self.extend_and_save_Qs(run_Qs)
+            if cmp_E:
+                self.extend_and_save_policy_entropies(run_Es)
+
+            if new_score[0] > self.stats['best_J']:
+                self.set_and_save_stats(
+                    best_J=new_score[0],
+                    best_R=new_score[1],
+                    best_Q=new_score[2])
+                if cmp_E:
+                    self.set_and_save_stats(best_E=new_score[3])
+                self.logger.save_best_agent(new_agent)
+
         self.stop_timer()
 
         self.logger.info('Finished experiment.')

@@ -88,7 +88,7 @@ class BenchmarkLogger:
         if log_id is None:
             log_id = 'benchmark'
         if use_timestamp:
-            log_id += '_{}'.format(datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%z"))
+            log_id += '_{}'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
         path = os.path.join(self.log_dir, log_id, '')
         if not os.path.exists(path):
             Path(path).mkdir(parents=True, exist_ok=True)

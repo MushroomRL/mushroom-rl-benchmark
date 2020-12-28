@@ -44,7 +44,11 @@ if __name__ == '__main__':
 
     print('Environment:', env)
     print('Agents:', str(list(agents)))
-    print('Using SLURM:', use_slurm)
+
+    type_msg = 'parallel'
+    type_msg = 'slurm' if use_slurm else type_msg
+    type_msg = 'sequential' if sequential else type_msg
+    print('Execution type:', type_msg)
     print('Runing FULL:', not demo)
     print()
 

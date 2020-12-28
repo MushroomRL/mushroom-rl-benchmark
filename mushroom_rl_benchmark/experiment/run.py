@@ -2,10 +2,10 @@ import sys
 import torch
 import numpy as np
 from copy import deepcopy
-from tqdm import tqdm
 
 from mushroom_rl.core import Core
 from mushroom_rl.utils.dataset import compute_J, parse_dataset
+from mushroom_rl.core.logger import Logger
 
 from mushroom_rl_benchmark.utils import be_range, get_init_states
 
@@ -27,18 +27,18 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
 
     """
     if seed is not None:
-        print('SEED', seed)
         np.random.seed(seed)
         torch.manual_seed(seed)
     
     cmp_E = agent_builder.compute_policy_entropy
 
     mdp = env_builder.build()
-    if seed is not None:
+    if hasattr(mdp, 'env'):
         mdp.env.seed(seed)
     agent = agent_builder.build(mdp.info)
     preprocessors = [prepro(mdp.info) for prepro in agent_builder.get_preprocessors()]
 
+    logger = Logger(agent.__class__.__name__, use_timestamp=True, seed=seed, results_dir=None)
     core = Core(agent, mdp, preprocessors=preprocessors)
 
     eval_params = dict(
@@ -52,6 +52,11 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     else:
         raise AttributeError('Set parameter n_steps_test or n_episodes_test')
 
+    if not quiet:
+        logger.strong_line()
+        logger.info('Starting experiment with seed {}'.format(seed))
+        logger.strong_line()
+
     best_agent = agent
     J, R, Q, E = compute_metrics(core, eval_params, agent_builder, cmp_E)
     best_J, best_R, best_Q, best_E = J, R, Q, E
@@ -60,18 +65,16 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     epoch_Qs = [Q] # Q Value
     epoch_Es = [E] # policy entropy
     
-    if quiet is False:
-        print_metrics(0, J, R, Q, E, start=True)
+    if not quiet:
+        print_metrics(logger, 0, J, R, Q, E)
 
     for epoch in be_range(n_epochs, quiet):
         try:
             core.learn(n_steps=n_steps, n_steps_per_fit=agent_builder.get_n_steps_per_fit(), quiet=quiet)
         except:
             e = sys.exc_info()
-            print('[ERROR] EXECUTION FAILED')
-            print('EPOCH', epoch)
-            print('SEED', seed)
-            print(e)
+            logger.error('EXECUTION FAILED: EPOCH {} SEED {}'.format(epoch, seed))
+            logger.exception(e)
             sys.exit()
 
         J, R, Q, E = compute_metrics(core, eval_params, agent_builder, cmp_E)
@@ -91,8 +94,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
                 best_E = float(E)
             best_agent = deepcopy(agent)
 
-        if quiet is False:
-            print_metrics(epoch, J, R, Q, E)
+        if not quiet:
+            print_metrics(logger, epoch+1, J, R, Q, E)
 
     result = dict(
         Js=np.array(epoch_Js),
@@ -143,24 +146,21 @@ def compute_metrics(core, eval_params, agent_builder, cmp_E):
     return J, R, Q, E
 
 
-def print_metrics(epoch, J, R, Q, E, start=False):
+def print_metrics(logger, epoch, J, R, Q, E):
     """
     Function that pretty prints the metrics on the standard output.
 
     Args:
-        epoch (int): the current epoch
+        logger (Logger): MushroomRL logger object;
+        epoch (int): the current epoch;
         J (float): the current value of J;
         R (float): the current value of R;
         Q (float): the current value of Q;
-        E (float): the current value of E (Set None if not defined);
-        start (bool, False): print at the start or end of an epoch.
+        E (float): the current value of E (Set None if not defined).
 
     """
     if E is None:
-        tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
-        tqdm.write('J: {}, R: {}, Q: {}'.format(J, R, Q))
-        tqdm.write('##################################################################################################')
+        logger.epoch_info(epoch, J=J, R=R, Q=Q)
     else:
-        tqdm.write('{} OF EPOCH {}'.format('START' if start else 'END', str(epoch)))
-        tqdm.write('J: {}, R: {}, Q: {}, E: {}'.format(J, R, Q, E))
-        tqdm.write('##################################################################################################')
+        logger.epoch_info(epoch, J=J, R=R, Q=Q, E=E)
+    logger.weak_line()
