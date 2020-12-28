@@ -93,7 +93,7 @@ class BenchmarkExperiment:
             if cmp_E:
                 self.extend_and_save_policy_entropies([result['Es']])
             new_score = result['score']
-            new_agent = result['builders']
+            new_agent = result['agent']
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
                     best_J=new_score[0],
