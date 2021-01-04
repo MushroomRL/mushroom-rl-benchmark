@@ -1,7 +1,7 @@
 ---
 run_params:
-  n_runs: 5
-  n_epochs: 200
+  n_runs: 1
+  n_epochs: 10
   n_steps: 250000
   n_steps_test: 125000
 env_params:
@@ -10,3 +10,5 @@ env_params:
 agent_params:
   DQN:
     lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
