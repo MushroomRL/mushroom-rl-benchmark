@@ -44,4 +44,4 @@ if __name__ == '__main__':
     end_time = time.time()
     logger.info('Execution time: {} SEC'.format(end_time-start_time))
 
-    exp.save_report()
+    exp.save_plot()

@@ -43,10 +43,8 @@ if __name__ == '__main__':
     end_time = time.time()
     logger.info('Execution time: {} SEC'.format(end_time-start_time))
 
-    exp.save_report()
-    #exp.show_report()
+    exp.save_plot()
 
-    # n_features: 64, actor_lr: 1e-5, critic_lr: 5e-5
 
 
 
