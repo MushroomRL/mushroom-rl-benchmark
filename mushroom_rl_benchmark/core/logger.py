@@ -102,6 +102,13 @@ class BenchmarkLogger:
     def get_path(self, filename=''):
         return os.path.join(self.log_dir, self.log_id, filename)
 
+    def get_figure_path(self, filename=''):
+        figure_dir = Path(self.log_dir) / self.log_id / 'plots'
+        if not figure_dir.exists():
+            figure_dir.mkdir()
+
+        return str(figure_dir / filename)
+
     def info(self, message):
         """
         Log info message.
@@ -212,7 +219,7 @@ class BenchmarkLogger:
         return self._load_json(self.get_path(self.file_stats))
 
     def save_figure(self, figure, figname):
-        figure.savefig(self.get_path(figname) + ".png")
+        figure.savefig(self.get_figure_path(figname + ".pdf"))
 
     @staticmethod
     def _save_pickle(path, obj):

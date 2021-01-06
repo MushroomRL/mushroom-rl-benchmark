@@ -3,7 +3,7 @@
 import yaml
 from pathlib import Path
 from argparse import ArgumentParser
-from mushroom_rl_benchmark import BenchmarkSuite
+from mushroom_rl_benchmark import BenchmarkSuite, BenchmarkSuiteVisualizer
 
 
 def get_args():
@@ -75,3 +75,7 @@ if __name__ == '__main__':
 
     if not test:
         suite.run(exec_type=exec_type)
+
+    if exec_type != 'slurm':
+        visualizer = BenchmarkSuiteVisualizer(suite.logger)
+        visualizer.save_reports()

@@ -9,13 +9,32 @@ from mushroom_rl.core import Core
 
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
+import warnings
+warnings.filterwarnings(action='ignore', category=RuntimeWarning, module='scipy')
 
-class BenchmarkVisualizer:
+
+def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None, grid=True):
+    """
+    Method to plot mean and confidence interval for data on pyplot axes.
+
+    """
+    facecolor = color if facecolor is None else facecolor
+
+    mean, conf = get_mean_and_confidence(np.array(data))
+    upper_bound = mean + conf
+    lower_bound = mean - conf
+
+    if grid:
+        ax.grid()
+    ax.plot(mean, color=color, label=label)
+    ax.fill_between(np.arange(np.size(mean)), upper_bound, lower_bound, facecolor=facecolor, alpha=alpha)
+
+
+class BenchmarkVisualizer(object):
     """
     Class to handle all visualizations of the experiment.
 
     """
-
     plot_counter = 0
 
     def __init__(self, logger, data=None, has_entropy=None, id=1):
@@ -31,6 +50,7 @@ class BenchmarkVisualizer:
         self.logger = logger
         self.data = data
         self.id = id
+
         if has_entropy is None:
             if self.is_data_persisted:
                 self.has_entropy = self.logger.exists_policy_entropy()
@@ -87,7 +107,7 @@ class BenchmarkVisualizer:
         else:
             return self.data['Es']
 
-    def get_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
+    def get_report(self):
         """
         Create report plot with matplotlib.
 
@@ -107,61 +127,46 @@ class BenchmarkVisualizer:
         j_ax = fig.add_subplot(j_pos, 
             ylabel='J', 
             xlabel='epochs')
-        self.plot_mean_conf(self.get_Js(), j_ax, color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+        plot_mean_conf(self.get_Js(), j_ax)
 
         r_ax = fig.add_subplot(r_pos,
             ylabel='R', 
             xlabel='epochs')
-        self.plot_mean_conf(self.get_Rs(), r_ax, color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+        plot_mean_conf(self.get_Rs(), r_ax)
 
         q_ax = fig.add_subplot(q_pos,
             ylabel='V', 
             xlabel='epochs')
-        self.plot_mean_conf(self.get_Qs(), q_ax, color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+        plot_mean_conf(self.get_Qs(), q_ax)
 
         if self.has_entropy:
             e_ax = fig.add_subplot(e_pos,
                 ylabel='policy_entropy', 
                 xlabel='epochs')
-            self.plot_mean_conf(self.get_Es(), e_ax, color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+            plot_mean_conf(self.get_Es(), e_ax)
 
         fig.tight_layout()
 
         return fig
 
-    def save_report(self, file_name='report_plot', color='blue', facecolor='blue', alpha=0.4, grid=True):
+    def save_report(self, file_name='report_plot'):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
 
         """
-        fig = self.get_report(color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+        fig = self.get_report()
         self.logger.save_figure(fig, file_name)
         plt.close(fig)
-    
-    def show_report(self, color='blue', facecolor='blue', alpha=0.4, grid=True):
+
+    def show_report(self):
         """
         Method to show a report of the training metrics from a performend experiment.
 
         """
         matplotlib.use(default_backend)
-        fig = self.get_report(color=color, facecolor=facecolor, alpha=alpha, grid=grid)
+        fig = self.get_report()
         plt.show()
         plt.close(fig)
-
-    @staticmethod
-    def plot_mean_conf(data, ax, color='blue', facecolor='blue', alpha=0.4, grid=True):
-        """
-        Method to plot mean and confidence interval for data on pyplot axes.
-
-        """
-        mean, conf = get_mean_and_confidence(np.array(data))
-        upper_bound = mean + conf
-        lower_bound = mean - conf
-
-        if grid:
-            ax.grid()
-        ax.plot(mean, color=color)
-        ax.fill_between(np.arange(np.size(mean)), upper_bound, lower_bound, facecolor=facecolor, alpha=alpha)
 
     def show_agent(self, episodes=5, mdp_render=False):
         """
@@ -184,3 +189,91 @@ class BenchmarkVisualizer:
         """
         path = Path(path)
         return cls(BenchmarkLogger(path.parent, path.name, False))
+
+
+class BenchmarkSuiteVisualizer(object):
+    plot_counter = 0
+
+    def __init__(self, logger, color_cycle=None):
+        self._logger = logger
+
+        path = Path(self._logger.get_path())
+
+        self._logger_dict = {}
+        self._color_cycle = dict() if color_cycle is None else color_cycle
+
+        alg_count = 0
+        for env_dir in path.iterdir():
+            if env_dir.is_dir():
+                env = env_dir.name
+                self._logger_dict[env] = dict()
+
+                for alg_dir in env_dir.iterdir():
+                    if alg_dir.is_dir():
+                        alg_count += 1
+                        alg = alg_dir.name
+
+                        if alg not in self._color_cycle:
+                            self._color_cycle[alg] = 'C' + str(alg_count)
+
+                        alg_logger = BenchmarkLogger.from_path(alg_dir)
+                        self._logger_dict[env][alg] = alg_logger
+
+    def get_report(self, env):
+        """
+        Create report plot with matplotlib.
+
+        """
+        self.plot_counter += 1
+
+        j_pos, r_pos, q_pos, e_pos = 141, 142, 143, 144
+
+        fig = plt.figure(self.plot_counter * 1000, figsize=(24,6), dpi=80)
+        j_ax = fig.add_subplot(j_pos,
+            ylabel='J',
+            xlabel='epochs')
+        r_ax = fig.add_subplot(r_pos,
+                               ylabel='R',
+                               xlabel='epochs')
+        q_ax = fig.add_subplot(q_pos,
+                               ylabel='V',
+                               xlabel='epochs')
+        e_ax = fig.add_subplot(e_pos,
+                               ylabel='policy_entropy',
+                               xlabel='epochs')
+
+        for alg, logger in self._logger_dict[env].items():
+
+            color = self._color_cycle[alg]
+
+            plot_mean_conf(logger.load_Js(), j_ax, color=color, label=alg)
+            plot_mean_conf(logger.load_Rs(), r_ax, color=color, label=alg)
+            plot_mean_conf(logger.load_Qs(), q_ax, color=color, label=alg)
+
+            if logger.exists_policy_entropy():
+                plot_mean_conf(logger.load_policy_entropies(), e_ax, color=color, label=alg)
+
+        j_ax.legend()
+        fig.tight_layout()
+
+        return fig
+
+    def save_reports(self):
+        """
+        Method to save an image of a report of the training metrics from a performend experiment.
+
+        """
+        for env in self._logger_dict.keys():
+            fig = self.get_report(env)
+            self._logger.save_figure(fig, env)
+            plt.close(fig)
+
+    def show_reports(self):
+        """
+        Method to show a report of the training metrics from a performend experiment.
+
+        """
+        matplotlib.use(default_backend)
+        for env in self._logger_dict.keys():
+            self.get_report(env)
+        plt.show()

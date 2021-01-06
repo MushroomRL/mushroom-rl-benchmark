@@ -1,11 +1,13 @@
 __version__ = '1.0.0'
 
 try:
-    from .core import BenchmarkLogger, BenchmarkVisualizer, BenchmarkExperiment, BenchmarkSuite
+    from .core import BenchmarkLogger, BenchmarkVisualizer, BenchmarkSuiteVisualizer,\
+        BenchmarkExperiment, BenchmarkSuite
 
     __all__ = [
         'BenchmarkLogger',
         'BenchmarkVisualizer',
+        'BenchmarkSuiteVisualizer',
         'BenchmarkExperiment',
         'BenchmarkSuite'
     ]
