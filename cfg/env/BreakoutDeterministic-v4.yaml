@@ -10,3 +10,5 @@ env_params:
 agent_params:
   DQN:
     lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
