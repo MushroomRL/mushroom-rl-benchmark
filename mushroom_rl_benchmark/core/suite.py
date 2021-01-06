@@ -58,7 +58,7 @@ class BenchmarkSuite:
             environment_params = dict(
                 env_id=environment_id,
                 **environment_params)
-            environment = environment.replace(separator, '_')
+            environment = environment_id
         else:
             environment_name = environment
 

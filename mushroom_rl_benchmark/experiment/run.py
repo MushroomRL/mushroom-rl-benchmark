@@ -142,6 +142,9 @@ def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
     Q = agent_builder.compute_Q(
         agent=core.agent, 
         states=states)
+
+    if hasattr(Q, 'item'):
+        Q = Q.item()
     
     # Compute Policy Entropy
     E = None
