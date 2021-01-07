@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings(action='ignore', category=RuntimeWarning, module='scipy')
 
 
-def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None, grid=True):
+def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None):
     """
     Method to plot mean and confidence interval for data on pyplot axes.
 
@@ -24,8 +24,6 @@ def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None
     upper_bound = mean + conf
     lower_bound = mean - conf
 
-    if grid:
-        ax.grid()
     ax.plot(mean, color=color, label=label)
     ax.fill_between(np.arange(np.size(mean)), upper_bound, lower_bound, facecolor=facecolor, alpha=alpha)
 
@@ -204,13 +202,12 @@ class BenchmarkSuiteVisualizer(object):
 
         alg_count = 0
         for env_dir in path.iterdir():
-            if env_dir.is_dir():
+            if env_dir.is_dir() and env_dir.name != 'plots':
                 env = env_dir.name
                 self._logger_dict[env] = dict()
 
                 for alg_dir in env_dir.iterdir():
                     if alg_dir.is_dir():
-                        alg_count += 1
                         alg = alg_dir.name
 
                         if alg not in self._color_cycle:
@@ -218,42 +215,35 @@ class BenchmarkSuiteVisualizer(object):
 
                         alg_logger = BenchmarkLogger.from_path(alg_dir)
                         self._logger_dict[env][alg] = alg_logger
+                        alg_count += 1
 
-    def get_report(self, env):
+    def get_report(self, env, data_type):
         """
         Create report plot with matplotlib.
 
         """
         self.plot_counter += 1
 
-        j_pos, r_pos, q_pos, e_pos = 141, 142, 143, 144
+        plot_id = self.plot_counter * 1000
+        fig = plt.figure(plot_id, figsize=(8, 6), dpi=80)
+        ax = plt.axes(ylabel=data_type, xlabel='# Epochs')
 
-        fig = plt.figure(self.plot_counter * 1000, figsize=(24,6), dpi=80)
-        j_ax = fig.add_subplot(j_pos,
-            ylabel='J',
-            xlabel='epochs')
-        r_ax = fig.add_subplot(r_pos,
-                               ylabel='R',
-                               xlabel='epochs')
-        q_ax = fig.add_subplot(q_pos,
-                               ylabel='V',
-                               xlabel='epochs')
-        e_ax = fig.add_subplot(e_pos,
-                               ylabel='policy_entropy',
-                               xlabel='epochs')
+        for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
+                     ax.get_xticklabels() + ax.get_yticklabels()):
+            item.set_fontsize('x-large')
 
         for alg, logger in self._logger_dict[env].items():
-
             color = self._color_cycle[alg]
+            data = getattr(logger, 'load_' + data_type + 's')()
 
-            plot_mean_conf(logger.load_Js(), j_ax, color=color, label=alg)
-            plot_mean_conf(logger.load_Rs(), r_ax, color=color, label=alg)
-            plot_mean_conf(logger.load_Qs(), q_ax, color=color, label=alg)
+            plot_mean_conf(data, ax, color=color, label=alg)
 
-            if logger.exists_policy_entropy():
-                plot_mean_conf(logger.load_policy_entropies(), e_ax, color=color, label=alg)
+            # if logger.exists_policy_entropy():
+            #     plot_mean_conf(logger.load_policy_entropies(), ax, color=color, label=alg)
 
-        j_ax.legend()
+        ax.grid()
+        ax.legend(fontsize='medium', ncol=len(self._logger_dict[env]), frameon=False,
+                  loc='upper center', bbox_to_anchor=(0.5, 0.05))
         fig.tight_layout()
 
         return fig
@@ -264,9 +254,10 @@ class BenchmarkSuiteVisualizer(object):
 
         """
         for env in self._logger_dict.keys():
-            fig = self.get_report(env)
-            self._logger.save_figure(fig, env)
-            plt.close(fig)
+            for data_type in ['J', 'R', 'Q']:
+                fig = self.get_report(env, data_type)
+                self._logger.save_figure(fig, env + '_' + data_type)
+                plt.close(fig)
 
     def show_reports(self):
         """
@@ -275,5 +266,6 @@ class BenchmarkSuiteVisualizer(object):
         """
         matplotlib.use(default_backend)
         for env in self._logger_dict.keys():
-            self.get_report(env)
+            for data_type in ['J', 'R', 'Q']:
+                self.get_report(env, data_type)
         plt.show()
