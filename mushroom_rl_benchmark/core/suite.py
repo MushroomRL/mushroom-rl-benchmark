@@ -121,9 +121,14 @@ class BenchmarkSuite:
         Print the experiments in the suite.
 
         """
+        first = True
         for env, agents in self._experiment_structure.items():
+            if not first:
+                self.logger.weak_line()
+            first = False
+            self.logger.info('Environment: ' + env)
             for agent, _ in agents.items():
-                self.logger.info('Environment: {}\tAgent: {}'.format(env, agent))
+                self.logger.info('- ' + agent)
 
     def run(self, exec_type='sequential'):
         """

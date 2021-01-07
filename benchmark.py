@@ -12,11 +12,11 @@ def get_args():
     arg_test = parser.add_argument_group('benchmark parameters')
     arg_test.add_argument("-e", "--env", type=str, nargs='+',
                           help='Environments to be used by the benchmark. '
-                               'Use all, to select all environments available.')
-    arg_test.add_argument("-s", "--slurm", action='store_true',
-                          help='Flag to use of SLURM.')
-    arg_test.add_argument("-q", "--sequential", action='store_true',
-                          help='Flag to run a the benchmark sequentially.')
+                               'Use \'all\', to select all the available environments.')
+    arg_test.add_argument("-x", "--execution_type",
+                          choices=['sequential', 'parallel', 'slurm'],
+                          default='parallel',
+                          help='Execution type for the benchmark.')
     arg_test.add_argument("-t", "--test", action='store_true',
                           help='Flag to test the script and NOT execute the benchmark.')
     arg_test.add_argument("-d", "--demo", action='store_true',
@@ -27,7 +27,7 @@ def get_args():
 
 
 if __name__ == '__main__':
-    env_ids, use_slurm, sequential, test, demo = get_args()
+    env_ids, exec_type, test, demo = get_args()
     cfg_dir = Path(__file__).parent / 'cfg'
     env_cfg_dir = cfg_dir / 'env'
 
@@ -43,16 +43,11 @@ if __name__ == '__main__':
             if env_id.suffix == '.yaml':
                 env_ids.append(env_id.stem)
 
-    type_msg = 'parallel'
-    type_msg = 'slurm' if use_slurm else type_msg
-    type_msg = 'sequential' if sequential else type_msg
-    logger.info('Execution type:' + type_msg)
-    logger.info('Runing FULL:' +str(not demo))
+    logger.info('Execution type: ' + exec_type)
+    logger.info('Runing FULL: ' + str(not demo))
     logger.strong_line()
 
-    exec_type = 'slurm' if use_slurm else 'parallel'
-    exec_type = 'sequential' if sequential else 'parallel'
-    param_file = 'params_slurm.yaml' if use_slurm else 'params_local.yaml'
+    param_file = 'params_slurm.yaml' if exec_type == 'slurm' else 'params_local.yaml'
 
     suite_params = yaml.safe_load(open(cfg_dir / param_file, 'r'))['suite_params']
 
@@ -60,8 +55,6 @@ if __name__ == '__main__':
 
     for env_id in env_ids:
         config_file = cfg_dir / 'env' / (env_id + '.yaml')
-
-        assert not (use_slurm and sequential)
 
         yaml_file = yaml.safe_load(open(config_file, 'r'))
         run_params = yaml_file['run_params']
@@ -73,9 +66,6 @@ if __name__ == '__main__':
 
         env = env_data['name']
         env_params = env_data['params']
-
-        logger.info('Adding environment:' + env)
-        logger.info('Adding agents:' + str(list(agents)))
 
         if demo:
             run_params['n_runs'] = 4

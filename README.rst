@@ -72,18 +72,18 @@ The script for starting the benchmarks takes following arguments:
 
 ::
     
-    usage: benchmark.py [-h] -e ENV [-s] [-q] [-t] [-d]
+    usage: benchmark.py [-h] [-e ENV [ENV ...]] [-x {sequential,parallel,slurm}] [-t] [-d]
 
     optional arguments:
-      -h, --help         show this help message and exit
+      -h, --help            show this help message and exit
 
     benchmark parameters:
-      -e ENV, --env ENV  Environment to benchmark.
-      -s, --slurm        Flag to use of SLURM.
-      -q, --sequential   Flag to run a the benchmark sequentially.
-      -t, --test         Flag to test the script and NOT execute the benchmark.
-      -d, --demo         Flag to run a reduced version of the benchmark.
-
+      -e ENV [ENV ...], --env ENV [ENV ...]
+                            Environments to be used by the benchmark. Use 'all', to select all the available environments.
+      -x {sequential,parallel,slurm}, --execution_type {sequential,parallel,slurm}
+                            Execution type for the benchmark.
+      -t, --test            Flag to test the script and NOT execute the benchmark.
+      -d, --demo            Flag to run a reduced version of the benchmark.
 
 
 The agent and environment parameters used for benchmarking the agents on an environment are located in
@@ -114,10 +114,10 @@ To run a reduced benchmark on a SLURM cluster call the script like this:
 
 .. code:: shell
 
-    $ ./benchmark.py -e <EnvironmentName> -s -d
+    $ ./benchmark.py -e <EnvironmentName> -x slurm -d
 
-To run the full benchmark on a SLURM cluster call the script like this:
+To run the full benchmark, with all environments, on a SLURM cluster call the script like this:
 
 .. code:: shell
 
-    $ ./benchmark.py -e <EnvironmentName> -s
+    $ ./benchmark.py -e all -x slurm

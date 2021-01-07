@@ -109,6 +109,20 @@ class BenchmarkLogger:
 
         return str(figure_dir / filename)
 
+    def strong_line(self):
+        """
+        Log a line of #
+
+        """
+        self.info('###################################################################################################')
+
+    def weak_line(self):
+        """
+        Log a line of -
+
+        """
+        self.info('---------------------------------------------------------------------------------------------------')
+
     def info(self, message):
         """
         Log info message.
