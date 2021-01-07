@@ -46,11 +46,11 @@ def run(res_dir, res_id):
             continue
         else:
             print("EXISTS")
-        Js.extend(logger.load_Js())
-        Rs.extend(logger.load_Rs())
-        Qs.extend(logger.load_Qs())
+        Js.extend(logger.load_J())
+        Rs.extend(logger.load_R())
+        Qs.extend(logger.load_V())
         if has_entropy:
-            Es.extend(logger.load_policy_entropies())
+            Es.extend(logger.load_entropy())
         stats = logger.load_stats()
         if stats['best_J'] > best_J:
             best_stats = stats
@@ -63,11 +63,11 @@ def run(res_dir, res_id):
 
     logger = BenchmarkLogger(log_dir=res_dir, log_id=res_id, use_timestamp=False)
 
-    logger.save_Js(Js)
-    logger.save_Rs(Rs)
-    logger.save_Qs(Qs)
+    logger.save_J(Js)
+    logger.save_R(Rs)
+    logger.save_V(Qs)
     if has_entropy:
-        logger.save_policy_entropies(Es)
+        logger.save_entropy(Es)
     logger.save_stats(best_stats)
     logger.save_best_agent(best_agent)
 

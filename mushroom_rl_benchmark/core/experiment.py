@@ -334,7 +334,7 @@ class BenchmarkExperiment:
 
         """
         self.Js.extend(Js)
-        self.logger.save_Js(self.Js)
+        self.logger.save_J(self.Js)
 
     def extend_and_save_Rs(self, Rs):
         """
@@ -342,7 +342,7 @@ class BenchmarkExperiment:
 
         """
         self.Rs.extend(Rs)
-        self.logger.save_Rs(self.Rs)
+        self.logger.save_R(self.Rs)
 
     def extend_and_save_Qs(self, Qs):
         """
@@ -350,7 +350,7 @@ class BenchmarkExperiment:
 
         """
         self.Qs.extend(Qs)
-        self.logger.save_Qs(self.Qs)
+        self.logger.save_V(self.Qs)
 
     def extend_and_save_policy_entropies(self, policy_entropies):
         """
@@ -358,7 +358,7 @@ class BenchmarkExperiment:
 
         """
         self.policy_entropies.extend(policy_entropies)
-        self.logger.save_policy_entropies(self.policy_entropies)
+        self.logger.save_entropy(self.policy_entropies)
 
     def set_and_save_config(self, **settings):
         """

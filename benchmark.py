@@ -10,7 +10,7 @@ from mushroom_rl.core import Logger
 def get_args():
     parser = ArgumentParser()
     arg_test = parser.add_argument_group('benchmark parameters')
-    arg_test.add_argument("-e", "--env", type=str, nargs='+',
+    arg_test.add_argument("-e", "--env", type=str, nargs='+', required=True,
                           help='Environments to be used by the benchmark. '
                                'Use \'all\', to select all the available environments.')
     arg_test.add_argument("-x", "--execution_type",

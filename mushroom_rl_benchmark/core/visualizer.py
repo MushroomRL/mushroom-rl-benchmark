@@ -65,43 +65,43 @@ class BenchmarkVisualizer(object):
         """
         return self.data is None
     
-    def get_Js(self):
+    def get_J(self):
         """
         Get Js from dictionary or log directory.
 
         """
         if self.is_data_persisted:
-            return self.logger.load_Js()
+            return self.logger.load_J()
         else:
             return self.data['Js']
     
-    def get_Rs(self):
+    def get_R(self):
         """
         Get Rs from dictionary or log directory.
 
         """
         if self.is_data_persisted:
-            return self.logger.load_Rs()
+            return self.logger.load_R()
         else:
             return self.data['Rs']
     
-    def get_Qs(self):
+    def get_V(self):
         """
         Get Qs from dictionary or log directory.
 
         """
         if self.is_data_persisted:
-            return self.logger.load_Qs()
+            return self.logger.load_V()
         else:
             return self.data['Qs']
     
-    def get_Es(self):
+    def get_entropy(self):
         """
         Get Es from dictionary or log directory.
 
         """
         if self.is_data_persisted:
-            return self.logger.load_policy_entropies()
+            return self.logger.load_entropy()
         else:
             return self.data['Es']
 
@@ -125,23 +125,23 @@ class BenchmarkVisualizer(object):
         j_ax = fig.add_subplot(j_pos, 
             ylabel='J', 
             xlabel='epochs')
-        plot_mean_conf(self.get_Js(), j_ax)
+        plot_mean_conf(self.get_J(), j_ax)
 
         r_ax = fig.add_subplot(r_pos,
             ylabel='R', 
             xlabel='epochs')
-        plot_mean_conf(self.get_Rs(), r_ax)
+        plot_mean_conf(self.get_R(), r_ax)
 
         q_ax = fig.add_subplot(q_pos,
             ylabel='V', 
             xlabel='epochs')
-        plot_mean_conf(self.get_Qs(), q_ax)
+        plot_mean_conf(self.get_V(), q_ax)
 
         if self.has_entropy:
             e_ax = fig.add_subplot(e_pos,
                 ylabel='policy_entropy', 
                 xlabel='epochs')
-            plot_mean_conf(self.get_Es(), e_ax)
+            plot_mean_conf(self.get_entropy(), e_ax)
 
         fig.tight_layout()
 
@@ -234,15 +234,13 @@ class BenchmarkSuiteVisualizer(object):
 
         for alg, logger in self._logger_dict[env].items():
             color = self._color_cycle[alg]
-            data = getattr(logger, 'load_' + data_type + 's')()
+            data = getattr(logger, 'load_' + data_type)()
 
-            plot_mean_conf(data, ax, color=color, label=alg)
-
-            # if logger.exists_policy_entropy():
-            #     plot_mean_conf(logger.load_policy_entropies(), ax, color=color, label=alg)
+            if data is not None:
+                plot_mean_conf(data, ax, color=color, label=alg)
 
         ax.grid()
-        ax.legend(fontsize='medium', ncol=len(self._logger_dict[env]), frameon=False,
+        ax.legend(fontsize='medium', ncol=6, frameon=False,
                   loc='upper center', bbox_to_anchor=(0.5, 0.05))
         fig.tight_layout()
 
@@ -254,9 +252,9 @@ class BenchmarkSuiteVisualizer(object):
 
         """
         for env in self._logger_dict.keys():
-            for data_type in ['J', 'R', 'Q']:
+            for data_type in ['J', 'R', 'V', 'entropy']:
                 fig = self.get_report(env, data_type)
-                self._logger.save_figure(fig, env + '_' + data_type)
+                self._logger.save_figure(fig, data_type, env)
                 plt.close(fig)
 
     def show_reports(self):
@@ -266,6 +264,6 @@ class BenchmarkSuiteVisualizer(object):
         """
         matplotlib.use(default_backend)
         for env in self._logger_dict.keys():
-            for data_type in ['J', 'R', 'Q']:
+            for data_type in ['J', 'R', 'V', 'entropy']:
                 self.get_report(env, data_type)
         plt.show()

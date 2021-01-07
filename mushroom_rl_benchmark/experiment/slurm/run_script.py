@@ -27,11 +27,11 @@ if __name__ == '__main__':
 
     cmp_E = agent_builder.compute_policy_entropy
 
-    logger.save_Js([result['Js']])
-    logger.save_Rs([result['Rs']])
-    logger.save_Qs([result['Qs']])
+    logger.save_J([result['Js']])
+    logger.save_R([result['Rs']])
+    logger.save_V([result['Qs']])
     if cmp_E:
-        logger.save_policy_entropies([result['Es']])
+        logger.save_entropy([result['Es']])
     new_score = result['score']
     new_agent = result['builders']
     stats = dict(

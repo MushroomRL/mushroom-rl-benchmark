@@ -1,5 +1,4 @@
 import os
-import logging
 import json
 import pickle
 from datetime import datetime
@@ -7,24 +6,15 @@ from datetime import datetime
 import torch
 import numpy as np
 from pathlib import Path
-from mushroom_rl.algorithms import Agent
+
+from mushroom_rl.core import Serializable
+from mushroom_rl.core.logger import ConsoleLogger
 
 
-class BenchmarkLogger:
+class BenchmarkLogger(ConsoleLogger):
     """
     Class to handle all interactions with the log directory.
     """
-
-    file_Js = 'Js.pkl'
-    file_Rs = 'Rs.pkl'
-    file_Qs = 'Qs.pkl'
-    file_policy_entropies = 'policy_entropies.pkl'
-    best_agent_dir = 'best_agent.msh'
-    last_agent_dir = 'last_agent.msh'
-    file_env_builder = 'environment_builder.pkl'
-    file_agent_builder = 'agent_builder.pkl'
-    file_config = 'config.json'
-    file_stats = 'stats.json'
 
     def __init__(self, log_dir=None, log_id=None, use_timestamp=True):
         """
@@ -37,35 +27,25 @@ class BenchmarkLogger:
             use_timestamp (bool, True): select if a timestamp should be appended to the log id.
 
         """
+        self._file_J = 'J.pkl'
+        self._file_R = 'R.pkl'
+        self._file_V = 'Q.pkl'
+        self._file_entropy = 'entropy.pkl'
+        self._file_best_agent = 'best_agent.msh'
+        self._file_last_agent = 'last_agent.msh'
+        self._file_env_builder = 'environment_builder.pkl'
+        self._file_agent_builder = 'agent_builder.pkl'
+        self._file_config = 'config.json'
+        self._file_stats = 'stats.json'
 
-        self.log_dir = ''
-        self.log_id = ''
-        self.log = None
+        self._log_dir = ''
+        self._log_id = ''
         
         # Set and create log directories
         self.set_log_dir(log_dir)
         self.set_log_id(log_id, use_timestamp=use_timestamp)
-        
-        # Get get logger for benchmark
-        self.log = logging.getLogger(log_id) # (self.get_log_id())
-        self.log.setLevel(logging.DEBUG)
-        self.log.propagate = False
-        
-        # Create handlers for console and file
-        fh = logging.FileHandler(self.get_path('console.log'))
-        fh.setLevel(logging.DEBUG)
-        
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
 
-        # Add formatter to handlers 
-        formatter = logging.Formatter(fmt='%(asctime)s [%(levelname)s] %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
-        ch.setFormatter(formatter)
-        fh.setFormatter(formatter)
-
-        # add the handlers to logger
-        self.log.addHandler(ch)
-        self.log.addHandler(fh)
+        super().__init__(self._log_id, Path(self.get_path()), log_file_name='console')
 
     def set_log_dir(self, log_dir):
         if log_dir is None:
@@ -79,161 +59,107 @@ class BenchmarkLogger:
             Path(log_dir).mkdir(parents=True, exist_ok=True)
         if not os.path.isdir(log_dir):
             raise NotADirectoryError("Path to save builders is not valid")
-        self.log_dir = log_dir
+        self._log_dir = log_dir
 
     def get_log_dir(self):
-        return self.log_dir
+        return self._log_dir
 
     def set_log_id(self, log_id, use_timestamp=True):
         if log_id is None:
             log_id = 'benchmark'
         if use_timestamp:
             log_id += '_{}'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
-        path = os.path.join(self.log_dir, log_id, '')
+        path = os.path.join(self._log_dir, log_id, '')
         if not os.path.exists(path):
             Path(path).mkdir(parents=True, exist_ok=True)
         if not os.path.isdir(path):
             raise NotADirectoryError("Path to save builders is not valid")
-        self.log_id = log_id
+        self._log_id = log_id
 
     def get_log_id(self):
-        return self.log_id
+        return self._log_id
 
     def get_path(self, filename=''):
-        return os.path.join(self.log_dir, self.log_id, filename)
+        return os.path.join(self._log_dir, self._log_id, filename)
 
-    def get_figure_path(self, filename=''):
-        figure_dir = Path(self.log_dir) / self.log_id / 'plots'
+    def get_figure_path(self, filename='', subfolder=None):
+        figure_dir = Path(self._log_dir) / self._log_id / 'plots'
+        if subfolder is not None:
+            figure_dir = figure_dir / subfolder
         if not figure_dir.exists():
-            figure_dir.mkdir()
+            figure_dir.mkdir(parents=True, exist_ok=True)
 
         return str(figure_dir / filename)
 
-    def strong_line(self):
-        """
-        Log a line of #
+    def save_J(self, J):
+        self._save_pickle(self.get_path(self._file_J), J)
 
-        """
-        self.info('###################################################################################################')
+    def load_J(self):
+        return self._load_pickle(self.get_path(self._file_J))
 
-    def weak_line(self):
-        """
-        Log a line of -
+    def save_R(self, R):
+        self._save_pickle(self.get_path(self._file_R), R)
 
-        """
-        self.info('---------------------------------------------------------------------------------------------------')
+    def load_R(self):
+        return self._load_pickle(self.get_path(self._file_R))
 
-    def info(self, message):
-        """
-        Log info message.
+    def save_V(self, V):
+        self._save_pickle(self.get_path(self._file_V), V)
 
-        Args:
-            message (str): message string
+    def load_V(self):
+        return self._load_pickle(self.get_path(self._file_V))
 
-        """
-        self.log.info(message)
-    
-    def warning(self, message):
-        """
-        Log warning message.
+    def save_entropy(self, policy_entropies):
+        self._save_pickle(self.get_path(self._file_entropy), policy_entropies)
 
-        Args:
-            message (str): message string
-
-        """
-        self.log.warning(message)
-    
-    def exception(self, message):
-        """
-        Log exception message.
-
-        Args:
-            message (str): message string
-
-        """
-        self.log.exception(message)
-    
-    def critical(self, message):
-        """
-        Log critical message.
-
-        Args:
-            message (str): message string
-
-        """
-        self.log.critical(message)
-
-    def save_Js(self, Js):
-        self._save_pickle(self.get_path(self.file_Js), Js)
-
-    def load_Js(self):
-        return self._load_pickle(self.get_path(self.file_Js))
-
-    def save_Rs(self, Rs):
-        self._save_pickle(self.get_path(self.file_Rs), Rs)
-
-    def load_Rs(self):
-        return self._load_pickle(self.get_path(self.file_Rs))
-
-    def save_Qs(self, Qs):
-        self._save_pickle(self.get_path(self.file_Qs), Qs)
-
-    def load_Qs(self):
-        return self._load_pickle(self.get_path(self.file_Qs))
-
-    def save_policy_entropies(self, policy_entropies):
-        self._save_pickle(self.get_path(self.file_policy_entropies), policy_entropies)
-
-    def load_policy_entropies(self):
-        return self._load_pickle(self.get_path(self.file_policy_entropies))
+    def load_entropy(self):
+        path = self.get_path(self._file_entropy)
+        if os.path.exists(path):
+            return self._load_pickle(path)
+        else:
+            return None
 
     def exists_policy_entropy(self):
-        return Path(self.get_path(self.file_policy_entropies)).exists()
+        return Path(self.get_path(self._file_entropy)).exists()
 
     def save_best_agent(self, agent):
-        self._save_agent(self.get_path(self.best_agent_dir), agent)
+        agent.save(self.get_path(self._file_best_agent))
 
     def save_last_agent(self, agent):
-        self._save_agent(self.get_path(self.last_agent_dir), agent)
-        
-    def _save_agent(self, path, agent):
-        agent.save(path)
+        agent.save(self.get_path(self._file_last_agent))
 
     def load_best_agent(self):
-        return self._load_agent(self.get_path(self.best_agent_dir))
+        return Serializable.load(self.get_path(self._file_best_agent))
 
     def load_last_agent(self):
-        return self._load_agent(self.get_path(self.last_agent_dir))
-        
-    def _load_agent(self, path):
-        return Agent.load(path)
+        return Serializable.load(self.get_path(self._file_last_agent))
 
     def save_environment_builder(self, env_builder):
-        self._save_pickle(self.get_path(self.file_env_builder), env_builder)
+        self._save_pickle(self.get_path(self._file_env_builder), env_builder)
 
     def load_environment_builder(self):
-        return self._load_pickle(self.get_path(self.file_env_builder))
+        return self._load_pickle(self.get_path(self._file_env_builder))
 
     def save_agent_builder(self, agent_builder):
-        self._save_pickle(self.get_path(self.file_agent_builder), agent_builder)
+        self._save_pickle(self.get_path(self._file_agent_builder), agent_builder)
 
     def load_agent_builder(self):
-        return self._load_pickle(self.get_path(self.file_agent_builder))
+        return self._load_pickle(self.get_path(self._file_agent_builder))
 
     def save_config(self, config):
-        self._save_json(self.get_path(self.file_config), config)
+        self._save_json(self.get_path(self._file_config), config)
 
     def load_config(self):
-        return self._load_json(self.get_path(self.file_config))
+        return self._load_json(self.get_path(self._file_config))
 
     def save_stats(self, stats):
-        self._save_json(self.get_path(self.file_stats), stats)
+        self._save_json(self.get_path(self._file_stats), stats)
 
     def load_stats(self):
-        return self._load_json(self.get_path(self.file_stats))
+        return self._load_json(self.get_path(self._file_stats))
 
-    def save_figure(self, figure, figname):
-        figure.savefig(self.get_figure_path(figname + ".pdf"))
+    def save_figure(self, figure, figname, subfolder=None):
+        figure.savefig(self.get_figure_path(figname + ".pdf", subfolder))
 
     @staticmethod
     def _save_pickle(path, obj):
