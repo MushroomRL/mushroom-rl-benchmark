@@ -5,7 +5,7 @@ from tqdm import tqdm
 class TqdmParallel(joblib.Parallel):
     def __call__(self, *args, total=None, **kwargs):
         self._total = total
-        with tqdm(total=total) as self._progress_bar:
+        with tqdm(total=total, leave=False) as self._progress_bar:
             return joblib.Parallel.__call__(self, *args, **kwargs)
 
     def print_progress(self):
