@@ -29,7 +29,7 @@ class BenchmarkLogger(ConsoleLogger):
         """
         self._file_J = 'J.pkl'
         self._file_R = 'R.pkl'
-        self._file_V = 'Q.pkl'
+        self._file_V = 'V.pkl'
         self._file_entropy = 'entropy.pkl'
         self._file_best_agent = 'best_agent.msh'
         self._file_last_agent = 'last_agent.msh'
@@ -109,8 +109,8 @@ class BenchmarkLogger(ConsoleLogger):
     def load_V(self):
         return self._load_pickle(self.get_path(self._file_V))
 
-    def save_entropy(self, policy_entropies):
-        self._save_pickle(self.get_path(self._file_entropy), policy_entropies)
+    def save_entropy(self, entropy):
+        self._save_pickle(self.get_path(self._file_entropy), entropy)
 
     def load_entropy(self):
         path = self.get_path(self._file_entropy)

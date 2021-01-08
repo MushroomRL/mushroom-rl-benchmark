@@ -53,7 +53,7 @@ class BenchmarkVisualizer(object):
             if self.is_data_persisted:
                 self.has_entropy = self.logger.exists_policy_entropy()
             else:
-                self.has_entropy = 'Es' in self.data
+                self.has_entropy = 'E' in self.data
         else:
             self.has_entropy = has_entropy
 
@@ -67,43 +67,43 @@ class BenchmarkVisualizer(object):
     
     def get_J(self):
         """
-        Get Js from dictionary or log directory.
+        Get J from dictionary or log directory.
 
         """
         if self.is_data_persisted:
             return self.logger.load_J()
         else:
-            return self.data['Js']
+            return self.data['J']
     
     def get_R(self):
         """
-        Get Rs from dictionary or log directory.
+        Get R from dictionary or log directory.
 
         """
         if self.is_data_persisted:
             return self.logger.load_R()
         else:
-            return self.data['Rs']
+            return self.data['R']
     
     def get_V(self):
         """
-        Get Qs from dictionary or log directory.
+        Get V from dictionary or log directory.
 
         """
         if self.is_data_persisted:
             return self.logger.load_V()
         else:
-            return self.data['Qs']
+            return self.data['V']
     
     def get_entropy(self):
         """
-        Get Es from dictionary or log directory.
+        Get entropy from dictionary or log directory.
 
         """
         if self.is_data_persisted:
             return self.logger.load_entropy()
         else:
-            return self.data['Es']
+            return self.data['E']
 
     def get_report(self):
         """
@@ -125,22 +125,26 @@ class BenchmarkVisualizer(object):
         j_ax = fig.add_subplot(j_pos, 
             ylabel='J', 
             xlabel='epochs')
+        j_ax.grid()
         plot_mean_conf(self.get_J(), j_ax)
 
         r_ax = fig.add_subplot(r_pos,
             ylabel='R', 
             xlabel='epochs')
+        r_ax.grid()
         plot_mean_conf(self.get_R(), r_ax)
 
-        q_ax = fig.add_subplot(q_pos,
+        v_ax = fig.add_subplot(q_pos,
             ylabel='V', 
             xlabel='epochs')
-        plot_mean_conf(self.get_V(), q_ax)
+        v_ax.grid()
+        plot_mean_conf(self.get_V(), v_ax)
 
         if self.has_entropy:
             e_ax = fig.add_subplot(e_pos,
                 ylabel='policy_entropy', 
                 xlabel='epochs')
+            e_ax.grid()
             plot_mean_conf(self.get_entropy(), e_ax)
 
         fig.tight_layout()

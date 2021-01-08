@@ -58,16 +58,16 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         logger.strong_line()
 
     best_agent = agent
-    J, R, Q, E = compute_metrics(core, eval_params, agent_builder, env_builder,
+    J, R, V, E = compute_metrics(core, eval_params, agent_builder, env_builder,
                                  cmp_E)
     best_J, best_R, best_Q, best_E = J, R, Q, E
-    epoch_Js = [J] # discounted reward
-    epoch_Rs = [R] # total reward
-    epoch_Qs = [Q] # Q Value
-    epoch_Es = [E] # policy entropy
+    epoch_J = [J] # discounted reward
+    epoch_R = [R] # total reward
+    epoch_V = [V] # Q Value
+    epoch_E = [E] # policy entropy
     
     if not quiet:
-        print_metrics(logger, 0, J, R, Q, E)
+        print_metrics(logger, 0, J, R, V, E)
 
     for epoch in be_range(n_epochs, quiet):
         try:
@@ -78,36 +78,36 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
             logger.exception(e)
             sys.exit()
 
-        J, R, Q, E = compute_metrics(core, eval_params, agent_builder,
+        J, R, V, E = compute_metrics(core, eval_params, agent_builder,
                                      env_builder, cmp_E)
 
-        epoch_Js.append(J)
-        epoch_Rs.append(R)
-        epoch_Qs.append(Q)
+        epoch_J.append(J)
+        epoch_R.append(R)
+        epoch_V.append(V)
         if cmp_E:
-            epoch_Es.append(E)
+            epoch_E.append(E)
 
         # Save if best Agent
         if J > best_J:
             best_J = float(J)
             best_R = float(R)
-            best_Q = float(Q)
+            best_Q = float(V)
             if cmp_E:
                 best_E = float(E)
             best_agent = deepcopy(agent)
 
         if not quiet:
-            print_metrics(logger, epoch+1, J, R, Q, E)
+            print_metrics(logger, epoch+1, J, R, V, E)
 
     result = dict(
-        Js=np.array(epoch_Js),
-        Qs=np.array(epoch_Qs),
-        Rs=np.array(epoch_Rs),
+        J=np.array(epoch_J),
+        Q=np.array(epoch_V),
+        R=np.array(epoch_R),
         agent=best_agent.copy(),
         score=[best_J, best_R, best_Q])
     
     if cmp_E:
-        result['Es'] = np.array(epoch_Es)
+        result['E'] = np.array(epoch_E)
         result['score'].append(best_E)
 
     return result
@@ -137,14 +137,14 @@ def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
     # Compute R
     R = np.mean(compute_J(dataset))
     
-    # Compute Q
+    # Compute V
     states = get_init_states(dataset)
-    Q = agent_builder.compute_Q(
+    V = agent_builder.compute_Q(
         agent=core.agent, 
         states=states)
 
-    if hasattr(Q, 'item'):
-        Q = Q.item()
+    if hasattr(V, 'item'):
+        V = V.item()
     
     # Compute Policy Entropy
     E = None
@@ -154,10 +154,10 @@ def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
         else:
             E = core.agent.policy.entropy()
     
-    return J, R, Q, E
+    return J, R, V, E
 
 
-def print_metrics(logger, epoch, J, R, Q, E):
+def print_metrics(logger, epoch, J, R, V, E):
     """
     Function that pretty prints the metrics on the standard output.
 
@@ -166,12 +166,12 @@ def print_metrics(logger, epoch, J, R, Q, E):
         epoch (int): the current epoch;
         J (float): the current value of J;
         R (float): the current value of R;
-        Q (float): the current value of Q;
+        V (float): the current value of V;
         E (float): the current value of E (Set None if not defined).
 
     """
     if E is None:
-        logger.epoch_info(epoch, J=J, R=R, Q=Q)
+        logger.epoch_info(epoch, J=J, R=R, V=V)
     else:
-        logger.epoch_info(epoch, J=J, R=R, Q=Q, E=E)
+        logger.epoch_info(epoch, J=J, R=R, V=V, E=E)
     logger.weak_line()

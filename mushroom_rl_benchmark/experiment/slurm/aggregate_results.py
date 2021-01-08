@@ -24,13 +24,13 @@ def run(res_dir, res_id):
     run_dirs = list(work_dir.glob('{}_*'.format(dir_name)))
     print(run_dirs)
 
-    has_entropy = (work_dir / '{}_0/policy_entropies.pkl'.format(dir_name)).exists()
+    has_entropy = (work_dir / '{}_0/entropy.pkl'.format(dir_name)).exists()
     print('has entropy:', has_entropy)
 
-    Js = list()
-    Rs = list()
-    Qs = list()
-    Es = list()
+    J = list()
+    R = list()
+    V = list()
+    E = list()
     best_J = float("-inf")
     best_stats = None
     best_agent = None
@@ -46,11 +46,11 @@ def run(res_dir, res_id):
             continue
         else:
             print("EXISTS")
-        Js.extend(logger.load_J())
-        Rs.extend(logger.load_R())
-        Qs.extend(logger.load_V())
+        J.extend(logger.load_J())
+        R.extend(logger.load_R())
+        V.extend(logger.load_V())
         if has_entropy:
-            Es.extend(logger.load_entropy())
+            E.extend(logger.load_entropy())
         stats = logger.load_stats()
         if stats['best_J'] > best_J:
             best_stats = stats
@@ -63,11 +63,11 @@ def run(res_dir, res_id):
 
     logger = BenchmarkLogger(log_dir=res_dir, log_id=res_id, use_timestamp=False)
 
-    logger.save_J(Js)
-    logger.save_R(Rs)
-    logger.save_V(Qs)
+    logger.save_J(J)
+    logger.save_R(R)
+    logger.save_V(V)
     if has_entropy:
-        logger.save_entropy(Es)
+        logger.save_entropy(E)
     logger.save_stats(best_stats)
     logger.save_best_agent(best_agent)
 

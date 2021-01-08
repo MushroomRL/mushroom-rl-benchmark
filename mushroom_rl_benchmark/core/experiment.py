@@ -36,10 +36,10 @@ class BenchmarkExperiment:
         self.start_time = 0
         self.stop_time = 0
 
-        self.Js = list()
-        self.Qs = list()
-        self.Rs = list()
-        self.policy_entropies = list()
+        self.J = list()
+        self.V = list()
+        self.R = list()
+        self.entropy = list()
         self.config = dict()
         self.stats = dict(best_J=float("-inf"))
 
@@ -87,11 +87,11 @@ class BenchmarkExperiment:
 
         for run in trange(n_runs_completed, n_runs):
             result = exec_run(self.agent_builder, self.env_builder, seed=run, quiet=False, **run_params)
-            self.extend_and_save_Js([result['Js']])
-            self.extend_and_save_Rs([result['Rs']])
-            self.extend_and_save_Qs([result['Qs']])
+            self.extend_and_save_J([result['J']])
+            self.extend_and_save_R([result['R']])
+            self.extend_and_save_V([result['V']])
             if cmp_E:
-                self.extend_and_save_policy_entropies([result['Es']])
+                self.extend_and_save_entropy([result['E']])
             new_score = result['score']
             new_agent = result['agent']
             if new_score[0] > self.stats['best_J']:
@@ -157,31 +157,31 @@ class BenchmarkExperiment:
                 total=n_runs
             )
 
-            run_Js = list()
-            run_Rs = list()
-            run_Qs = list()
-            run_Es = list()
+            run_J = list()
+            run_R = list()
+            run_V = list()
+            run_E = list()
             new_score = [float("-inf"), 0, 0, 0] # J, R, Q, E
             new_agent = None
 
             for run in runs:
                 # Collect J, R, Q and E
-                run_Js.append(run['Js'])
-                run_Rs.append(run['Rs'])
-                run_Qs.append(run['Qs'])
+                run_J.append(run['J'])
+                run_R.append(run['R'])
+                run_V.append(run['V'])
                 if cmp_E:
-                    run_Es.append(run['Es'])
+                    run_E.append(run['E'])
 
                 # Check for best Agent (depends on J)
                 if run['score'][0] > new_score[0]:
                     new_score = run['score']
                     new_agent = run['agent']
 
-            self.extend_and_save_Js(run_Js)
-            self.extend_and_save_Rs(run_Rs)
-            self.extend_and_save_Qs(run_Qs)
+            self.extend_and_save_J(run_J)
+            self.extend_and_save_R(run_R)
+            self.extend_and_save_V(run_V)
             if cmp_E:
-                self.extend_and_save_policy_entropies(run_Es)
+                self.extend_and_save_entropy(run_E)
 
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
@@ -291,10 +291,10 @@ class BenchmarkExperiment:
         Reset the internal state of the experiment.
 
         """
-        self.Js = list()
-        self.Qs = list()
-        self.Rs = list()
-        self.policy_entropies = list()
+        self.J = list()
+        self.V = list()
+        self.R = list()
+        self.entropy = list()
 
     def resume(self, logger):
         """
@@ -328,37 +328,37 @@ class BenchmarkExperiment:
         self.logger.save_agent_builder(self.agent_builder)
         self.logger.save_environment_builder(self.env_builder)
 
-    def extend_and_save_Js(self, Js):
+    def extend_and_save_J(self, J):
         """
-        Extend Js with another datapoint and save the current state to the log directory.
+        Extend J with another datapoint and save the current state to the log directory.
 
         """
-        self.Js.extend(Js)
-        self.logger.save_J(self.Js)
+        self.J.extend(J)
+        self.logger.save_J(self.J)
 
-    def extend_and_save_Rs(self, Rs):
+    def extend_and_save_R(self, R):
         """
-        Extend Rs with another datapoint and save the current state to the log directory.
-
-        """
-        self.Rs.extend(Rs)
-        self.logger.save_R(self.Rs)
-
-    def extend_and_save_Qs(self, Qs):
-        """
-        Extend Qs with another datapoint and save the current state to the log directory.
+        Extend R with another datapoint and save the current state to the log directory.
 
         """
-        self.Qs.extend(Qs)
-        self.logger.save_V(self.Qs)
+        self.R.extend(R)
+        self.logger.save_R(self.R)
 
-    def extend_and_save_policy_entropies(self, policy_entropies):
+    def extend_and_save_V(self, V):
         """
-        Extend Es with another datapoint and save the current state to the log directory.
+        Extend V with another datapoint and save the current state to the log directory.
 
         """
-        self.policy_entropies.extend(policy_entropies)
-        self.logger.save_entropy(self.policy_entropies)
+        self.V.extend(V)
+        self.logger.save_V(self.V)
+
+    def extend_and_save_entropy(self, entropy):
+        """
+        Extend entropy with another datapoint and save the current state to the log directory.
+
+        """
+        self.entropy.extend(entropy)
+        self.logger.save_entropy(self.entropy)
 
     def set_and_save_config(self, **settings):
         """

@@ -51,12 +51,12 @@ class SACBuilder(AgentBuilder):
         return sac
 
     def compute_Q(self, agent, states):
-        Qs = list()
+        Q = list()
         for state in states:
             s = np.array([state for i in range(self.n_q_samples)])
             a = np.array([agent.policy.draw_action(state) for i in range(self.n_q_samples)])
-            Qs.append(agent._critic_approximator(s, a).mean())
-        return np.array(Qs).mean()
+            Q.append(agent._critic_approximator(s, a).mean())
+        return np.array(Q).mean()
     
     @classmethod
     def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork,
