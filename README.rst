@@ -101,6 +101,13 @@ The parameters used to run the benchmark locally/with slurm slurm and in the red
     cfg/params_local.yaml
     cfg/params_slurm.yaml
 
+The parameters to customize the plots are located in:
+
+::
+
+    cfg/plots.yaml
+
+
 Launch benchmarks
 -----------------
 
