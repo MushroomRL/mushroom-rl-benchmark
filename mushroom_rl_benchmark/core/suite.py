@@ -141,18 +141,24 @@ class BenchmarkSuite:
                 run_params = self._environment_dict[environment]['run_params']
                 exp.run(exec_type=exec_type, **self._suite_params, **run_params)
 
-    def save_plots(self):
+    def save_plots(self, **plot_params):
         """
-        Save the result plot to the log directory.
+        Save the result plots to the log directory.
+
+        Args:
+            **plot_params: parameters to be passed to the suite visualizer.
 
         """
-        visualizer = BenchmarkSuiteVisualizer(self.logger)
+        visualizer = BenchmarkSuiteVisualizer(self.logger, **plot_params)
         visualizer.save_reports()
 
-    def show_plots(self):
+    def show_plots(self, **plot_params):
         """
-        Display the result plot.
+        Display the result plots.
+
+        Args:
+            **plot_params: parameters to be passed to the suite visualizer.
 
         """
-        visualizer = BenchmarkSuiteVisualizer(self.logger)
+        visualizer = BenchmarkSuiteVisualizer(self.logger, **plot_params)
         visualizer.show_report()

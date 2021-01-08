@@ -1,0 +1,15 @@
+---
+color_cycle:
+  A2C: C0
+  TRPO: C1
+  PPO: C2
+  DDPG: C3
+  TD3: C4
+  SAC: C5
+  DQN: C0
+y_limit:
+#    Pendulum-v0:
+#      V:
+#        'ymin': -450
+#        'ymax': -50
+

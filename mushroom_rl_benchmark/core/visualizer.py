@@ -192,13 +192,14 @@ class BenchmarkVisualizer(object):
 class BenchmarkSuiteVisualizer(object):
     plot_counter = 0
 
-    def __init__(self, logger, color_cycle=None):
+    def __init__(self, logger, color_cycle=None, y_limit=None):
         self._logger = logger
 
         path = Path(self._logger.get_path())
 
         self._logger_dict = {}
         self._color_cycle = dict() if color_cycle is None else color_cycle
+        self._y_limit = dict() if y_limit is None else y_limit
 
         alg_count = 0
         for env_dir in path.iterdir():
@@ -232,13 +233,19 @@ class BenchmarkSuiteVisualizer(object):
                      ax.get_xticklabels() + ax.get_yticklabels()):
             item.set_fontsize('x-large')
 
+        max_epochs = 1
         for alg, logger in self._logger_dict[env].items():
             color = self._color_cycle[alg]
             data = getattr(logger, 'load_' + data_type)()
 
             if data is not None:
                 plot_mean_conf(data, ax, color=color, label=alg)
+                max_epochs = max(max_epochs, len(data[0]))
 
+        if env in self._y_limit and data_type in self._y_limit[env]:
+            ax.set_ylim(**self._y_limit[env][data_type])
+
+        ax.set_xlim(xmin=0, xmax=max_epochs-1)
         ax.grid()
         ax.legend(fontsize='medium', ncol=6, frameon=False,
                   loc='upper center', bbox_to_anchor=(0.5, 0.05))

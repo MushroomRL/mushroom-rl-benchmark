@@ -31,6 +31,9 @@ if __name__ == '__main__':
     cfg_dir = Path(__file__).parent / 'cfg'
     env_cfg_dir = cfg_dir / 'env'
 
+    param_file = 'params_slurm.yaml' if exec_type == 'slurm' else 'params_local.yaml'
+    plots_file = 'plots.yaml'
+
     logger = Logger(results_dir=None)
 
     logger.info('Starting benchmarking script')
@@ -47,9 +50,11 @@ if __name__ == '__main__':
     logger.info('Runing FULL: ' + str(not demo))
     logger.strong_line()
 
-    param_file = 'params_slurm.yaml' if exec_type == 'slurm' else 'params_local.yaml'
+    with open(cfg_dir / param_file, 'r') as param_file:
+        suite_params = yaml.safe_load(param_file)['suite_params']
 
-    suite_params = yaml.safe_load(open(cfg_dir / param_file, 'r'))['suite_params']
+    with open(cfg_dir / plots_file, 'r') as plots_file:
+        plot_params = yaml.safe_load(plots_file)
 
     suite = BenchmarkSuite(**suite_params)
 
@@ -85,4 +90,4 @@ if __name__ == '__main__':
 
         if exec_type != 'slurm':
             logger.info('Saving the plots on disk')
-            suite.save_plots()
+            suite.save_plots(**plot_params)
