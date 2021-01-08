@@ -128,3 +128,14 @@ To run the full benchmark, with all environments, on a SLURM cluster call the sc
 .. code:: shell
 
     $ ./benchmark.py -e all -x slurm
+
+Create Plots
+------------
+
+If you need to create the plots for a benchmarking folder, you can call the following script
+
+.. code:: shell
+
+    $ ./create_plots -d <BenchmarkDir>
+
+where `BenchmarkDir` is the directory of your benchmark, e.g. "logs/benchmark"
