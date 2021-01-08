@@ -60,10 +60,10 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     best_agent = agent
     J, R, V, E = compute_metrics(core, eval_params, agent_builder, env_builder,
                                  cmp_E)
-    best_J, best_R, best_Q, best_E = J, R, Q, E
+    best_J, best_R, best_V, best_E = J, R, V, E
     epoch_J = [J] # discounted reward
     epoch_R = [R] # total reward
-    epoch_V = [V] # Q Value
+    epoch_V = [V] # Value function
     epoch_E = [E] # policy entropy
     
     if not quiet:
@@ -91,7 +91,7 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         if J > best_J:
             best_J = float(J)
             best_R = float(R)
-            best_Q = float(V)
+            best_V = float(V)
             if cmp_E:
                 best_E = float(E)
             best_agent = deepcopy(agent)
@@ -101,10 +101,10 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
 
     result = dict(
         J=np.array(epoch_J),
-        Q=np.array(epoch_V),
+        V=np.array(epoch_V),
         R=np.array(epoch_R),
         agent=best_agent.copy(),
-        score=[best_J, best_R, best_Q])
+        score=[best_J, best_R, best_V])
     
     if cmp_E:
         result['E'] = np.array(epoch_E)
