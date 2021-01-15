@@ -1,9 +1,9 @@
 ---
 run_params:
   n_runs: 5
-  n_epochs: 2
-  n_steps: 250
-  n_steps_test: 125
+  n_epochs: 200
+  n_steps: 250000
+  n_steps_test: 125000
 env_params:
   name: Atari.BreakoutDeterministic-v4
   params:
