@@ -57,7 +57,8 @@ class TD3Builder(AgentBuilder):
     
     @classmethod
     def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork,
-                initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], use_cuda=False):
+                initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], tau=1e-3,
+                use_cuda=False):
         
         policy_class = OrnsteinUhlenbeckPolicy
         policy_params = dict(
@@ -87,6 +88,6 @@ class TD3Builder(AgentBuilder):
             initial_replay_size=initial_replay_size,
             max_replay_size=max_replay_size,
             batch_size=batch_size,
-            tau=1e-3)
+            tau=tau)
 
         return cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params)
