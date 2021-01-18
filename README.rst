@@ -50,14 +50,18 @@ Installation
 
 You can do a minimal installation of ``mushroom_rl_benchmark`` with:
 
-    pip install  -e .
+::
+
+    $ pip install  -e .
 
 Running Examples
 ----------------
 
 You can run the example scripts with:
 
-    python examples/benchmarking_trpo.py
+::
+ 
+    $ python examples/benchmarking_trpo.py
 
 Launch predefined benchmarks
 ============================

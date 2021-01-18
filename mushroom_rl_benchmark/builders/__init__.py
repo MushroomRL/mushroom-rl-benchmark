@@ -5,7 +5,8 @@ from .trpo_builder import TRPOBuilder
 from .ddpg_builder import DDPGBuilder
 from .td3_builder import TD3Builder
 from .sac_builder import SACBuilder
-from .dqn_builder import DQNBuilder
+from .dqn_builder import DQNBuilder, DoubleDQNBuilder, PrioritizedDQNBuilder, AveragedDQNBuilder, DuelingDQNBuilder,\
+    MaxminDQNBuilder, CategoricalDQNBuilder
 from .environment_builder import EnvironmentBuilder
 
 __all__ = [
@@ -17,5 +18,11 @@ __all__ = [
     'TD3Builder',
     'SACBuilder',
     'DQNBuilder',
+    'DoubleDQNBuilder',
+    'PrioritizedDQNBuilder',
+    'AveragedDQNBuilder',
+    'DuelingDQNBuilder',
+    'MaxminDQNBuilder',
+    'CategoricalDQNBuilder',
     'EnvironmentBuilder'
 ]

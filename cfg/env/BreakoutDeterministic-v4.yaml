@@ -12,3 +12,27 @@ agent_params:
     lr: .0001
     n_steps_per_fit: 4
     use_cuda: True
+  PrioritizedDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
+  DoubleDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
+  AveragedDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
+  DuelingDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
+  MaxminDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
+  CategoricalDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
