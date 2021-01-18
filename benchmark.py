@@ -31,8 +31,8 @@ if __name__ == '__main__':
     cfg_dir = Path(__file__).parent / 'cfg'
     env_cfg_dir = cfg_dir / 'env'
 
-    param_file = 'params_slurm.yaml' if exec_type == 'slurm' else 'params_local.yaml'
-    plots_file = 'plots.yaml'
+    param_path = 'suite.yaml'
+    plots_path = 'plots.yaml'
 
     logger = Logger(results_dir=None)
 
@@ -50,18 +50,23 @@ if __name__ == '__main__':
     logger.info('Runing FULL: ' + str(not demo))
     logger.strong_line()
 
-    with open(cfg_dir / param_file, 'r') as param_file:
+    with open(cfg_dir / param_path, 'r') as param_file:
         suite_params = yaml.safe_load(param_file)['suite_params']
 
-    with open(cfg_dir / plots_file, 'r') as plots_file:
+    with open(cfg_dir / plots_path, 'r') as plots_file:
         plot_params = yaml.safe_load(plots_file)
 
     suite = BenchmarkSuite(**suite_params)
 
     for env_id in env_ids:
-        config_file = cfg_dir / 'env' / (env_id + '.yaml')
+        config_path = cfg_dir / 'env' / (env_id + '.yaml')
 
-        yaml_file = yaml.safe_load(open(config_file, 'r'))
+        if not config_path.exists():
+            logger.error('The environment configuration file ' + config_path.name + ' does not exists')
+            exit()
+
+        with open(config_path, 'r') as config_file:
+            yaml_file = yaml.safe_load(config_file)
         run_params = yaml_file['run_params']
         env_data = yaml_file['env_params']
         agent_data = yaml_file['agent_params']
