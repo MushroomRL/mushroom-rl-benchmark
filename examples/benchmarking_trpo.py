@@ -26,6 +26,10 @@ if __name__ == '__main__':
         gamma=.99
     )
 
+    parallel = dict(
+        max_concurrent_runs=10
+    )
+
     env_builder = EnvironmentBuilder(env_name, env_params)
     logger.info('Environment is imported')
 
@@ -39,7 +43,7 @@ if __name__ == '__main__':
         n_epochs=100,
         n_steps=30000,
         n_episodes_test=5,
-        max_concurrent_runs=10
+        parallel=parallel
     )
     end_time = time.time()
     logger.info('Execution time: {} SEC'.format(end_time-start_time))
