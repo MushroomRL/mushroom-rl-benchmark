@@ -10,7 +10,7 @@ class BenchmarkSuite:
     Class to orchestrate the execution of multiple experiments.
 
     """
-    def __init__(self, log_dir=None, log_id=None, use_timestamp=True, **suite_params):
+    def __init__(self, log_dir=None, log_id=None, use_timestamp=True, parallel=None, slurm=None):
         """
         Constructor.
 
@@ -18,13 +18,15 @@ class BenchmarkSuite:
             log_dir (str): path to the log directory (Default: ./logs or /work/scratch/$USER)
             log_id (str): log id (Default: benchmark[_YYYY-mm-dd-HH-MM-SS])
             use_timestamp (bool): select if a timestamp should be appended to the log id
-            **suite_params: parameters that are passed to the run method of the experiment
+            parallel (dict, None): parameters that are passed to the run_parallel method of the experiment
+            slurm (dict, None): parameters that are passed to the run_slurm method of the experiment
         
         """
         self._experiment_structure = dict()
         self._environment_dict = dict()
         self._agent_list = []
-        self._suite_params = suite_params
+        self._parallel = parallel
+        self._slurm = slurm
         self.logger = BenchmarkLogger(log_dir=log_dir, log_id=log_id, use_timestamp=use_timestamp)
 
     def add_experiments(self, environment_name, environment_builder_params, agent_names_list,
@@ -139,7 +141,7 @@ class BenchmarkSuite:
             for agent, exp in agents.items():
                 self.logger.info('Starting Experiment for {} on {}'.format(agent, environment))
                 run_params = self._environment_dict[environment]['run_params']
-                exp.run(exec_type=exec_type, **self._suite_params, **run_params)
+                exp.run(exec_type=exec_type, parallel=self._parallel, slurm=self._slurm, **run_params)
 
     def save_plots(self, **plot_params):
         """

@@ -96,14 +96,11 @@ The agent and environment parameters used for benchmarking the agents on an envi
 
     cfg/env/*
 
-The parameters used to run the benchmark locally/with slurm slurm and in the reduced version are located in:
+The parameters used to configure the main folder, the log id and the execution backend (parallel or slurm) and are
+located in:
 
 ::
-
-    cfg/params_local_reduced.yaml
-    cfg/params_slurm_reduced.yaml
-    cfg/params_local.yaml
-    cfg/params_slurm.yaml
+    cfg/suite.yaml
 
 The parameters to customize the plots are located in:
 
@@ -127,7 +124,7 @@ To run a reduced benchmark on a SLURM cluster call the script like this:
 
     $ ./benchmark.py -e <EnvironmentName> -x slurm -d
 
-To run the full benchmark, with all environments, on a SLURM cluster call the script like this:
+To run the full benchmark for all environments, on a SLURM cluster call the script like this:
 
 .. code:: shell
 

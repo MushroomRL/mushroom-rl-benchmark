@@ -52,13 +52,15 @@ class BenchmarkExperiment:
             **run_params: parameters for the selected execution type.
 
         """
+        executor_params = run_params[exec_type] if exec_type in run_params and run_params[exec_type] is not None \
+            else dict()
         try:
             run_fn = getattr(self, 'run_{}'.format(exec_type))
         except AttributeError as e: 
             self.logger.exception(e)
             raise ValueError("exec_type must be 'sequential', 'parallel' or 'slurm'")
         self.logger.info('Running BenchmarkExperiment {}'.format(exec_type))
-        run_fn(**run_params)
+        run_fn(**executor_params, **run_params)
 
     def run_sequential(self, n_runs, n_runs_completed=0, save_plot=True, **run_params):
         """
@@ -200,7 +202,7 @@ class BenchmarkExperiment:
             self.save_plot()
 
     def run_slurm(self, n_runs, n_runs_completed=0, aggregation_job=True, aggregate_hours=3,
-                  aggregate_minutes=0, aggregate_seconds=0, demo=False, **run_params):
+                  aggregate_minutes=0, aggregate_seconds=0, only_print=False, **run_params):
         """
         Execute the experiment with SLURM.
 
@@ -211,7 +213,8 @@ class BenchmarkExperiment:
             aggregate_hours (int, 3): maximum number of hours for the aggregation job;
             aggregate_minutes (int, 0): maximum number of minutes for the aggregation job;
             aggregate_seconds (int, 0): maximum number of seconds for the aggregation job;
-            demo (bool, False): select if the experiment should be run in demo mode;
+            only_print (bool, False): if True, don't launch the benchmarks, only print the
+                submitted commands to the terminal;
             **run_params: parameters for executing a benchmark run.
 
         """
@@ -272,7 +275,7 @@ class BenchmarkExperiment:
         
         command = "sbatch --parsable {} {}".format(script_path, command_line_arguments)
 
-        if demo:
+        if only_print:
             self.logger.info(command)
         else:
             slurm_job_id = subprocess.getoutput(command).split(' ')[-1]
