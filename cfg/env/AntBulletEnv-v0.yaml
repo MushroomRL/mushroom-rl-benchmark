@@ -1,3 +1,4 @@
+%YAML 1.2
 ---
 run_params:
   n_runs: 25
@@ -45,4 +46,4 @@ agent_params:
     n_features: 256
     batch_size: 256
     tau: 5.0e-3
-    lr_alpha: 3e-4
+    lr_alpha: 3.0e-4
