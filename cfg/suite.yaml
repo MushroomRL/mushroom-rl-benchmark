@@ -14,4 +14,4 @@ suite_params:
     only_print: false
     aggregation_job: false
     memory: 4000
-    gres: 'gpu:rtx2080:1'
+    # gres: 'gpu:rtx2080:1'
