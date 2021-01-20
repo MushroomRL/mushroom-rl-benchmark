@@ -27,7 +27,6 @@ agent_params:
     initial_replay_size: 5000
     max_replay_size: 1000000
     tau: 1e-3
-    warmup_transitions: 10000
     batch_size: 128
   TD3:
     actor_lr: 1.0e-4
@@ -36,7 +35,6 @@ agent_params:
     initial_replay_size: 5000
     max_replay_size: 1000000
     tau: 1e-3
-    warmup_transitions: 10000
     batch_size: 128
   SAC:
     actor_lr: 1.0e-4
