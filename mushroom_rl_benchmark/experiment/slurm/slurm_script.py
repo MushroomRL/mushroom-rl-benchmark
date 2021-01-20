@@ -25,7 +25,7 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
     return slurm_path
 
 
-def generate_slurm(exp_name, exp_dir_slurm, python_file, gres, project_name=None, n_exp=1,
+def generate_slurm(exp_name, exp_dir_slurm, python_file, gres=None, project_name=None, n_exp=1,
                    max_concurrent_runs=None, memory=2000, hours=24, minutes=0, seconds=0):
     """
     Function to generate the slurm file content.
@@ -34,7 +34,7 @@ def generate_slurm(exp_name, exp_dir_slurm, python_file, gres, project_name=None
         exp_name (str): name of the experiment;
         exp_dir_slurm (str): directory where the slurm log files are located;
         python_file (str): path to the python file that should be executed;
-        gres (str): request cluster resources. E.g. to add a GPU in the IAS cluster specify gres='gpu:rtx2080:1';
+        gres (str, None): request cluster resources. E.g. to add a GPU in the IAS cluster specify gres='gpu:rtx2080:1';
         project_name (str, None): name of the slurm project;
         n_exp (int, 1): number of experiments in the slurm array;
         max_concurrent_runs (int, None): maximum number of runs that should be executed
