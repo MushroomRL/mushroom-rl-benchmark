@@ -10,23 +10,23 @@ env_params:
     horizon: 200
     gamma: 0.99
 agent_params:
-#  A2C:
-#    actor_lr: 7.0e-4
-#    critic_lr: 7.0e-4
-#  TRPO:
-#    max_kl: 1.0e-2
-#    critic_lr: 3.0e-4
-#    n_steps_per_fit: 3000
-#  PPO:
-#    actor_lr: 3.0e-4
-#    critic_lr: 3.0e-4
+  A2C:
+    actor_lr: 7.0e-4
+    critic_lr: 7.0e-4
+  TRPO:
+    max_kl: 1.0e-2
+    critic_lr: 3.0e-4
+    n_steps_per_fit: 3000
+  PPO:
+    actor_lr: 3.0e-4
+    critic_lr: 3.0e-4
   DDPG:
     actor_lr: 1.0e-4
     critic_lr: 1.0e-3
     n_features: [64, 64]
     initial_replay_size: 128
     max_replay_size: 1000000
-    tau: 1e-3
+    tau: 1.0e-3
     batch_size: 64
   TD3:
     actor_lr: 1.0e-4
@@ -34,7 +34,7 @@ agent_params:
     n_features: [64, 64]
     initial_replay_size: 128
     max_replay_size: 1000000
-    tau: 1e-3
+    tau: 1.0e-3
     batch_size: 64
   SAC:
     actor_lr: 1.0e-4
@@ -44,5 +44,5 @@ agent_params:
     max_replay_size: 500000
     n_features: 64
     batch_size: 64
-    tau: 5e-3
+    tau: 1.0e-3
     lr_alpha: 3e-4

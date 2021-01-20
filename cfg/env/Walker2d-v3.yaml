@@ -26,7 +26,7 @@ agent_params:
     n_features: [400, 300]
     initial_replay_size: 5000
     max_replay_size: 1000000
-    tau: 1e-3
+    tau: 1.0e-3
     batch_size: 128
   TD3:
     actor_lr: 1.0e-4
@@ -34,7 +34,7 @@ agent_params:
     n_features: [400, 300]
     initial_replay_size: 5000
     max_replay_size: 1000000
-    tau: 1e-3
+    tau: 1.0e-3
     batch_size: 128
   SAC:
     actor_lr: 1.0e-4
@@ -44,5 +44,5 @@ agent_params:
     max_replay_size: 500000
     n_features: 256
     batch_size: 256
-    tau: 5e-3
+    tau: 5.0e-3
     lr_alpha: 3e-4
