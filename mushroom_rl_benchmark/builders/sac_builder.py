@@ -61,6 +61,7 @@ class SACBuilder(AgentBuilder):
     @classmethod
     def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork,
                 initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100,
+                batch_size=64, tau=5e-3, lr_alpha=3e-3,
                 preprocessors=None, target_entropy=None, use_cuda=False):
 
         actor_mu_params = dict(network=actor_network,
@@ -84,10 +85,10 @@ class SACBuilder(AgentBuilder):
         alg_params = dict(
             initial_replay_size=initial_replay_size,
             max_replay_size=max_replay_size,
-            batch_size=64,
+            batch_size=batch_size,
             warmup_transitions=warmup_transitions,
-            tau=5e-3,
-            lr_alpha=3e-4,
+            tau=tau,
+            lr_alpha=lr_alpha,
             critic_fit_params=None,
             target_entropy=target_entropy)
 
