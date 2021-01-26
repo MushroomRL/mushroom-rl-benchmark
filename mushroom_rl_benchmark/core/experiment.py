@@ -95,15 +95,20 @@ class BenchmarkExperiment:
             if cmp_E:
                 self.extend_and_save_entropy([result['E']])
             new_score = result['score']
-            new_agent = result['agent']
+
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
                     best_J=new_score[0],
                     best_R=new_score[1],
                     best_Q=new_score[2])
+
                 if cmp_E:
                     self.set_and_save_stats(best_E=new_score[3])
-                self.logger.save_best_agent(new_agent)
+
+                if 'agent' in result:
+                    new_agent = result['agent']
+                    self.logger.save_best_agent(new_agent)
+
             self.set_and_save_config(n_runs_completed=(run+1))
         self.stop_timer()
 
@@ -177,7 +182,8 @@ class BenchmarkExperiment:
                 # Check for best Agent (depends on J)
                 if run['score'][0] > new_score[0]:
                     new_score = run['score']
-                    new_agent = run['agent']
+                    if 'agent' in run:
+                        new_agent = run['agent']
 
             self.extend_and_save_J(run_J)
             self.extend_and_save_R(run_R)
@@ -192,7 +198,9 @@ class BenchmarkExperiment:
                     best_Q=new_score[2])
                 if cmp_E:
                     self.set_and_save_stats(best_E=new_score[3])
-                self.logger.save_best_agent(new_agent)
+
+                if new_agent is not None:
+                    self.logger.save_best_agent(new_agent)
 
         self.stop_timer()
 

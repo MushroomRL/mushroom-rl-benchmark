@@ -11,7 +11,7 @@ from mushroom_rl_benchmark.utils import be_range, get_init_states
 
 
 def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None,
-             quiet=True, **kwargs):
+             save_agent=False, quiet=True, **kwargs):
     """
     Function that handles the execution of an experiment run.
 
@@ -23,6 +23,7 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         n_steps_test (int, None): number of steps for testing;
         n_episodes_test (int, None): number of episodes for testing;
         seed (int, None): the seed;
+        save_agent (bool, False): select if the agent should be logged or not;
         quiet (bool, True): select if run should print execution information.
 
     """
@@ -57,7 +58,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         logger.info('Starting experiment with seed {}'.format(seed))
         logger.strong_line()
 
-    best_agent = agent
+    if save_agent:
+        best_agent = deepcopy(agent)
     J, R, V, E = compute_metrics(core, eval_params, agent_builder, env_builder,
                                  cmp_E)
     best_J, best_R, best_V, best_E = J, R, V, E
@@ -94,7 +96,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
             best_V = float(V)
             if cmp_E:
                 best_E = float(E)
-            best_agent = deepcopy(agent)
+            if save_agent:
+                best_agent = deepcopy(agent)
 
         if not quiet:
             print_metrics(logger, epoch+1, J, R, V, E)
@@ -103,8 +106,10 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
         J=np.array(epoch_J),
         V=np.array(epoch_V),
         R=np.array(epoch_R),
-        agent=best_agent.copy(),
         score=[best_J, best_R, best_V])
+
+    if save_agent:
+        result['agent'] = best_agent
     
     if cmp_E:
         result['E'] = np.array(epoch_E)

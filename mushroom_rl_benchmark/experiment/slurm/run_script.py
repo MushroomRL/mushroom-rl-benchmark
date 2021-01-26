@@ -33,14 +33,18 @@ if __name__ == '__main__':
     if cmp_E:
         logger.save_entropy([result['E']])
     new_score = result['score']
-    new_agent = result['agent']
+
     stats = dict(
         best_J=new_score[0],
         best_R=new_score[1],
         best_Q=new_score[2])
+
     if cmp_E:
         stats.update(dict(best_E=new_score[3]))
     logger.save_stats(stats=stats)
-    logger.save_best_agent(new_agent)
+
+    if 'agent' in result:
+        new_agent = result['agent']
+        logger.save_best_agent(new_agent)
 
     logger.info('Finished execution.')

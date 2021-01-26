@@ -128,6 +128,9 @@ class BenchmarkLogger(ConsoleLogger):
     def save_last_agent(self, agent):
         agent.save(self.get_path(self._file_last_agent))
 
+    def exists_best_agent(self):
+        return Path(self.get_path(self._file_best_agent)).exists()
+
     def load_best_agent(self):
         return Serializable.load(self.get_path(self._file_best_agent))
 

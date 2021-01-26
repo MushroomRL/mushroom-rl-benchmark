@@ -12,6 +12,6 @@ suite_params:
     aggregate_hours: 3
     aggregate_minutes: 0
     only_print: false
-    aggregation_job: false
+    aggregation_job: true
     memory: 4000
     # gres: 'gpu:rtx2080:1'
