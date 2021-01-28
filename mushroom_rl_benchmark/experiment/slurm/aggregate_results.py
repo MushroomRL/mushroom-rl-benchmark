@@ -22,7 +22,7 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
     console = Logger(aggregation_name, results_dir=console_log_dir,
                      log_console=console_log_dir is not None)
     console.strong_line()
-    console.info(aggregation_name)
+    console.info(f'Env: {work_dir.parent.name} Alg: {res_id}')
 
     # check if results are aggregated
     
@@ -52,11 +52,12 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
             V.extend(logger.load_V())
             if has_entropy:
                 E.extend(logger.load_entropy())
-            # stats = logger.load_stats()
-            # if stats['best_J'] > best_J:
-            #     best_stats = stats
-            #     if logger.exists_best_agent():
-            #         best_agent = logger.load_best_agent()
+            if logger.exists_stats():
+                stats = logger.load_stats()
+                if stats['best_J'] > best_J:
+                    best_stats = stats
+                    if logger.exists_best_agent():
+                        best_agent = logger.load_best_agent()
             console.info(run_dir.name + " OK")
         except Exception as e:
             console.error(run_dir.name + " ERROR")
@@ -67,8 +68,6 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
         if skip_cnt > 0:
             console.warning(f'NUMBER OF FAILED RUNS: {skip_cnt}/{len(run_dirs)}')
 
-        console.info('Env: ' + work_dir.name + ' alg: ' + res_id)
-
         logger = BenchmarkLogger(log_dir=res_dir, log_id=res_id, use_timestamp=False)
 
         logger.save_J(J)
@@ -76,7 +75,8 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
         logger.save_V(V)
         if has_entropy:
             logger.save_entropy(E)
-        # logger.save_stats(best_stats)
+        if best_stats is not None:
+            logger.save_stats(best_stats)
         if best_agent is not None:
             logger.save_best_agent(best_agent)
 

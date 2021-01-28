@@ -3,6 +3,7 @@
 import yaml
 from pathlib import Path
 from argparse import ArgumentParser
+
 from mushroom_rl_benchmark import BenchmarkSuiteVisualizer, BenchmarkLogger
 
 
@@ -10,12 +11,15 @@ def get_args():
     parser = ArgumentParser()
     parser.add_argument("-d", "--directory", type=str, required=True,
                           help='Benchmark directory where the plots generation is needed')
+    parser.add_argument("-s", "--show", action='store_true',
+                        help='Flag to show the plots and not only save them.')
+
     args = vars(parser.parse_args())
     return args.values()
 
 
 if __name__ == '__main__':
-    path, = get_args()
+    path, show = get_args()
 
     plots_file = Path('cfg') / 'plots.yaml'
     logger = BenchmarkLogger.from_path(path)
@@ -24,5 +28,6 @@ if __name__ == '__main__':
         plot_params = yaml.safe_load(plots_file)
 
     visualizer = BenchmarkSuiteVisualizer(logger, **plot_params)
-    visualizer.show_reports()
+    if show:
+        visualizer.show_reports()
     visualizer.save_reports()

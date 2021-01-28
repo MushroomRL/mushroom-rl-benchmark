@@ -155,6 +155,9 @@ class BenchmarkLogger(ConsoleLogger):
     def load_config(self):
         return self._load_json(self.get_path(self._file_config))
 
+    def exists_stats(self):
+        return Path(self.get_path(self._file_stats)).exists()
+
     def save_stats(self, stats):
         self._save_json(self.get_path(self._file_stats), stats)
 
