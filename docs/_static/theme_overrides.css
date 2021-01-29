@@ -1,0 +1,21 @@
+.wy-nav-content {
+    max-width: 1400px !important;
+}
+
+ul {
+    margin-top: 0px !important;
+    margin-bottom: 10px !important;
+}
+
+p {
+    margin-bottom: 0px !important;
+}
+
+.highlight-yaml {
+    border: None;
+    width: 400px;
+}
+
+.highlight {
+background-color: #edf0f2;
+}

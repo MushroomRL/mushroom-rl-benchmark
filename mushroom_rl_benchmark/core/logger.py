@@ -164,9 +164,9 @@ class BenchmarkLogger(ConsoleLogger):
     def load_stats(self):
         return self._load_json(self.get_path(self._file_stats))
 
-    def save_figure(self, figure, figname, subfolder=None, as_pdf=False):
+    def save_figure(self, figure, figname, subfolder=None, as_pdf=False, transparent=True):
         extension = '.pdf' if as_pdf else '.png'
-        figure.savefig(self.get_figure_path(figname + extension, subfolder))
+        figure.savefig(self.get_figure_path(figname + extension, subfolder), transparent=transparent)
 
     @staticmethod
     def _save_pickle(path, obj):

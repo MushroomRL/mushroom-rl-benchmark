@@ -265,24 +265,26 @@ class BenchmarkSuiteVisualizer(object):
 
         ax.set_xlim(xmin=0, xmax=max_epochs-1)
         ax.grid()
-        ax.legend(fontsize='medium', ncol=6, frameon=False,
-                  loc='upper center', bbox_to_anchor=(0.5, 0.08))
+        bbox_to_anchor = (0.7, 1.0) if data_type == 'entropy' else (0.7, 0.15)
+        ax.legend(fontsize='x-large', ncol=len(self._logger_dict[env])//2, frameon=False,
+                  loc='upper center', bbox_to_anchor=bbox_to_anchor)
         fig.tight_layout()
 
         return fig
 
-    def save_reports(self, as_pdf=True):
+    def save_reports(self, as_pdf=True, transparent=True):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
 
         Args:
-            as_pdf (bool, True): whether to save the reports as pdf files or png.
+            as_pdf (bool, True): whether to save the reports as pdf files or png;
+            transparent (bool, True): If true, the figure background is transparent and not white;
 
         """
         for env in self._logger_dict.keys():
             for data_type in ['J', 'R', 'V', 'entropy']:
                 fig = self.get_report(env, data_type)
-                self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf)
+                self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf, transparent=transparent)
                 plt.close(fig)
 
     def show_reports(self):
