@@ -194,9 +194,22 @@ class BenchmarkVisualizer(object):
 
 
 class BenchmarkSuiteVisualizer(object):
+    """
+    Class to handle visualization of a benchmark suite.
+
+    """
     plot_counter = 0
 
     def __init__(self, logger, color_cycle=None, y_limit=None):
+        """
+        Constructor.
+
+        Args:
+            logger (BenchmarkLogger): logger to be used;
+            color_cycle (dict, None): dictionary with colors to be used for each algorithm;
+            y_limit (dict, None): dictionary with environment specific plot limits.
+
+        """
         self._logger = logger
 
         path = Path(self._logger.get_path())
@@ -231,7 +244,8 @@ class BenchmarkSuiteVisualizer(object):
 
         plot_id = self.plot_counter * 1000
         fig = plt.figure(plot_id, figsize=(8, 6), dpi=80)
-        ax = plt.axes(ylabel=data_type, xlabel='# Epochs')
+        ax = plt.axes(xlabel='# Epochs')
+        ax.set_ylabel(data_type, rotation=0 if len(data_type) == 1 else 90)
 
         for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
                      ax.get_xticklabels() + ax.get_yticklabels()):
@@ -252,20 +266,23 @@ class BenchmarkSuiteVisualizer(object):
         ax.set_xlim(xmin=0, xmax=max_epochs-1)
         ax.grid()
         ax.legend(fontsize='medium', ncol=6, frameon=False,
-                  loc='upper center', bbox_to_anchor=(0.5, 0.05))
+                  loc='upper center', bbox_to_anchor=(0.5, 0.08))
         fig.tight_layout()
 
         return fig
 
-    def save_reports(self):
+    def save_reports(self, as_pdf=True):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
+
+        Args:
+            as_pdf (bool, True): whether to save the reports as pdf files or png.
 
         """
         for env in self._logger_dict.keys():
             for data_type in ['J', 'R', 'V', 'entropy']:
                 fig = self.get_report(env, data_type)
-                self._logger.save_figure(fig, data_type, env)
+                self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf)
                 plt.close(fig)
 
     def show_reports(self):

@@ -30,4 +30,4 @@ if __name__ == '__main__':
     visualizer = BenchmarkSuiteVisualizer(logger, **plot_params)
     if show:
         visualizer.show_reports()
-    visualizer.save_reports()
+    visualizer.save_reports(as_pdf=False)
