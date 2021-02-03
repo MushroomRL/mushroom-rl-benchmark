@@ -1,2 +1,2 @@
 pyyaml
-mushroom-rl>=1.5.3
+mushroom-rl>=1.6.0
