@@ -1,0 +1,24 @@
+{
+  "agent_type": "A2CBuilder",
+  "n_runs_completed": 0,
+  "n_runs": 25,
+  "max_concurrent_runs": 5,
+  "use_threading": true,
+  "run_parallel": true,
+  "parallel": {
+    "max_concurrent_runs": 5,
+    "threading": true
+  },
+  "slurm": {
+    "hours": 24,
+    "minutes": 0,
+    "aggregate_hours": 3,
+    "aggregate_minutes": 0,
+    "only_print": false,
+    "aggregation_job": false,
+    "memory": 4000
+  },
+  "n_epochs": 10,
+  "n_steps": 30000,
+  "n_episodes_test": 10
+}
