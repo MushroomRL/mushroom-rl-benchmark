@@ -244,8 +244,9 @@ class BenchmarkSuiteVisualizer(object):
 
         plot_id = self.plot_counter * 1000
         fig = plt.figure(plot_id, figsize=(8, 6), dpi=80)
-        ax = plt.axes(xlabel='# Epochs')
-        ax.set_ylabel(data_type, rotation=0 if len(data_type) == 1 else 90)
+        ax = plt.axes()
+        ax.set_xlabel('# Epochs', fontweight='bold')
+        ax.set_ylabel(data_type, fontweight='bold', rotation=0 if len(data_type) == 1 else 90)
 
         for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
                      ax.get_xticklabels() + ax.get_yticklabels()):
