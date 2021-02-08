@@ -26,7 +26,6 @@ Pendulum-v0
 
 LunarLanderContinuous-v2
 ------------------------
-FIXME
 
 .. image:: ../../../results/plots/LunarLanderContinuous-v2/J.png
    :width: 400
