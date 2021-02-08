@@ -14,13 +14,16 @@ agent_params:
   A2C:
     actor_lr: 7.0e-4
     critic_lr: 7.0e-4
+    preprocessors: StandardizationPreprocessor
   TRPO:
     max_kl: 1.0e-2
     critic_lr: 3.0e-2
     n_steps_per_fit: 3000
+    preprocessors: StandardizationPreprocessor
   PPO:
     actor_lr: 3.0e-4
     critic_lr: 3.0e-3
+    preprocessors: StandardizationPreprocessor
   DDPG:
     actor_lr: 1.0e-4
     critic_lr: 1.0e-3

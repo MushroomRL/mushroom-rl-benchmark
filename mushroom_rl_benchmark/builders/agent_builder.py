@@ -1,5 +1,5 @@
 from copy import deepcopy
-
+import mushroom_rl.utils.preprocessors as m_prep
 
 class AgentBuilder:
     """
@@ -12,6 +12,7 @@ class AgentBuilder:
         Initialize AgentBuilder
 
         """
+        self._preprocessors = None
         self.set_n_steps_per_fit(n_steps_per_fit)
         self.set_preprocessors(preprocessors)
         self.compute_policy_entropy = compute_policy_entropy
@@ -42,7 +43,14 @@ class AgentBuilder:
             preprocessors: list of preprocessor classes.
 
         """
-        self._preprocessors = preprocessors if preprocessors is not None else list()
+
+        if preprocessors:
+            preprocessors = preprocessors if isinstance(preprocessors, list) else [preprocessors]
+            self._preprocessors = [getattr(m_prep, p) if isinstance(p, str)
+                                   else p
+                                   for p in preprocessors]
+        else:
+            self._preprocessors = list()
 
     def get_preprocessors(self):
         """
