@@ -7,9 +7,23 @@ color_cycle:
   TD3: C4
   SAC: C5
   DQN: C0
+  DoubleDQN: C2
+  AveragedDQN: C3
+  MaxminDQN: C4
+  DuelingDQN: C5
+  CategoricalDQN: C6
+
 y_limit:
 #    Pendulum-v0:
 #      V:
 #        'ymin': -450
 #        'ymax': -50
 
+legend:
+  BreakoutDeterministic-v4:
+    R:
+      loc: 'center'
+      bbox_to_anchor: [0.5, .9]
+    J:
+      loc: 'center'
+      bbox_to_anchor: [0.5, .9]

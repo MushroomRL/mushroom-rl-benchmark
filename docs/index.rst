@@ -56,6 +56,7 @@ or to compile the pdf version:
    :caption: Benchmarks Results:
 
    source/benchmarks/actor_critic.rst
+   source/benchmarks/value_based.rst
 
 .. toctree::
    :hidden:

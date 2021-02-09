@@ -200,7 +200,7 @@ class BenchmarkSuiteVisualizer(object):
     """
     plot_counter = 0
 
-    def __init__(self, logger, color_cycle=None, y_limit=None):
+    def __init__(self, logger, color_cycle=None, y_limit=None, legend=None):
         """
         Constructor.
 
@@ -208,6 +208,7 @@ class BenchmarkSuiteVisualizer(object):
             logger (BenchmarkLogger): logger to be used;
             color_cycle (dict, None): dictionary with colors to be used for each algorithm;
             y_limit (dict, None): dictionary with environment specific plot limits.
+            legend (dict, None): dictionary with environment specific legend parameters.
 
         """
         self._logger = logger
@@ -217,6 +218,7 @@ class BenchmarkSuiteVisualizer(object):
         self._logger_dict = {}
         self._color_cycle = dict() if color_cycle is None else color_cycle
         self._y_limit = dict() if y_limit is None else y_limit
+        self._legend_dict = dict() if legend is None else legend
 
         alg_count = 0
         for env_dir in path.iterdir():
@@ -234,6 +236,20 @@ class BenchmarkSuiteVisualizer(object):
                         alg_logger = BenchmarkLogger.from_path(alg_dir)
                         self._logger_dict[env][alg] = alg_logger
                         alg_count += 1
+
+    def _legend(self, ax, env, data_type):
+        if env in self._legend_dict and data_type in self._legend_dict[env]:
+            legend_dict = self._legend_dict[env][data_type]
+        else:
+            legend_dict = dict()
+
+        fontsize = legend_dict.pop('fontsize', 'x-large')
+        frameon = legend_dict.pop('frameon', False)
+        loc = legend_dict.pop('loc', 'lower right')
+        default_bbox = (0.7, 1.0) if data_type == 'entropy' else (0.7, 0.15)
+        bbox_to_anchor = legend_dict.pop('bbox_to_anchor', default_bbox)
+        ax.legend(fontsize=fontsize, ncol=len(self._logger_dict[env]) // 2, frameon=frameon,
+                  loc=loc, bbox_to_anchor=bbox_to_anchor, **legend_dict)
 
     def get_report(self, env, data_type):
         """
@@ -266,9 +282,7 @@ class BenchmarkSuiteVisualizer(object):
 
         ax.set_xlim(xmin=0, xmax=max_epochs-1)
         ax.grid()
-        bbox_to_anchor = (0.7, 1.0) if data_type == 'entropy' else (0.7, 0.15)
-        ax.legend(fontsize='x-large', ncol=len(self._logger_dict[env])//2, frameon=False,
-                  loc='upper center', bbox_to_anchor=bbox_to_anchor)
+        self._legend(ax, env, data_type)
         fig.tight_layout()
 
         return fig
