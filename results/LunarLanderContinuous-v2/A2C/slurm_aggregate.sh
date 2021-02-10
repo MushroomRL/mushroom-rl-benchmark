@@ -7,14 +7,14 @@
 #SBATCH -n 1
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=2000
-#SBATCH -o /work/scratch/dt11kypo/logs/benchmark/LunarLanderContinuous-v2/A2C/%A.out
-#SBATCH -e /work/scratch/dt11kypo/logs/benchmark/LunarLanderContinuous-v2/A2C/%A.err
+#SBATCH -o /home/tateo/mushroom-rl-benchmark/logs/benchmark/LunarLanderContinuous-v2/A2C/%A.out
+#SBATCH -e /home/tateo/mushroom-rl-benchmark/logs/benchmark/LunarLanderContinuous-v2/A2C/%A.err
 ###############################################################################
 # Your PROGRAM call starts here
 echo "Starting Job $SLURM_JOB_ID, Index $SLURM_ARRAY_TASK_ID"
 
 # Program specific arguments
-CMD="python3 /work/home/dt11kypo/mushroom-rl-benchmark/mushroom_rl_benchmark/experiment/slurm/aggregate_results.py \
+CMD="python3 /home/tateo/mushroom-rl-benchmark/mushroom_rl_benchmark/experiment/slurm/aggregate_results.py \
 		${@:1}\
 		--seed 0"
 
