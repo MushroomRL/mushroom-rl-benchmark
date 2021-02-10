@@ -17,4 +17,3 @@ We consider the following environments in the benchmark
     gym.rst
     mujoco.rst
     bullet.rst
-
