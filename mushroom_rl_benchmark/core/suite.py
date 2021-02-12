@@ -2,7 +2,7 @@ import mushroom_rl_benchmark.builders
 from mushroom_rl_benchmark.builders import EnvironmentBuilder
 from mushroom_rl_benchmark.core.experiment import BenchmarkExperiment
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
-from mushroom_rl_benchmark.core.visualizer import BenchmarkSuiteVisualizer
+from mushroom_rl_benchmark.core.suite_visualizer import BenchmarkSuiteVisualizer
 
 
 class BenchmarkSuite:

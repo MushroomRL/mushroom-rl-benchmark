@@ -24,6 +24,21 @@ def get_mean_and_confidence(data):
     return mean, interval
 
 
+def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None):
+    """
+    Method to plot mean and confidence interval for data on pyplot axes.
+
+    """
+    facecolor = color if facecolor is None else facecolor
+
+    mean, conf = get_mean_and_confidence(np.array(data))
+    upper_bound = mean + conf
+    lower_bound = mean - conf
+
+    ax.plot(mean, color=color, label=label)
+    ax.fill_between(np.arange(np.size(mean)), upper_bound, lower_bound, facecolor=facecolor, alpha=alpha)
+
+
 def get_init_states(dataset):
     """
     Get the initial states of a MushroomRL dataset
