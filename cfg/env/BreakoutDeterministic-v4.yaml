@@ -37,3 +37,7 @@ agent_params:
     lr: .0001
     n_steps_per_fit: 4
     use_cuda: True
+  NoisyDQN:
+    lr: .0001
+    n_steps_per_fit: 4
+    use_cuda: True
