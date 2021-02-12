@@ -6,7 +6,7 @@ from .ddpg_builder import DDPGBuilder
 from .td3_builder import TD3Builder
 from .sac_builder import SACBuilder
 from .dqn_builder import DQNBuilder, DoubleDQNBuilder, PrioritizedDQNBuilder, AveragedDQNBuilder, DuelingDQNBuilder,\
-    MaxminDQNBuilder, CategoricalDQNBuilder
+    MaxminDQNBuilder, CategoricalDQNBuilder, NoisyDQNBuilder
 from .environment_builder import EnvironmentBuilder
 
 __all__ = [
@@ -24,5 +24,6 @@ __all__ = [
     'DuelingDQNBuilder',
     'MaxminDQNBuilder',
     'CategoricalDQNBuilder',
+    'NoisyDQNBuilder',
     'EnvironmentBuilder'
 ]
