@@ -1,6 +1,7 @@
 from copy import deepcopy
 import mushroom_rl.utils.preprocessors as m_prep
 
+
 class AgentBuilder:
     """
     Base class to spawn instances of a MushroomRL agent
@@ -102,7 +103,7 @@ class AgentBuilder:
         pass
     
     @classmethod
-    def default(cls):
+    def default(cls, get_default_dict=False, **kwargs):
         """
         Create a default initialization for the specific AgentBuilder and return it
 

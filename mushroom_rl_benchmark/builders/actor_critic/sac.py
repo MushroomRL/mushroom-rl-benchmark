@@ -62,7 +62,8 @@ class SACBuilder(AgentBuilder):
     def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork,
                 initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100,
                 batch_size=64, tau=5e-3, lr_alpha=3e-3,
-                preprocessors=None, target_entropy=None, use_cuda=False):
+                preprocessors=None, target_entropy=None, use_cuda=False, get_default_dict=False):
+        defaults = locals()
 
         actor_mu_params = dict(network=actor_network,
                             n_features=n_features,
@@ -92,5 +93,10 @@ class SACBuilder(AgentBuilder):
             critic_fit_params=None,
             target_entropy=target_entropy)
 
-        return cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
+        builder = cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
                    preprocessors=preprocessors)
+
+        if get_default_dict:
+            return builder, defaults
+        else:
+            return builder
