@@ -11,36 +11,80 @@ Builders
    :undoc-members:
    :show-inheritance:
 
-Agent Builders
---------------
+Value Based Builders
+--------------------
 
-.. automodule:: mushroom_rl_benchmark.builders.a2c_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.dqn
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: mushroom_rl_benchmark.builders.ddpg_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.double_dqn
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.builders.ppo_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.averaged_dqn
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.builders.sac_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.prioritized_dqn
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.builders.td3_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.dueling_dqn
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: mushroom_rl_benchmark.builders.trpo_builder
+.. automodule:: mushroom_rl_benchmark.builders.value.maxmin_dqn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.value.noisy_dqn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.value.categorical_dqn
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Actor Critic Builders
+---------------------
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.a2c
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.ddpg
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.ppo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.sac
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.td3
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: mushroom_rl_benchmark.builders.actor_critic.trpo
    :members:
    :undoc-members:
    :show-inheritance:
