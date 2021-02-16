@@ -1,3 +1,4 @@
+%YAML 1.2
 ---
 suite_params:
   log_dir: logs
