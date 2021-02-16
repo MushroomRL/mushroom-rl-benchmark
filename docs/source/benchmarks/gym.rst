@@ -13,27 +13,47 @@ n_episodes_test  10
 Pendulum-v0
 -----------
 
-.. image:: ../../../results/plots/Pendulum-v0/J.png
-   :width: 400
-.. image:: ../../../results/plots/Pendulum-v0/R.png
-   :width: 400
-.. image:: ../../../results/plots/Pendulum-v0/entropy.png
-   :width: 400
 
-.. highlight:: yaml
-.. literalinclude:: ../../../cfg/env/Pendulum-v0.yaml
-    :lines: 14-
+.. container:: twocol
+
+    .. container:: leftside
+
+        .. image:: ../../../results/plots/Pendulum-v0/J.png
+           :width: 400
+        .. image:: ../../../results/plots/Pendulum-v0/R.png
+           :width: 400
+        .. image:: ../../../results/plots/Pendulum-v0/entropy.png
+           :width: 400
+
+
+    .. container:: rightside
+
+        .. highlight:: yaml
+        .. literalinclude:: ../../../cfg/env/Pendulum-v0.yaml
+            :lines: 14-
+
+
+
 
 LunarLanderContinuous-v2
 ------------------------
 
-.. image:: ../../../results/plots/LunarLanderContinuous-v2/J.png
-   :width: 400
-.. image:: ../../../results/plots/LunarLanderContinuous-v2/R.png
-   :width: 400
-.. image:: ../../../results/plots/LunarLanderContinuous-v2/entropy.png
-   :width: 400
 
-.. highlight:: yaml
-.. literalinclude:: ../../../cfg/env/LunarLanderContinuous-v2.yaml
-    :lines: 14-
+.. container:: twocol
+
+    .. container:: leftside
+
+        .. image:: ../../../results/plots/LunarLanderContinuous-v2/J.png
+           :width: 400
+        .. image:: ../../../results/plots/LunarLanderContinuous-v2/R.png
+           :width: 400
+        .. image:: ../../../results/plots/LunarLanderContinuous-v2/entropy.png
+           :width: 400
+
+
+    .. container:: rightside
+
+        .. highlight:: yaml
+        .. literalinclude:: ../../../cfg/env/LunarLanderContinuous-v2.yaml
+            :lines: 14-
+

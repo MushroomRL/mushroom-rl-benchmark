@@ -1,5 +1,5 @@
 .wy-nav-content {
-    max-width: 1400px !important;
+    max-width: 1000px !important;
 }
 
 ul {
@@ -12,10 +12,30 @@ p {
 }
 
 .highlight-yaml {
+    display: block;
     border: None;
     width: 400px;
 }
 
 .highlight {
-background-color: #edf0f2;
+    background-color: #edf0f2;
+}
+
+.twocol {
+    display: block;
+    width: 100%;
+    height: 950px;
+    padding: auto;
+}
+
+.leftside {
+    display: block;
+    float: left;
+    width: 400px;
+}
+
+.rightside {
+    display: block;
+    float: right;
+    padding: auto;
 }
