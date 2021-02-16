@@ -232,7 +232,7 @@ class BenchmarkExperiment:
         slurm_params.update(extract_arguments(run_params, generate_slurm))
 
         # Create SLURM Script for experiment runs
-        log_dir = os.path.abspath(self.logger.get_path())
+        log_dir = str(self.logger.get_path().absolute())
         log_id = self.logger.get_log_id()
         python_file = pkgutil.get_loader("mushroom_rl_benchmark.experiment.slurm.run_script").path
         script_path = create_slurm_script(

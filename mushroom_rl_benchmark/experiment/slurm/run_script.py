@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from mushroom_rl_benchmark import BenchmarkLogger
 from mushroom_rl_benchmark.experiment import exec_run
@@ -7,11 +7,12 @@ from mushroom_rl_benchmark.experiment.slurm import read_arguments_run
 if __name__ == '__main__':
 
     log_dir, run_args = read_arguments_run()
+    log_dir = Path(log_dir)
 
     log_id = 'run_' + str(run_args['seed'])
 
-    agent_builder = BenchmarkLogger._load_pickle(os.path.join(log_dir, 'agent_builder.pkl'))
-    env_builder = BenchmarkLogger._load_pickle(os.path.join(log_dir, 'environment_builder.pkl'))
+    agent_builder = BenchmarkLogger._load_pickle(log_dir / 'agent_builder.pkl')
+    env_builder = BenchmarkLogger._load_pickle(log_dir / 'environment_builder.pkl')
 
     logger = BenchmarkLogger(
         log_dir=log_dir,

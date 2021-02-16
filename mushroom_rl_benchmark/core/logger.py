@@ -47,7 +47,7 @@ class BenchmarkLogger(ConsoleLogger):
         self.set_log_dir(log_dir)
         self.set_log_id(log_id, use_timestamp=use_timestamp)
 
-        super().__init__(self._log_id, Path(self.get_path()), log_file_name='console')
+        super().__init__(self._log_id, self.get_path(), log_file_name='console')
 
     def set_log_dir(self, log_dir):
         if log_dir is None:
@@ -64,7 +64,7 @@ class BenchmarkLogger(ConsoleLogger):
             Path(log_dir).mkdir(parents=True, exist_ok=True)
         if not log_dir.is_dir():
             raise NotADirectoryError("Path to save builders is not valid")
-        
+
         self._log_dir = log_dir
 
     def get_log_dir(self):
@@ -134,7 +134,7 @@ class BenchmarkLogger(ConsoleLogger):
             return None
 
     def exists_policy_entropy(self):
-        return Path(self.get_path(self._file_entropy)).exists()
+        return self.get_path(self._file_entropy).exists()
 
     def save_best_agent(self, agent):
         agent.save(self.get_path(self._file_best_agent))
@@ -143,7 +143,7 @@ class BenchmarkLogger(ConsoleLogger):
         agent.save(self.get_path(self._file_last_agent))
 
     def exists_best_agent(self):
-        return Path(self.get_path(self._file_best_agent)).exists()
+        return self.get_path(self._file_best_agent).exists()
 
     def load_best_agent(self):
         return Serializable.load(self.get_path(self._file_best_agent))
@@ -170,7 +170,7 @@ class BenchmarkLogger(ConsoleLogger):
         return self._load_yaml(self.get_path(self._file_config))
 
     def exists_stats(self):
-        return Path(self.get_path(self._file_stats)).exists()
+        return self.get_path(self._file_stats).exists()
 
     def save_stats(self, stats):
         self._save_yaml(self.get_path(self._file_stats), stats)
@@ -203,17 +203,17 @@ class BenchmarkLogger(ConsoleLogger):
     
     @staticmethod
     def _save_yaml(path, obj):
-        with Path(path).open('w') as f:
+        with path.open('w') as f:
             yaml.dump(obj, f, version=(1, 2), default_flow_style=False)
 
     @staticmethod
     def _load_pickle(path):
-        with Path(path).open('rb') as f:
+        with path.open('rb') as f:
             return pickle.load(f)
     
     @staticmethod
     def _load_numpy(path):
-        with Path(path).open('rb') as f:
+        with path.open('rb') as f:
             return np.load(f)
     
     @staticmethod
@@ -222,7 +222,7 @@ class BenchmarkLogger(ConsoleLogger):
     
     @staticmethod
     def _load_yaml(path):
-        with Path(path).open('r') as f:
+        with path.open('r') as f:
             return yaml.load(f)
 
     @classmethod

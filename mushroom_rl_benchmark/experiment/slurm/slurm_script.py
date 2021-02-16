@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 
 def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params):
@@ -16,8 +16,9 @@ def create_slurm_script(slurm_path, slurm_script_name='slurm.sh', **slurm_params
     """
     code = generate_slurm(**slurm_params)
 
-    os.makedirs(slurm_path, exist_ok=True)
-    slurm_path = os.path.join(slurm_path, slurm_script_name)
+    slurm_path = Path(slurm_path)
+    slurm_path.mkdir(exist_ok=True)
+    slurm_path = slurm_path / slurm_script_name
 
     with open(slurm_path, "w") as file:
         file.write(code)

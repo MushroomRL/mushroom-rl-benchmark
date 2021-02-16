@@ -31,7 +31,7 @@ class BenchmarkSuiteVisualizer(object):
         """
         self._logger = logger
 
-        path = Path(self._logger.get_path())
+        path = self._logger.get_path()
 
         self._logger_dict = {}
         self._color_cycle = dict() if color_cycle is None else color_cycle
