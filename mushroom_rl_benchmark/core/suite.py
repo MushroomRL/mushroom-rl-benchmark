@@ -192,4 +192,5 @@ class BenchmarkSuite:
 
         del params['cls']
         del params['use_cuda']
+        del params['get_default_dict']
         self._parameters_dict[environment_name][agent_name] = params
