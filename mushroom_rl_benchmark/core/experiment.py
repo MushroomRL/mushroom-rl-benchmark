@@ -87,7 +87,7 @@ class BenchmarkExperiment:
         
         cmp_E = self.agent_builder.compute_policy_entropy
 
-        for run in trange(n_runs_completed, n_runs):
+        for run in trange(n_runs_completed, n_runs, leave=False):
             result = exec_run(self.agent_builder, self.env_builder, seed=run, quiet=False, **run_params)
             self.extend_and_save_J([result['J']])
             self.extend_and_save_R([result['R']])
