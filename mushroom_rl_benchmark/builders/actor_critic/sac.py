@@ -94,7 +94,7 @@ class SACBuilder(AgentBuilder):
             target_entropy=target_entropy)
 
         builder = cls(actor_mu_params, actor_sigma_params, actor_optimizer, critic_params, alg_params,
-                   preprocessors=preprocessors)
+                      preprocessors=preprocessors)
 
         if get_default_dict:
             return builder, defaults

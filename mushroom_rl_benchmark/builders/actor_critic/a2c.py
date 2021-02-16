@@ -49,7 +49,8 @@ class A2CBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, actor_lr=7e-4, critic_lr=7e-4, critic_network=Network, n_features=64,
+    def default(cls, actor_lr=7e-4, critic_lr=7e-4, eps_actor=3e-3, eps_critic=1e-5, batch_size=64,
+                max_grad_norm=0.5, ent_coeff=1e-2, critic_network=Network, n_features=64,
                 preprocessors=None, use_cuda=False, get_default_dict=False):
         defaults = locals()
         
@@ -60,21 +61,21 @@ class A2CBuilder(AgentBuilder):
 
         actor_optimizer = {
             'class': optim.RMSprop,
-            'params': {'lr': actor_lr, 'eps': 3e-3}}
+            'params': {'lr': actor_lr, 'eps': eps_actor}}
 
         critic_params = dict(
             network=critic_network,
             optimizer={
                 'class': optim.RMSprop, 
-                'params': {'lr': critic_lr, 'eps': 1e-5}},
+                'params': {'lr': critic_lr, 'eps': eps_critic}},
             loss=F.mse_loss,
             n_features=n_features,
-            batch_size=64,
+            batch_size=batch_size,
             output_shape=(1,))
         
         alg_params = dict(
-            max_grad_norm=0.5,
-            ent_coeff=1e-2)
+            max_grad_norm=max_grad_norm,
+            ent_coeff=ent_coeff)
 
         builder = cls(policy_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
 

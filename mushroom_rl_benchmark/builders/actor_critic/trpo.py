@@ -46,9 +46,9 @@ class TRPOBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, lam=.95, n_features=32,
-                critic_fit_params=None, n_steps_per_fit=3000, n_epochs_cg=100,
-                preprocessors=None, use_cuda=False, get_default_dict=False):
+    def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, ent_coeff=0.0, lam=.95, batch_size=64,
+                n_features=32, critic_fit_params=None, n_steps_per_fit=3000, n_epochs_line_search=10, n_epochs_cg=100,
+                cg_damping=1e-2, cg_residual_tol=1e-10, preprocessors=None, use_cuda=False, get_default_dict=False):
         defaults = locals()
 
         policy_params = dict(
@@ -63,21 +63,21 @@ class TRPOBuilder(AgentBuilder):
                 'params': {'lr': critic_lr}},
             loss=F.mse_loss,
             n_features=n_features,
-            batch_size=64,
+            batch_size=batch_size,
             output_shape=(1,))
         
         alg_params = dict(
-            ent_coeff=0.0,
+            ent_coeff=ent_coeff,
             max_kl=max_kl,
             lam=lam,
-            n_epochs_line_search=10,
+            n_epochs_line_search=n_epochs_line_search,
             n_epochs_cg=n_epochs_cg,
-            cg_damping=1e-2,
-            cg_residual_tol=1e-10,
+            cg_damping=cg_damping,
+            cg_residual_tol=cg_residual_tol,
             critic_fit_params=critic_fit_params)
 
         builder = cls(policy_params, critic_params, alg_params,
-                   n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
+                      n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
 
         if get_default_dict:
             return builder, defaults
