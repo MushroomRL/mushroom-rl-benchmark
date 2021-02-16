@@ -2,10 +2,11 @@ import matplotlib
 default_backend = matplotlib.rcParams['backend']
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
 from pathlib import Path
-from mushroom_rl_benchmark.utils import plot_mean_conf
 from mushroom_rl.core import Core
 
+from mushroom_rl_benchmark.utils import plot_mean_conf
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 import warnings

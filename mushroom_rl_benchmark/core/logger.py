@@ -1,6 +1,6 @@
 import os
-import json
 import pickle
+import yaml
 from datetime import datetime
 
 import torch
@@ -9,6 +9,8 @@ from pathlib import Path
 
 from mushroom_rl.core import Serializable
 from mushroom_rl.core.logger import ConsoleLogger
+
+from mushroom_rl_benchmark.utils import dictionary_to_primitive
 
 
 class BenchmarkLogger(ConsoleLogger):
@@ -35,8 +37,8 @@ class BenchmarkLogger(ConsoleLogger):
         self._file_last_agent = 'last_agent.msh'
         self._file_env_builder = 'environment_builder.pkl'
         self._file_agent_builder = 'agent_builder.pkl'
-        self._file_config = 'config.json'
-        self._file_stats = 'stats.json'
+        self._file_config = 'config.yaml'
+        self._file_stats = 'stats.yaml'
 
         self._log_dir = ''
         self._log_id = ''
@@ -80,7 +82,15 @@ class BenchmarkLogger(ConsoleLogger):
         return self._log_id
 
     def get_path(self, filename=''):
-        return os.path.join(self._log_dir, self._log_id, filename)
+        return Path(self._log_dir) / self._log_id / filename
+
+    def get_params_path(self, filename=''):
+        params_dir = Path(self._log_dir) / self._log_id / 'params'
+
+        if not params_dir.exists():
+            params_dir.mkdir(parents=True, exist_ok=True)
+
+        return str(params_dir / filename)
 
     def get_figure_path(self, filename='', subfolder=None):
         figure_dir = Path(self._log_dir) / self._log_id / 'plots'
@@ -150,19 +160,24 @@ class BenchmarkLogger(ConsoleLogger):
         return self._load_pickle(self.get_path(self._file_agent_builder))
 
     def save_config(self, config):
-        self._save_json(self.get_path(self._file_config), config)
+        self._save_yaml(self.get_path(self._file_config), config)
 
     def load_config(self):
-        return self._load_json(self.get_path(self._file_config))
+        return self._load_yaml(self.get_path(self._file_config))
 
     def exists_stats(self):
         return Path(self.get_path(self._file_stats)).exists()
 
     def save_stats(self, stats):
-        self._save_json(self.get_path(self._file_stats), stats)
+        self._save_yaml(self.get_path(self._file_stats), stats)
 
     def load_stats(self):
-        return self._load_json(self.get_path(self._file_stats))
+        return self._load_yaml(self.get_path(self._file_stats))
+
+    def save_params(self, env, params):
+        file_name = env + '.yaml'
+        primitive_params = dictionary_to_primitive(params)
+        self._save_yaml(self.get_params_path(file_name), primitive_params)
 
     def save_figure(self, figure, figname, subfolder=None, as_pdf=False, transparent=True):
         extension = '.pdf' if as_pdf else '.png'
@@ -183,9 +198,9 @@ class BenchmarkLogger(ConsoleLogger):
         torch.save(obj, path)
     
     @staticmethod
-    def _save_json(path, obj):
+    def _save_yaml(path, obj):
         with Path(path).open('w') as f:
-            json.dump(obj, f, indent=2)
+            yaml.dump(obj, f, version=(1, 2), default_flow_style=False)
 
     @staticmethod
     def _load_pickle(path):
@@ -202,9 +217,9 @@ class BenchmarkLogger(ConsoleLogger):
         return torch.load(path)
     
     @staticmethod
-    def _load_json(path):
+    def _load_yaml(path):
         with Path(path).open('r') as f:
-            return json.load(f)
+            return yaml.load(f)
 
     @classmethod
     def from_path(cls, path):

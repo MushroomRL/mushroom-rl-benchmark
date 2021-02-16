@@ -1,5 +1,6 @@
 from .agent_builder import AgentBuilder
 from .actor_critic import *
+from .value import *
 from .environment_builder import EnvironmentBuilder
 
 __all__ = [

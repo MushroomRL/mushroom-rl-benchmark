@@ -24,6 +24,7 @@ class BenchmarkSuite:
         """
         self._experiment_structure = dict()
         self._environment_dict = dict()
+        self._parameters_dict = dict()
         self._agent_list = []
         self._parallel = parallel
         self._slurm = slurm
@@ -84,39 +85,19 @@ class BenchmarkSuite:
             )
         self._agent_list.append(agent_name)
         environment_builder_params = self._environment_dict[environment_name]['build_params']
-        self._experiment_structure[environment_name][agent_name] = \
-            self._create_experiment(environment_name, environment_builder_params, agent_name, agent_params)
+        exp = self._create_experiment(environment_name, environment_builder_params, agent_name, agent_params)
+        self._experiment_structure[environment_name][agent_name] = exp
 
-    def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
-        separator = '.'
-        if environment_params is None:
-            environment_params = dict()
-        if separator in environment:
-            environment_name, environment_id = environment.split(separator)
-            environment_params = dict(
-                env_id=environment_id,
-                **environment_params)
-            environment = environment_id
-        else:
-            environment_name = environment
+    def run(self, exec_type='sequential'):
+        """
+        Run all experiments in the suite.
 
-        logger = BenchmarkLogger(
-            log_dir=self.logger.get_path(), 
-            log_id='{}/{}'.format(environment, agent_name),
-            use_timestamp=False
-        )
-
-        try:
-            builder = getattr(mushroom_rl_benchmark.builders, '{}Builder'.format(agent_name))
-        except AttributeError as e: 
-            logger.exception(e)
-
-        agent_builder = builder.default(**agent_builder_params)
-        env_builder = EnvironmentBuilder(environment_name, environment_params)
-
-        exp = BenchmarkExperiment(agent_builder, env_builder, logger)
-
-        return exp
+        """
+        for environment, agents in self._experiment_structure.items():
+            for agent, exp in agents.items():
+                self.logger.info('Starting Experiment for {} on {}'.format(agent, environment))
+                run_params = self._environment_dict[environment]['run_params']
+                exp.run(exec_type=exec_type, parallel=self._parallel, slurm=self._slurm, **run_params)
 
     def print_experiments(self):
         """
@@ -132,16 +113,13 @@ class BenchmarkSuite:
             for agent, _ in agents.items():
                 self.logger.info('- ' + agent)
 
-    def run(self, exec_type='sequential'):
+    def save_parameters(self):
         """
-        Run all experiments in the suite.
+        Save the experiment parameters in yaml files inside the parameters folder
 
         """
-        for environment, agents in self._experiment_structure.items():
-            for agent, exp in agents.items():
-                self.logger.info('Starting Experiment for {} on {}'.format(agent, environment))
-                run_params = self._environment_dict[environment]['run_params']
-                exp.run(exec_type=exec_type, parallel=self._parallel, slurm=self._slurm, **run_params)
+        for env, params in self._parameters_dict.items():
+            self.logger.save_params(env, params)
 
     def save_plots(self, **plot_params):
         """
@@ -164,3 +142,54 @@ class BenchmarkSuite:
         """
         visualizer = BenchmarkSuiteVisualizer(self.logger, **plot_params)
         visualizer.show_report()
+
+    def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
+        environment_name, environment_id = self._split_env_name(environment)
+        environment_params = self._update_environment_params(environment_name, environment_id, environment_params)
+
+        logger = BenchmarkLogger(
+            log_dir=self.logger.get_path(),
+            log_id='{}/{}'.format(environment_id, agent_name),
+            use_timestamp=False
+        )
+
+        try:
+            builder = getattr(mushroom_rl_benchmark.builders, '{}Builder'.format(agent_name))
+        except AttributeError as e: 
+            logger.exception(e)
+
+        agent_builder, agent_params = builder.default(get_default_dict=True, **agent_builder_params)
+        env_builder = EnvironmentBuilder(environment_name, environment_params)
+
+        self._add_parameters(agent_name, environment_id, agent_params)
+
+        return BenchmarkExperiment(agent_builder, env_builder, logger)
+
+    def _split_env_name(self, environment):
+        separator = '.'
+
+        if separator in environment:
+            environment_name, environment_id = environment.split(separator)
+            return environment_name, environment_id
+        else:
+            return environment, environment
+
+    def _update_environment_params(self, environment_name, environment_id, environment_params):
+        if environment_params is None:
+            environment_params = dict()
+
+        if environment_name != environment_id:
+            environment_params = dict(
+                env_id=environment_id,
+                **environment_params)
+
+        return environment_params
+
+    def _add_parameters(self, agent_name, environment_name, params):
+
+        if environment_name not in self._parameters_dict:
+            self._parameters_dict[environment_name] = dict()
+
+        del params['cls']
+        del params['use_cuda']
+        self._parameters_dict[environment_name][agent_name] = params

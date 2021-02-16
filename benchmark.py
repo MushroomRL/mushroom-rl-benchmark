@@ -88,6 +88,8 @@ if __name__ == '__main__':
     suite.print_experiments()
     logger.strong_line()
 
+    suite.save_parameters()
+
     if not test:
         logger.info('Running the benchmarks')
         logger.weak_line()

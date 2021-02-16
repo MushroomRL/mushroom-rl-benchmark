@@ -7,7 +7,9 @@ from mushroom_rl.core import Core
 from mushroom_rl.utils.dataset import compute_J, parse_dataset
 from mushroom_rl.core.logger import Logger
 
-from mushroom_rl_benchmark.utils import be_range, get_init_states
+from mushroom_rl_benchmark.utils import get_init_states
+
+from tqdm import trange
 
 
 def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n_episodes_test=None, seed=None,
@@ -71,7 +73,7 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps, n_steps_test=None, n
     if not quiet:
         print_metrics(logger, 0, J, R, V, E)
 
-    for epoch in be_range(n_epochs, quiet):
+    for epoch in trange(n_epochs, disable=quiet, leave=False):
         try:
             core.learn(n_steps=n_steps, n_steps_per_fit=agent_builder.get_n_steps_per_fit(), quiet=quiet)
         except:
