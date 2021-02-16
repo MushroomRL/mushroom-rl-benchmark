@@ -277,7 +277,7 @@ class BenchmarkExperiment:
         )
 
         command_line_arguments_aggregate = make_arguments(
-            log_dir=self.logger.get_log_dir() ,
+            log_dir=self.logger.get_log_dir(),
             log_id=log_id
         )
         

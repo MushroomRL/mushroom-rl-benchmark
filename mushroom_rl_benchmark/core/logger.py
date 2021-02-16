@@ -51,30 +51,34 @@ class BenchmarkLogger(ConsoleLogger):
 
     def set_log_dir(self, log_dir):
         if log_dir is None:
-            default_dir = './logs'
-            scratch_dir = os.path.join('/work', 'scratch', os.getenv('USER'))
-            if Path(scratch_dir).is_dir():
-                log_dir = os.path.join(scratch_dir, 'logs')
+            default_dir = Path('logs')
+            scratch_dir = Path('/work', 'scratch', os.getenv('USER'))
+            if scratch_dir.is_dir():
+                log_dir = scratch_dir / 'logs'
             else:
                 log_dir = default_dir
-        if not os.path.exists(log_dir):
+        else:
+            log_dir = Path(log_dir)
+
+        if not log_dir.exists():
             Path(log_dir).mkdir(parents=True, exist_ok=True)
-        if not os.path.isdir(log_dir):
+        if not log_dir.is_dir():
             raise NotADirectoryError("Path to save builders is not valid")
+        
         self._log_dir = log_dir
 
     def get_log_dir(self):
-        return self._log_dir
+        return str(self._log_dir)
 
     def set_log_id(self, log_id, use_timestamp=True):
         if log_id is None:
             log_id = 'benchmark'
         if use_timestamp:
             log_id += '_{}'.format(datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
-        path = os.path.join(self._log_dir, log_id, '')
-        if not os.path.exists(path):
+        path = self._log_dir / log_id
+        if not path.exists():
             Path(path).mkdir(parents=True, exist_ok=True)
-        if not os.path.isdir(path):
+        if not path.is_dir():
             raise NotADirectoryError("Path to save builders is not valid")
         self._log_id = log_id
 
@@ -82,15 +86,15 @@ class BenchmarkLogger(ConsoleLogger):
         return self._log_id
 
     def get_path(self, filename=''):
-        return Path(self._log_dir) / self._log_id / filename
+        return self._log_dir / self._log_id / filename
 
     def get_params_path(self, filename=''):
-        params_dir = Path(self._log_dir) / self._log_id / 'params'
+        params_dir = self._log_dir / self._log_id / 'params'
 
         if not params_dir.exists():
             params_dir.mkdir(parents=True, exist_ok=True)
 
-        return str(params_dir / filename)
+        return params_dir / filename
 
     def get_figure_path(self, filename='', subfolder=None):
         figure_dir = Path(self._log_dir) / self._log_id / 'plots'
@@ -124,7 +128,7 @@ class BenchmarkLogger(ConsoleLogger):
 
     def load_entropy(self):
         path = self.get_path(self._file_entropy)
-        if os.path.exists(path):
+        if path.exists():
             return self._load_pickle(path)
         else:
             return None
