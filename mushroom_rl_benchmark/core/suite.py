@@ -85,8 +85,15 @@ class BenchmarkSuite:
             )
         self._agent_list.append(agent_name)
         environment_builder_params = self._environment_dict[environment_name]['build_params']
-        exp = self._create_experiment(environment_name, environment_builder_params, agent_name, agent_params)
-        self._experiment_structure[environment_name][agent_name] = exp
+
+        try:
+            exp = self._create_experiment(environment_name, environment_builder_params, agent_name, agent_params)
+            self._experiment_structure[environment_name][agent_name] = exp
+        except AttributeError as e:
+            self.logger.error(
+                f'Unable to create experiment for the environment {environment_name} and agent {agent_name}'
+            )
+            self.logger.exception(e)
 
     def run(self, exec_type='sequential'):
         """
@@ -153,10 +160,7 @@ class BenchmarkSuite:
             use_timestamp=False
         )
 
-        try:
-            builder = getattr(mushroom_rl_benchmark.builders, '{}Builder'.format(agent_name))
-        except AttributeError as e: 
-            logger.exception(e)
+        builder = getattr(mushroom_rl_benchmark.builders, '{}Builder'.format(agent_name))
 
         agent_builder, agent_params = builder.default(get_default_dict=True, **agent_builder_params)
         env_builder = EnvironmentBuilder(environment_name, environment_params)
