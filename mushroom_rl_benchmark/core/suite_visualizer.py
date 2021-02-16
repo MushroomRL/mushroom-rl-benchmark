@@ -40,7 +40,7 @@ class BenchmarkSuiteVisualizer(object):
 
         alg_count = 0
         for env_dir in path.iterdir():
-            if env_dir.is_dir() and env_dir.name != 'plots':
+            if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
                 env = env_dir.name
                 self._logger_dict[env] = dict()
 
