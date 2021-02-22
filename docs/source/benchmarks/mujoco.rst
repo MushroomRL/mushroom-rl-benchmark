@@ -28,7 +28,7 @@ Hopper-v3
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/Hopper-v3.yaml
+        .. literalinclude:: ../../../results/params/Hopper-v3.yaml
             :lines: 14-
 
 
@@ -50,7 +50,7 @@ Walker2d-v3
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/Walker2d-v3.yaml
+        .. literalinclude:: ../../../results/params/Walker2d-v3.yaml
             :lines: 14-
 
 
@@ -72,7 +72,7 @@ HalfCheetah-v3
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/HalfCheetah-v3.yaml
+        .. literalinclude:: ../../../results/params/HalfCheetah-v3.yaml
             :lines: 14-
 
 
@@ -95,6 +95,6 @@ Ant-v3
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/Ant-v3.yaml
+        .. literalinclude:: ../../../results/params/Ant-v3.yaml
             :lines: 14-
 

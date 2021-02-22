@@ -28,7 +28,7 @@ HopperBulletEnv-v0
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/HopperBulletEnv-v0.yaml
+        .. literalinclude:: ../../../results/params/HopperBulletEnv-v0.yaml
             :lines: 14-
 
 
@@ -49,7 +49,7 @@ Walker2DBulletEnv-v0
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/Walker2DBulletEnv-v0.yaml
+        .. literalinclude:: ../../../results/params/Walker2DBulletEnv-v0.yaml
             :lines: 14-
 
 
@@ -71,7 +71,7 @@ HalfCheetahBulletEnv-v0
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/HalfCheetahBulletEnv-v0.yaml
+        .. literalinclude:: ../../../results/params/HalfCheetahBulletEnv-v0.yaml
             :lines: 14-
 
 
@@ -93,6 +93,6 @@ AntBulletEnv-v0
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/AntBulletEnv-v0.yaml
+        .. literalinclude:: ../../../results/params/AntBulletEnv-v0.yaml
             :lines: 14-
 

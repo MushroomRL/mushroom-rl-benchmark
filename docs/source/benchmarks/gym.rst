@@ -29,7 +29,7 @@ Pendulum-v0
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/Pendulum-v0.yaml
+        .. literalinclude:: ../../../results/params/Pendulum-v0.yaml
             :lines: 14-
 
 
@@ -54,6 +54,6 @@ LunarLanderContinuous-v2
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/LunarLanderContinuous-v2.yaml
+        .. literalinclude:: ../../../results/params/LunarLanderContinuous-v2.yaml
             :lines: 14-
 

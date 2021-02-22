@@ -26,6 +26,6 @@ BreakoutDeterministic-v4
     .. container:: rightside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../cfg/env/BreakoutDeterministic-v4.yaml
+        .. literalinclude:: ../../../results/params/BreakoutDeterministic-v4.yaml
             :lines: 12-
 
