@@ -23,6 +23,9 @@ agent_params:
   PPO:
     actor_lr: 3.0e-4
     critic_lr: 3.0e-4
+    n_epochs_policy: 10
+    n_steps_per_fit: 2000
+    batch_size: 32
     preprocessors: StandardizationPreprocessor
   DDPG:
     actor_lr: 1.0e-4
