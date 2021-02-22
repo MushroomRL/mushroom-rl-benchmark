@@ -66,7 +66,8 @@ class BenchmarkSuiteVisualizer(object):
         loc = legend_dict.pop('loc', 'center')
         default_bbox = (0.5, 0.9) if data_type == 'entropy' else (0.5, 0.1)
         bbox_to_anchor = legend_dict.pop('bbox_to_anchor', default_bbox)
-        ax.legend(fontsize=fontsize, ncol=len(self._logger_dict[env]) // 2, frameon=frameon,
+        ncol = legend_dict.pop('ncol', len(self._logger_dict[env]) // 2)
+        ax.legend(fontsize=fontsize, ncol=ncol, frameon=frameon,
                   loc=loc, bbox_to_anchor=bbox_to_anchor, **legend_dict)
 
     def get_report(self, env, data_type):

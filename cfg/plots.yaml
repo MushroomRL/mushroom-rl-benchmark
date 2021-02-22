@@ -13,6 +13,7 @@ color_cycle:
   MaxminDQN: C4
   DuelingDQN: C5
   CategoricalDQN: C6
+  NoisyDQN: C7
 
 y_limit:
 #    Pendulum-v0:
@@ -25,6 +26,8 @@ legend:
     R:
       loc: 'center'
       bbox_to_anchor: [0.5, .9]
+      ncol: 2
     J:
       loc: 'center'
       bbox_to_anchor: [0.5, .9]
+      ncol: 2
