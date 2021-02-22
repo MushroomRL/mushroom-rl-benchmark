@@ -17,15 +17,13 @@ BreakoutDeterministic-v4
 
     .. container:: leftside
 
+        .. highlight:: yaml
+        .. literalinclude:: ../../../results/params/BreakoutDeterministic-v4.yaml
+            :lines: 3-
+
+    .. container:: rightside
+
         .. image:: ../../../results/plots/BreakoutDeterministic-v4/J.png
            :width: 400
         .. image:: ../../../results/plots/BreakoutDeterministic-v4/R.png
            :width: 400
-
-
-    .. container:: rightside
-
-        .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/BreakoutDeterministic-v4.yaml
-            :lines: 12-
-

@@ -18,6 +18,12 @@ Pendulum-v0
 
     .. container:: leftside
 
+        .. highlight:: yaml
+        .. literalinclude:: ../../../results/params/Pendulum-v0.yaml
+            :lines: 3-
+
+    .. container:: rightside
+
         .. image:: ../../../results/plots/Pendulum-v0/J.png
            :width: 400
         .. image:: ../../../results/plots/Pendulum-v0/R.png
@@ -26,11 +32,7 @@ Pendulum-v0
            :width: 400
 
 
-    .. container:: rightside
 
-        .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/Pendulum-v0.yaml
-            :lines: 14-
 
 
 
@@ -43,17 +45,16 @@ LunarLanderContinuous-v2
 
     .. container:: leftside
 
+        .. highlight:: yaml
+        .. literalinclude:: ../../../results/params/LunarLanderContinuous-v2.yaml
+            :lines: 3-
+
+    .. container:: rightside
+
         .. image:: ../../../results/plots/LunarLanderContinuous-v2/J.png
            :width: 400
         .. image:: ../../../results/plots/LunarLanderContinuous-v2/R.png
            :width: 400
         .. image:: ../../../results/plots/LunarLanderContinuous-v2/entropy.png
            :width: 400
-
-
-    .. container:: rightside
-
-        .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/LunarLanderContinuous-v2.yaml
-            :lines: 14-
 
