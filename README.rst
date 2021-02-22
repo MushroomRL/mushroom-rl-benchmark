@@ -100,6 +100,7 @@ The parameters used to configure the main folder, the log id and the execution b
 located in:
 
 ::
+
     cfg/suite.yaml
 
 The parameters to customize the plots are located in:
