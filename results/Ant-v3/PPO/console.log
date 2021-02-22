@@ -1,3 +1,6 @@
 12/02/2021 16:38:53 [INFO] Running BenchmarkExperiment slurm
 12/02/2021 16:38:53 [INFO] slurm_job_id: 17031241
 12/02/2021 16:38:53 [INFO] slurm_job_id (aggregate): 17031242
+20/02/2021 18:41:39 [INFO] Running BenchmarkExperiment slurm
+20/02/2021 18:41:40 [INFO] slurm_job_id: 17039204
+20/02/2021 18:41:40 [INFO] slurm_job_id (aggregate): 17039205
