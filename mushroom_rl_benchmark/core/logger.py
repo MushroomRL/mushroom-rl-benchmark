@@ -223,7 +223,7 @@ class BenchmarkLogger(ConsoleLogger):
     @staticmethod
     def _load_yaml(path):
         with path.open('r') as f:
-            return yaml.load(f)
+            return yaml.safe_load(f)
 
     @classmethod
     def from_path(cls, path):
