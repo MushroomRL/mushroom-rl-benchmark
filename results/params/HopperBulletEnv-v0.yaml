@@ -1,0 +1,78 @@
+%YAML 1.2
+---
+A2C:
+  actor_lr: 0.0007
+  batch_size: 64
+  critic_lr: 0.0007
+  critic_network: A2CNetwork
+  ent_coeff: 0.01
+  eps_actor: 0.003
+  eps_critic: 1.0e-05
+  max_grad_norm: 0.5
+  n_features: 64
+  preprocessors: null
+DDPG:
+  actor_lr: 0.0001
+  actor_network: DDPGActorNetwork
+  batch_size: 128
+  critic_lr: 0.001
+  critic_network: DDPGCriticNetwork
+  initial_replay_size: 5000
+  max_replay_size: 1000000
+  n_features:
+  - 400
+  - 300
+  tau: 0.001
+PPO:
+  actor_lr: 0.0003
+  batch_size: 64
+  critic_fit_params: null
+  critic_lr: 0.0003
+  critic_network: TRPONetwork
+  eps: 0.2
+  lam: 0.95
+  n_epochs_policy: 4
+  n_features: 32
+  n_steps_per_fit: 3000
+  preprocessors: null
+SAC:
+  actor_lr: 0.0001
+  actor_network: SACActorNetwork
+  batch_size: 256
+  critic_lr: 0.0003
+  critic_network: SACCriticNetwork
+  initial_replay_size: 5000
+  lr_alpha: 0.0003
+  max_replay_size: 500000
+  n_features: 256
+  preprocessors: null
+  target_entropy: null
+  tau: 0.005
+  warmup_transitions: 10000
+TD3:
+  actor_lr: 0.0001
+  actor_network: TD3ActorNetwork
+  batch_size: 128
+  critic_lr: 0.001
+  critic_network: TD3CriticNetwork
+  initial_replay_size: 5000
+  max_replay_size: 1000000
+  n_features:
+  - 400
+  - 300
+  tau: 0.001
+TRPO:
+  batch_size: 64
+  cg_damping: 0.01
+  cg_residual_tol: 1.0e-10
+  critic_fit_params: null
+  critic_lr: 0.003
+  critic_network: TRPONetwork
+  ent_coeff: 0.0
+  lam: 0.95
+  max_kl: 0.01
+  n_epochs_cg: 100
+  n_epochs_line_search: 10
+  n_features: 32
+  n_steps_per_fit: 3000
+  preprocessors: null
