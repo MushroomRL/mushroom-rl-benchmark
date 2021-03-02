@@ -19,5 +19,6 @@ __all__ = [
     'MaxminDQNBuilder',
     'CategoricalDQNBuilder',
     'NoisyDQNBuilder',
+    'RainbowBuilder',
     'EnvironmentBuilder'
 ]

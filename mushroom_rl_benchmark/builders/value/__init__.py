@@ -5,6 +5,7 @@ from .averaged_dqn import AveragedDQNBuilder
 from .dueling_dqn import DuelingDQNBuilder
 from .maxmin_dqn import MaxminDQNBuilder
 from .categorical_dqn import CategoricalDQNBuilder
+from .rainbow import RainbowBuilder
 
 
 __all__ = [
@@ -14,7 +15,8 @@ __all__ = [
     'AveragedDQNBuilder',
     'DuelingDQNBuilder',
     'MaxminDQNBuilder',
-    'CategoricalDQNBuilder'
+    'CategoricalDQNBuilder',
+    'RainbowBuilder'
 ]
 
 try:

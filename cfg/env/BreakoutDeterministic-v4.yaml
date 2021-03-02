@@ -2,42 +2,46 @@
 ---
 run_params:
   n_runs: 5
-  n_epochs: 200
+  n_epochs: 100
   n_steps: 250000
   n_steps_test: 125000
 env_params:
   name: Atari.BreakoutDeterministic-v4
   params:
 agent_params:
-  DQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  PrioritizedDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  DoubleDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  AveragedDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  DuelingDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  MaxminDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  CategoricalDQN:
-    lr: .0001
-    n_steps_per_fit: 4
-    use_cuda: True
-  NoisyDQN:
+  #DQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #PrioritizedDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #DoubleDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #AveragedDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #DuelingDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #MaxminDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #CategoricalDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  #NoisyDQN:
+  #  lr: .0001
+  #  n_steps_per_fit: 4
+  #  use_cuda: True
+  Rainbow:
     lr: .0001
     n_steps_per_fit: 4
     use_cuda: True

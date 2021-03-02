@@ -47,7 +47,7 @@ if __name__ == '__main__':
                 env_ids.append(env_id.stem)
 
     logger.info('Execution type: ' + exec_type)
-    logger.info('Runing FULL: ' + str(not demo))
+    logger.info('Running FULL: ' + str(not demo))
     logger.strong_line()
 
     with open(cfg_dir / param_path, 'r') as param_file:
