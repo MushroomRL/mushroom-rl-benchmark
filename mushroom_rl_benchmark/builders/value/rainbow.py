@@ -37,7 +37,7 @@ class RainbowBuilder(DQNBuilder):
             loss=F.smooth_l1_loss,
             use_cuda=use_cuda)
 
-        beta = LinearParameter(.4, threshold_value=1, n=25000000 // 4)
+        beta = LinearParameter(.4, threshold_value=1, n=50000000 // 4)
 
         alg_params = dict(
             initial_replay_size=initial_replay_size,
