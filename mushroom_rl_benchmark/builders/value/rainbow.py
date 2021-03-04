@@ -34,7 +34,6 @@ class RainbowBuilder(DQNBuilder):
             optimizer={
                 'class': optim.Adam,
                 'params': {'lr': lr}},
-            loss=F.smooth_l1_loss,
             use_cuda=use_cuda)
 
         beta = LinearParameter(.4, threshold_value=1, n=50000000 // 4)
