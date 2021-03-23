@@ -3,7 +3,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import TD3
-from mushroom_rl.policy import OrnsteinUhlenbeckPolicy
+from mushroom_rl.policy import ClippedGaussianPolicy
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 from mushroom_rl_benchmark.builders.network import TD3ActorNetwork as ActorNetwork, TD3CriticNetwork as CriticNetwork
@@ -47,6 +47,12 @@ class TD3Builder(AgentBuilder):
         critic_input_shape = (actor_input_shape[0] + mdp_info.action_space.shape[0],)
         self.critic_params["input_shape"] = critic_input_shape
         self.critic_params["action_shape"] = mdp_info.action_space.shape
+
+        if self.policy_class is ClippedGaussianPolicy:
+            self.policy_params['sigma'] = np.eye(mdp_info.action_space.shape[0]) * 0.1
+            self.policy_params['low'] = mdp_info.action_space.low
+            self.policy_params['high'] = mdp_info.action_space.high
+
         return TD3(mdp_info, self.policy_class, self.policy_params, self.actor_params, self.actor_optimizer,
                    self.critic_params, **self.alg_params)
 
@@ -61,10 +67,8 @@ class TD3Builder(AgentBuilder):
                 use_cuda=False, get_default_dict=False):
         defaults = locals()
         
-        policy_class = OrnsteinUhlenbeckPolicy
-        policy_params = dict(
-            sigma=np.ones(1) * .2, 
-            theta=.15, dt=1e-2)
+        policy_class = ClippedGaussianPolicy
+        policy_params = dict()
             
         actor_params = dict(
             network=actor_network,
