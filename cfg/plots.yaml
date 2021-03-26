@@ -14,6 +14,7 @@ color_cycle:
   DuelingDQN: C5
   CategoricalDQN: C6
   NoisyDQN: C7
+  Rainbow: C8
 
 y_limit:
 #    Pendulum-v0:
