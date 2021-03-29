@@ -57,7 +57,7 @@ class TD3ActorNetwork(nn.Module):
             device=torch.device('cuda' if kwargs['use_cuda'] else 'cpu'))
 
         # Assume there are two hidden layers
-        assert len(n_features) == 2, 'DDPG critic needs to hidden layers'
+        assert len(n_features) == 2, 'DDPG critic needs two hidden layers'
 
         self._h1 = nn.Linear(dim_state, n_features[0])
         self._h2 = nn.Linear(n_features[0], n_features[1])

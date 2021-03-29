@@ -21,12 +21,6 @@ class CategoricalDQNBuilder(DQNBuilder):
 
         return CategoricalDQN(mdp_info, self.policy, self.approximator_params, **self.alg_params)
 
-    @staticmethod
-    def categorical_loss(input, target):
-        input = input.clamp(1e-5)
-
-        return -torch.sum(target * torch.log(input))
-
     @classmethod
     def default(cls, lr=.0001, network=DQNFeatureNetwork, initial_replay_size=50000, max_replay_size=1000000,
                 batch_size=32, target_update_frequency=2500, n_features=512, n_steps_per_fit=1, v_min=-10, v_max=10,
@@ -41,7 +35,6 @@ class CategoricalDQNBuilder(DQNBuilder):
             optimizer={
                 'class': optim.Adam,
                 'params': {'lr': lr}},
-            loss=CategoricalDQNBuilder.categorical_loss,
             use_cuda=use_cuda)
 
         alg_params = dict(
