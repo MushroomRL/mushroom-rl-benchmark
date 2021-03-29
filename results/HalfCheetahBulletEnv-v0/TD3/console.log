@@ -1,3 +1,6 @@
-26/01/2021 18:05:03 [INFO] Running BenchmarkExperiment slurm
-26/01/2021 18:05:03 [INFO] slurm_job_id: 16931933
-26/01/2021 18:05:04 [INFO] slurm_job_id (aggregate): 16931934
+26/03/2021 10:29:08 [INFO] Running BenchmarkExperiment slurm
+26/03/2021 10:29:08 [INFO] slurm_job_id: limits[0m)
+26/03/2021 10:29:08 [INFO] slurm_job_id (aggregate): 'HalfCheetahBulletEnv-v0/TD3''
+28/03/2021 22:32:56 [INFO] Running BenchmarkExperiment slurm
+28/03/2021 22:32:56 [INFO] slurm_job_id: 17287853
+28/03/2021 22:32:56 [INFO] slurm_job_id (aggregate): 17287854

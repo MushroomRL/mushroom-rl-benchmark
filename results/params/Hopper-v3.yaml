@@ -50,17 +50,17 @@ SAC:
   tau: 0.005
   warmup_transitions: 10000
 TD3:
-  actor_lr: 0.0001
+  actor_lr: 0.0003
   actor_network: TD3ActorNetwork
-  batch_size: 128
-  critic_lr: 0.001
+  batch_size: 256
+  critic_lr: 0.0003
   critic_network: TD3CriticNetwork
-  initial_replay_size: 5000
+  initial_replay_size: 1000
   max_replay_size: 1000000
   n_features:
-  - 400
-  - 300
-  tau: 0.001
+  - 256
+  - 256
+  tau: 0.005
 TRPO:
   batch_size: 64
   cg_damping: 0.01

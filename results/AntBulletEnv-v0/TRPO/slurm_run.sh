@@ -8,8 +8,8 @@
 #SBATCH -n 1
 #SBATCH -c 1
 #SBATCH --mem-per-cpu=4000
-#SBATCH -o /work/home/dt11kypo/mushroom-rl-benchmark/logs/benchmark_2021-01-26-18-05-18/AntBulletEnv-v0/TRPO/%A_%a.out
-#SBATCH -e /work/home/dt11kypo/mushroom-rl-benchmark/logs/benchmark_2021-01-26-18-05-18/AntBulletEnv-v0/TRPO/%A_%a.err
+#SBATCH -o /work/scratch/dt11kypo/logs/benchmark/AntBulletEnv-v0/TRPO/%A_%a.out
+#SBATCH -e /work/scratch/dt11kypo/logs/benchmark/AntBulletEnv-v0/TRPO/%A_%a.err
 ###############################################################################
 # Your PROGRAM call starts here
 echo "Starting Job $SLURM_JOB_ID, Index $SLURM_ARRAY_TASK_ID"
