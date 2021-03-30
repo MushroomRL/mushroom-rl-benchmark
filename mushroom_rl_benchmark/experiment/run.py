@@ -141,8 +141,14 @@ def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
     # Compute J
     J = np.mean(compute_J(dataset, core.mdp.info.gamma))
 
+    if hasattr(J, 'item'):
+        J = J.item()
+
     # Compute R
     R = np.mean(compute_J(dataset))
+
+    if hasattr(R, 'item'):
+        R = R.item()
     
     # Compute V
     states = get_init_states(dataset)
@@ -160,6 +166,9 @@ def compute_metrics(core, eval_params, agent_builder, env_builder, cmp_E):
             E = core.agent.policy.entropy(parse_dataset(dataset)[0])
         else:
             E = core.agent.policy.entropy()
+
+    if hasattr(E, 'item'):
+        E = E.item()
     
     return J, R, V, E
 
