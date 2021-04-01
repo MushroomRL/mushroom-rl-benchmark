@@ -49,7 +49,7 @@ class TD3Builder(AgentBuilder):
         self.critic_params["action_shape"] = mdp_info.action_space.shape
 
         if self.policy_class is ClippedGaussianPolicy:
-            self.policy_params['sigma'] = np.eye(mdp_info.action_space.shape[0]) * 0.1
+            self.policy_params['sigma'] = np.eye(mdp_info.action_space.shape[0]) * 0.01
             self.policy_params['low'] = mdp_info.action_space.low
             self.policy_params['high'] = mdp_info.action_space.high
 
