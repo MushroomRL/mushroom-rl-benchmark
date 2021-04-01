@@ -75,19 +75,22 @@ You must have both mushroom-rl and mushroom-rl-benchmark packages installed.
 The script for starting the benchmarks takes following arguments:
 
 ::
-    
-    usage: benchmark.py [-h] [-e ENV [ENV ...]] [-x {sequential,parallel,slurm}] [-t] [-d]
+
+    usage: benchmark.py [-h] -e ENV [ENV ...] [-a ALGORITHM [ALGORITHM ...]] [-x {sequential,parallel,slurm}] [-t] [-d]
 
     optional arguments:
       -h, --help            show this help message and exit
 
     benchmark parameters:
       -e ENV [ENV ...], --env ENV [ENV ...]
-                            Environments to be used by the benchmark. Use 'all', to select all the available environments.
+                            Environments to be used by the benchmark. Use 'all' to select all the available environments.
+      -a ALGORITHM [ALGORITHM ...], --algorithm ALGORITHM [ALGORITHM ...]
+                            Algorithms to be used by the benchmark. Use 'all' to select all the algorithms defined in the config file.
       -x {sequential,parallel,slurm}, --execution_type {sequential,parallel,slurm}
                             Execution type for the benchmark.
       -t, --test            Flag to test the script and NOT execute the benchmark.
       -d, --demo            Flag to run a reduced version of the benchmark.
+
 
 
 The agent and environment parameters used for benchmarking the agents on an environment are located in

@@ -12,7 +12,10 @@ def get_args():
     arg_test = parser.add_argument_group('benchmark parameters')
     arg_test.add_argument("-e", "--env", type=str, nargs='+', required=True,
                           help='Environments to be used by the benchmark. '
-                               'Use \'all\', to select all the available environments.')
+                               'Use \'all\' to select all the available environments.')
+    arg_test.add_argument("-a", "--algorithm",  type=str, nargs='+', default=['all'],
+                          help='Algorithms to be used by the benchmark. '
+                               'Use \'all\' to select all the algorithms defined in the config file.')
     arg_test.add_argument("-x", "--execution_type",
                           choices=['sequential', 'parallel', 'slurm'],
                           default='parallel',
@@ -27,7 +30,7 @@ def get_args():
 
 
 if __name__ == '__main__':
-    env_ids, exec_type, test, demo = get_args()
+    env_ids, algs, exec_type, test, demo = get_args()
     cfg_dir = Path(__file__).parent / 'cfg'
     env_cfg_dir = cfg_dir / 'env'
 
@@ -70,6 +73,9 @@ if __name__ == '__main__':
         run_params = yaml_file['run_params']
         env_data = yaml_file['env_params']
         agent_data = yaml_file['agent_params']
+
+        if 'all' not in algs:
+            agent_data = {k: agent_data[k] for k in algs}
 
         agents = agent_data.keys()
         agents_params = agent_data.values()
