@@ -6,4 +6,12 @@ Utils
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: mushroom_rl_benchmark.utils.primitive
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
+.. automodule:: mushroom_rl_benchmark.utils.plot
+   :members:
+   :undoc-members:
+   :show-inheritance:
