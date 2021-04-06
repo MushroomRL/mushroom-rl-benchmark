@@ -36,8 +36,8 @@ agent_params:
     tau: 1.0e-3
     batch_size: 128
   TD3:
-    actor_lr: 1e-3
-    critic_lr: 1e-3
+    actor_lr: 1.0e-3
+    critic_lr: 1.0e-3
     n_features: [400, 300]
     initial_replay_size: 10000
     max_replay_size: 1000000
