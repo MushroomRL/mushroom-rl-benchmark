@@ -1,3 +1,12 @@
-26/03/2021 10:26:48 [INFO] Running BenchmarkExperiment slurm
-26/03/2021 10:26:49 [INFO] slurm_job_id: 17280184
-26/03/2021 10:26:49 [INFO] slurm_job_id (aggregate): 17280185
+01/04/2021 14:43:01 [INFO] Running BenchmarkExperiment slurm
+01/04/2021 14:43:01 [INFO] slurm_job_id: 17313447
+01/04/2021 14:43:01 [INFO] slurm_job_id (aggregate): 17313448
+06/04/2021 13:48:10 [INFO] Running BenchmarkExperiment slurm
+06/04/2021 13:48:10 [INFO] slurm_job_id: 17342846
+06/04/2021 13:48:10 [INFO] slurm_job_id (aggregate): 17342847
+06/04/2021 13:49:14 [INFO] Running BenchmarkExperiment slurm
+06/04/2021 13:49:15 [INFO] slurm_job_id: 17342849
+06/04/2021 13:49:15 [INFO] slurm_job_id (aggregate): 17342850
+06/04/2021 13:49:59 [INFO] Running BenchmarkExperiment slurm
+06/04/2021 13:49:59 [INFO] slurm_job_id: 17342862
+06/04/2021 13:49:59 [INFO] slurm_job_id (aggregate): 17342863
