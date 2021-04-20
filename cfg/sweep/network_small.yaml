@@ -1,0 +1,26 @@
+%YAML 1.2
+---
+A2C:
+  n_features:
+    - 32
+    - 64
+TRPO:
+  n_features:
+    - 32
+    - 64
+PPO:
+  n_features:
+    - 32
+    - 64
+DDPG:
+  n_features:
+    - [32, 32]
+    - [64, 64]
+TD3:
+  n_features:
+    - [32, 32]
+    - [64, 64]
+SAC:
+  n_features:
+    - 32
+    - 64

@@ -3,8 +3,11 @@
 import yaml
 from pathlib import Path
 from argparse import ArgumentParser
-from mushroom_rl_benchmark import BenchmarkSuite
+
 from mushroom_rl.core import Logger
+
+from mushroom_rl_benchmark import BenchmarkSuite
+from mushroom_rl_benchmark.utils import build_sweep_list
 
 
 def get_args():
@@ -16,6 +19,8 @@ def get_args():
     arg_test.add_argument("-a", "--algorithm",  type=str, nargs='+', default=['all'],
                           help='Algorithms to be used by the benchmark. '
                                'Use \'all\' to select all the algorithms defined in the config file.')
+    arg_test.add_argument("-s", "--sweep", type=str, required=False,
+                          help='Sweep configuration file to be used by the benchmark.')
     arg_test.add_argument("-x", "--execution_type",
                           choices=['sequential', 'parallel', 'slurm'],
                           default='parallel',
@@ -30,9 +35,10 @@ def get_args():
 
 
 if __name__ == '__main__':
-    env_ids, algs, exec_type, test, demo = get_args()
+    env_ids, algs, sweep, exec_type, test, demo = get_args()
     cfg_dir = Path(__file__).parent / 'cfg'
     env_cfg_dir = cfg_dir / 'env'
+    sweep_cfg_dir = cfg_dir / 'sweep'
 
     param_path = 'suite.yaml'
     plots_path = 'plots.yaml'
@@ -51,6 +57,9 @@ if __name__ == '__main__':
 
     logger.info('Execution type: ' + exec_type)
     logger.info('Running FULL: ' + str(not demo))
+
+    if sweep is not None:
+        logger.info(f'Sweep configuration file: {sweep}')
     logger.strong_line()
 
     with open(cfg_dir / param_path, 'r') as param_file:
@@ -58,6 +67,11 @@ if __name__ == '__main__':
 
     with open(cfg_dir / plots_path, 'r') as plots_file:
         plot_params = yaml.safe_load(plots_file)
+
+    if sweep is not None:
+        sweep_file_name = sweep + '.yaml'
+        with open(sweep_cfg_dir / sweep_file_name, 'r') as sweep_file:
+            sweep_params = yaml.safe_load(sweep_file)
 
     suite = BenchmarkSuite(**suite_params)
 
@@ -89,7 +103,11 @@ if __name__ == '__main__':
             run_params['n_steps'] = 15000
             run_params['n_episodes_test'] = 5
 
-        suite.add_experiments(env, env_params, agents, agents_params, **run_params)
+        if sweep is None:
+            suite.add_experiments(env, env_params, agents, agents_params, **run_params)
+        else:
+            sweep_list = build_sweep_list(agents, sweep_params)
+            suite.add_experiments_sweeps(env, env_params, agents, agents_params, sweep_list, **run_params)
 
     suite.print_experiments()
     logger.strong_line()
