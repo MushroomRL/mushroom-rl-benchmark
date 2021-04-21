@@ -7,6 +7,7 @@ color_cycle:
   DDPG: C3
   TD3: C4
   SAC: C5
+
   DQN: C0
   DoubleDQN: C2
   AveragedDQN: C3
@@ -17,7 +18,6 @@ color_cycle:
   Rainbow: C8
 
 y_limit:
-#    Pendulum-v0:
 #      V:
 #        'ymin': -450
 #        'ymax': -50
@@ -32,3 +32,17 @@ legend:
       loc: 'center'
       bbox_to_anchor: [0.5, .9]
       ncol: 2
+
+  Pendulum-v0:
+    R:
+      fontsize: 'large'
+      ncol: 4
+    J:
+      fontsize: 'large'
+      ncol: 4
+    entropy:
+      fontsize: 'large'
+      ncol: 4
+    V:
+      fontsize: 'large'
+      ncol: 4

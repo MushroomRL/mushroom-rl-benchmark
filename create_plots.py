@@ -33,3 +33,5 @@ if __name__ == '__main__':
     if show:
         visualizer.show_reports()
     visualizer.save_reports(as_pdf=False)
+    if sweep:
+        visualizer.save_reports(as_pdf=False, alg_sweep=True)

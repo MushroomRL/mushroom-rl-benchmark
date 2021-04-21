@@ -106,7 +106,7 @@ class BenchmarkSuiteVisualizer(object):
         ax.legend(fontsize=fontsize, ncol=ncol, frameon=frameon,
                   loc=loc, bbox_to_anchor=bbox_to_anchor, **legend_dict)
 
-    def get_report(self, env, data_type):
+    def get_report(self, env, data_type, selected_alg=None):
         """
         Create report plot with matplotlib.
 
@@ -114,8 +114,8 @@ class BenchmarkSuiteVisualizer(object):
 
         if data_type == 'entropy':
             has_entropy = False
-            for logger in self._logger_dict[env].values():
-                if logger.exists_policy_entropy():
+            for alg, logger in self._logger_dict[env].items():
+                if (selected_alg is None or alg.startswith(selected_alg + '_')) and logger.exists_policy_entropy():
                     has_entropy = True
                     break
             if not has_entropy:
@@ -134,15 +134,20 @@ class BenchmarkSuiteVisualizer(object):
             item.set_fontsize('x-large')
 
         max_epochs = 1
+        default_color_cycle = cycle(plt.rcParams['axes.prop_cycle'].by_key()['color'])
         for alg, logger in self._logger_dict[env].items():
-            print(alg)
-            color = self._color_cycle[alg]
-            line = '-' if alg not in self._line_cycle else self._line_cycle[alg]
-            data = getattr(logger, 'load_' + data_type)()
+            if selected_alg is None or alg.startswith(selected_alg + '_'):
+                if selected_alg is None:
+                    color = self._color_cycle[alg]
+                    line = '-' if alg not in self._line_cycle else self._line_cycle[alg]
+                else:
+                    color = next(default_color_cycle)
+                    line = '-'
+                data = getattr(logger, 'load_' + data_type)()
 
-            if data is not None:
-                plot_mean_conf(data, ax, color=color, line=line, label=alg)
-                max_epochs = max(max_epochs, len(data[0]))
+                if data is not None:
+                    plot_mean_conf(data, ax, color=color, line=line, label=alg)
+                    max_epochs = max(max_epochs, len(data[0]))
 
         if env in self._y_limit and data_type in self._y_limit[env]:
             ax.set_ylim(**self._y_limit[env][data_type])
@@ -154,30 +159,49 @@ class BenchmarkSuiteVisualizer(object):
 
         return fig
 
-    def save_reports(self, as_pdf=True, transparent=True):
+    def save_reports(self, as_pdf=True, transparent=True, alg_sweep=False):
         """
         Method to save an image of a report of the training metrics from a performend experiment.
 
         Args:
             as_pdf (bool, True): whether to save the reports as pdf files or png;
             transparent (bool, True): If true, the figure background is transparent and not white;
+            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
 
         """
         for env in self._logger_dict.keys():
             for data_type in ['J', 'R', 'V', 'entropy']:
-                fig = self.get_report(env, data_type)
+                if alg_sweep:
+                    env_dir = self._logger.get_path() / env
+                    for alg_dir in env_dir.iterdir():
+                        alg = alg_dir.name
+                        fig = self.get_report(env, data_type, alg)
 
-                if fig is not None:
-                    self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf, transparent=transparent)
-                    plt.close(fig)
+                        if fig is not None:
+                            self._logger.save_figure(fig, data_type, env + '/' + alg,
+                                                     as_pdf=as_pdf, transparent=transparent)
+                            plt.close(fig)
+                else:
+                    fig = self.get_report(env, data_type)
 
-    def show_reports(self):
+                    if fig is not None:
+                        self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf, transparent=transparent)
+                        plt.close(fig)
+
+    def show_reports(self, alg_sweep=False):
         """
         Method to show a report of the training metrics from a performend experiment.
 
+        Args:
+            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
+
         """
-        matplotlib.use('Qt5Agg')
+        matplotlib.use(default_backend)
         for env in self._logger_dict.keys():
             for data_type in ['J', 'R', 'V', 'entropy']:
-                self.get_report(env, data_type)
+                if alg_sweep:
+                    for alg in self._logger_dict[env].keys():
+                        self.get_report(env, data_type, [alg])
+                else:
+                    self.get_report(env, data_type)
         plt.show()
