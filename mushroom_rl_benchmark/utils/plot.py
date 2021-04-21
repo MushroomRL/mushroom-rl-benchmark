@@ -20,7 +20,7 @@ def get_mean_and_confidence(data):
     return mean, interval
 
 
-def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None):
+def plot_mean_conf(data, ax, color='blue', line='-', facecolor=None, alpha=0.4, label=None):
     """
     Method to plot mean and confidence interval for data on pyplot axes.
 
@@ -31,5 +31,5 @@ def plot_mean_conf(data, ax, color='blue', facecolor=None, alpha=0.4, label=None
     upper_bound = mean + conf
     lower_bound = mean - conf
 
-    ax.plot(mean, color=color, label=label)
+    ax.plot(mean, color=color, linestyle=line, label=label)
     ax.fill_between(np.arange(np.size(mean)), upper_bound, lower_bound, facecolor=facecolor, alpha=alpha)

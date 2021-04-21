@@ -27,6 +27,7 @@ class BenchmarkSuite:
         self._parameters_dict = dict()
         self._parallel = parallel
         self._slurm = slurm
+        self._is_sweep = None
         self.logger = BenchmarkLogger(log_dir=log_dir, log_id=log_id, use_timestamp=use_timestamp)
 
     def add_experiments(self, environment_name, environment_builder_params, agent_names_list,
@@ -42,6 +43,9 @@ class BenchmarkSuite:
             run_params: Parameters that are passed to the run method of the experiment.
 
         """
+        assert self._is_sweep is False or self._is_sweep is None
+        self._is_sweep = False
+
         self.add_environment(environment_name, environment_builder_params, **run_params)
 
         for agent_name, agent_params in zip(agent_names_list, agent_builders_params):
@@ -61,6 +65,9 @@ class BenchmarkSuite:
             run_params: Parameters that are passed to the run method of the experiment.
 
         """
+        assert self._is_sweep is True or self._is_sweep is None
+        self._is_sweep = True
+
         self.add_environment(environment_name, environment_builder_params, **run_params)
 
         for agent_name, agent_params, sweep_dict in zip(agent_names_list, agent_builders_params, sweeps_list):
@@ -97,6 +104,8 @@ class BenchmarkSuite:
 
         """
         assert environment_name in self._environment_dict
+        assert self._is_sweep is False or self._is_sweep is None
+        self._is_sweep = False
         if agent_name in self._experiment_structure[environment_name]:
             raise AttributeError(
                 f'An experiment for environment {environment_name} and builders {agent_name} already exists.'
@@ -125,6 +134,8 @@ class BenchmarkSuite:
 
         """
         assert environment_name in self._environment_dict
+        assert self._is_sweep is True or self._is_sweep is None
+        self._is_sweep = True
 
         for sweep_key, sweep_params in sweep_dict.items():
             sweep_name = agent_name + '_' + sweep_key
@@ -188,7 +199,7 @@ class BenchmarkSuite:
             **plot_params: parameters to be passed to the suite visualizer.
 
         """
-        visualizer = BenchmarkSuiteVisualizer(self.logger, **plot_params)
+        visualizer = BenchmarkSuiteVisualizer(self.logger, self._is_sweep, **plot_params)
         visualizer.save_reports()
 
     def show_plots(self, **plot_params):
@@ -199,7 +210,7 @@ class BenchmarkSuite:
             **plot_params: parameters to be passed to the suite visualizer.
 
         """
-        visualizer = BenchmarkSuiteVisualizer(self.logger, **plot_params)
+        visualizer = BenchmarkSuiteVisualizer(self.logger, self._is_sweep, **plot_params)
         visualizer.show_report()
 
     def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
@@ -212,8 +223,8 @@ class BenchmarkSuite:
             use_timestamp=False
         )
 
-        return self._create_experiment_base(agent_builder_params, agent_name, environment_id, environment_name,
-                                            environment_params, logger)
+        return self._create_experiment_base(agent_builder_params, agent_name, environment_id,
+                                            environment_name, environment_params, logger)
 
     def _create_experiment_sweep(self, environment, environment_params, agent_name, agent_builder_params, sweep_key,
                                  sweep_params):
@@ -226,20 +237,21 @@ class BenchmarkSuite:
             use_timestamp=False
         )
 
-        agent_sweep_params = {**agent_builder_params, **sweep_params}
+        agent_sweep_params = agent_builder_params.copy()
+        agent_sweep_params.update(sweep_params)
 
-        return self._create_experiment_base(agent_sweep_params, agent_name, environment_id, environment_name,
-                                            environment_params, logger)
+        return self._create_experiment_base(agent_sweep_params, agent_name, environment_id,
+                                            environment_name, environment_params, logger, sweep_key)
 
     def _create_experiment_base(self, agent_builder_params, agent_name, environment_id, environment_name,
-                                environment_params, logger):
+                                environment_params, logger, sweep_key=None):
         builder = getattr(mushroom_rl_benchmark.builders, f'{agent_name}Builder')
         agent_builder, agent_params = builder.default(get_default_dict=True, **agent_builder_params)
         env_builder = EnvironmentBuilder(environment_name, environment_params)
-        self._add_parameters(agent_name, environment_id, agent_params)
+        self._add_parameters(agent_name, sweep_key, environment_id, agent_params)
         return BenchmarkExperiment(agent_builder, env_builder, logger)
 
-    def _add_parameters(self, agent_name, environment_name, params):
+    def _add_parameters(self, agent_name, sweep_key, environment_name, params):
 
         if environment_name not in self._parameters_dict:
             self._parameters_dict[environment_name] = dict()
@@ -247,7 +259,13 @@ class BenchmarkSuite:
         del params['cls']
         del params['use_cuda']
         del params['get_default_dict']
-        self._parameters_dict[environment_name][agent_name] = params
+
+        if sweep_key is None:
+            self._parameters_dict[environment_name][agent_name] = params
+        else:
+            if agent_name not in self._parameters_dict[environment_name]:
+                self._parameters_dict[environment_name][agent_name] = dict()
+            self._parameters_dict[environment_name][agent_name][sweep_key] = params
 
     @staticmethod
     def _split_env_name(environment):

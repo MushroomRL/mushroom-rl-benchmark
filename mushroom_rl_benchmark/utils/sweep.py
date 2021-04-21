@@ -78,7 +78,7 @@ def _generate_sweep_params_recursive(current_dict, items):
             current_dict[key] = value
             yield from _generate_sweep_params_recursive(current_dict, items[1:])
     else:
-        yield current_dict
+        yield current_dict.copy()
 
 
 if __name__ == '__main__':

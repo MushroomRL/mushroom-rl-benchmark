@@ -2,7 +2,8 @@ import matplotlib
 default_backend = matplotlib.rcParams['backend']
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from pathlib import Path
+
+from itertools import cycle
 
 from mushroom_rl_benchmark.utils import plot_mean_conf
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
@@ -18,26 +19,37 @@ class BenchmarkSuiteVisualizer(object):
     """
     plot_counter = 0
 
-    def __init__(self, logger, color_cycle=None, y_limit=None, legend=None):
+    def __init__(self, logger, is_sweep, color_cycle=None, y_limit=None, legend=None):
         """
         Constructor.
 
         Args:
             logger (BenchmarkLogger): logger to be used;
+            is_sweep (bool): whether the benchmark is a parameter sweep.
             color_cycle (dict, None): dictionary with colors to be used for each algorithm;
             y_limit (dict, None): dictionary with environment specific plot limits.
             legend (dict, None): dictionary with environment specific legend parameters.
 
         """
+        assert is_sweep is not None
         self._logger = logger
+        self._is_sweep = is_sweep
 
         path = self._logger.get_path()
 
         self._logger_dict = {}
         self._color_cycle = dict() if color_cycle is None else color_cycle
+        self._line_cycle = dict()
+        self._lines = ["-", "--", "-.", ":"]
         self._y_limit = dict() if y_limit is None else y_limit
         self._legend_dict = dict() if legend is None else legend
 
+        if is_sweep:
+            self._load_sweep(path)
+        else:
+            self._load_benchmark(path)
+
+    def _load_benchmark(self, path):
         alg_count = 0
         for env_dir in path.iterdir():
             if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
@@ -53,6 +65,30 @@ class BenchmarkSuiteVisualizer(object):
 
                         alg_logger = BenchmarkLogger.from_path(alg_dir)
                         self._logger_dict[env][alg] = alg_logger
+                        alg_count += 1
+
+    def _load_sweep(self, path):
+        alg_count = 0
+        for env_dir in path.iterdir():
+            if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
+                env = env_dir.name
+                self._logger_dict[env] = dict()
+
+                for alg_dir in env_dir.iterdir():
+                    if alg_dir.is_dir():
+                        alg = alg_dir.name
+
+                        line_cycler = cycle(self._lines)
+                        for sweep_dir in alg_dir.iterdir():
+                            if sweep_dir.is_dir():
+                                sweep_name = alg + '_' + sweep_dir.name
+
+                                if sweep_name not in self._color_cycle:
+                                    self._color_cycle[sweep_name] = 'C' + str(alg_count)
+                                    self._line_cycle[sweep_name] = next(line_cycler)
+
+                                sweep_logger = BenchmarkLogger.from_path(sweep_dir)
+                                self._logger_dict[env][sweep_name] = sweep_logger
                         alg_count += 1
 
     def _legend(self, ax, env, data_type):
@@ -99,11 +135,13 @@ class BenchmarkSuiteVisualizer(object):
 
         max_epochs = 1
         for alg, logger in self._logger_dict[env].items():
+            print(alg)
             color = self._color_cycle[alg]
+            line = '-' if alg not in self._line_cycle else self._line_cycle[alg]
             data = getattr(logger, 'load_' + data_type)()
 
             if data is not None:
-                plot_mean_conf(data, ax, color=color, label=alg)
+                plot_mean_conf(data, ax, color=color, line=line, label=alg)
                 max_epochs = max(max_epochs, len(data[0]))
 
         if env in self._y_limit and data_type in self._y_limit[env]:
@@ -138,7 +176,7 @@ class BenchmarkSuiteVisualizer(object):
         Method to show a report of the training metrics from a performend experiment.
 
         """
-        matplotlib.use(default_backend)
+        matplotlib.use('Qt5Agg')
         for env in self._logger_dict.keys():
             for data_type in ['J', 'R', 'V', 'entropy']:
                 self.get_report(env, data_type)
