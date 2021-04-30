@@ -1,5 +1,5 @@
 import matplotlib
-default_backend = matplotlib.rcParams['backend']
+default_backend = matplotlib.get_backend()
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -276,6 +276,8 @@ class BenchmarkSuiteVisualizer(object):
                 else:
                     self.get_report(env, data_type)
 
+            plt.show()
+
         if boxplots:
             for env in self._logger_dict.keys():
                 for metric in ['max', 'convergence']:
@@ -286,4 +288,4 @@ class BenchmarkSuiteVisualizer(object):
                         else:
                             self.get_boxplot(env, metric, data_type)
 
-        plt.show()
+                plt.show()

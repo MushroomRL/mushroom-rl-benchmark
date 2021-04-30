@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     visualizer = BenchmarkSuiteVisualizer(logger, sweep, **plot_params)
     if show:
-        visualizer.show_reports()
+        visualizer.show_reports(alg_sweep=sweep)
     visualizer.save_reports(as_pdf=False)
     visualizer.save_boxplots(as_pdf=False)
     if sweep:
