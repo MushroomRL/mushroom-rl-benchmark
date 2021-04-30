@@ -7,6 +7,7 @@ from itertools import cycle
 
 from mushroom_rl_benchmark.utils import plot_mean_conf
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
+import mushroom_rl_benchmark.utils.metrics as metrics
 
 import warnings
 warnings.filterwarnings(action='ignore', category=RuntimeWarning, module='scipy')
@@ -159,9 +160,48 @@ class BenchmarkSuiteVisualizer(object):
 
         return fig
 
+    def get_boxplot(self, env, metric_type, data_type, selected_alg=None):
+        """
+        Create boxplot with matplotlib for a given metric.
+
+        Args:
+            env (str): The environment name;
+            metric_type (str): The metric to compute.
+
+        Returns:
+            A figure with the desired boxplot of the given metric.
+
+        """
+        self.plot_counter += 1
+
+        plot_id = self.plot_counter * 1000
+        fig = plt.figure(plot_id, figsize=(8, 6), dpi=80)
+        ax = plt.axes()
+        ax.set_title(f'{metric_type} {data_type}', fontweight='bold')
+
+        metric_function = getattr(metrics, f'{metric_type}_metric')
+
+        boxplot_data = list()
+        boxplot_labels = list()
+        for alg, logger in self._logger_dict[env].items():
+            if selected_alg is None or alg.startswith(selected_alg + '_'):
+                data = getattr(logger, f'load_{data_type}')()
+                if data is not None:
+                    boxplot_data.append(metric_function(data))
+                    boxplot_labels.append(alg)
+
+        if len(boxplot_data) == 0:
+            return None
+
+        ax.boxplot(boxplot_data, showfliers=False, labels=boxplot_labels)
+        ax.grid()
+        fig.tight_layout()
+
+        return fig
+
     def save_reports(self, as_pdf=True, transparent=True, alg_sweep=False):
         """
-        Method to save an image of a report of the training metrics from a performend experiment.
+        Method to save an image of a report of the training metrics from a performed experiment.
 
         Args:
             as_pdf (bool, True): whether to save the reports as pdf files or png;
@@ -188,7 +228,38 @@ class BenchmarkSuiteVisualizer(object):
                         self._logger.save_figure(fig, data_type, env, as_pdf=as_pdf, transparent=transparent)
                         plt.close(fig)
 
-    def show_reports(self, alg_sweep=False):
+    def save_boxplots(self, as_pdf=True, transparent=True, alg_sweep=False):
+        """
+        Method to save an image of a report of the training metrics from a performed experiment.
+
+        Args:
+            as_pdf (bool, True): whether to save the reports as pdf files or png;
+            transparent (bool, True): If true, the figure background is transparent and not white;
+            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
+
+        """
+        for env in self._logger_dict.keys():
+            for data_type in ['J', 'R', 'V']:
+                for metric in ['max', 'convergence']:
+                    if alg_sweep:
+                        env_dir = self._logger.get_path() / env
+                        for alg_dir in env_dir.iterdir():
+                            alg = alg_dir.name
+                            fig = self.get_boxplot(env, metric, data_type, alg)
+
+                            if fig is not None:
+                                self._logger.save_figure(fig, f'{metric}_{data_type}', env + '/' + alg,
+                                                         as_pdf=as_pdf, transparent=transparent)
+                                plt.close(fig)
+                    else:
+                        fig = self.get_boxplot(env, metric, data_type)
+
+                        if fig is not None:
+                            self._logger.save_figure(fig, f'{metric}_{data_type}', env, as_pdf=as_pdf,
+                                                     transparent=transparent)
+                            plt.close(fig)
+
+    def show_reports(self, boxplots=True, alg_sweep=False):
         """
         Method to show a report of the training metrics from a performend experiment.
 
@@ -201,7 +272,18 @@ class BenchmarkSuiteVisualizer(object):
             for data_type in ['J', 'R', 'V', 'entropy']:
                 if alg_sweep:
                     for alg in self._logger_dict[env].keys():
-                        self.get_report(env, data_type, [alg])
+                        self.get_report(env, data_type, alg)
                 else:
                     self.get_report(env, data_type)
+
+        if boxplots:
+            for env in self._logger_dict.keys():
+                for metric in ['max', 'convergence']:
+                    for data_type in ['J', 'R', 'V']:
+                        if alg_sweep:
+                            for alg in self._logger_dict[env].keys():
+                                self.get_boxplot(env, metric, data_type, alg)
+                        else:
+                            self.get_boxplot(env, metric, data_type)
+
         plt.show()
