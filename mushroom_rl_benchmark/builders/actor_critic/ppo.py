@@ -49,7 +49,7 @@ class PPOBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, eps=0.2, n_epochs_policy=4, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None,
+    def default(cls, eps=0.2, ent_coeff=0., n_epochs_policy=4, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None,
                 critic_network=Network, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000,
                 preprocessors=None, use_cuda=False, get_default_dict=False):
         defaults = locals()
@@ -77,6 +77,7 @@ class PPOBuilder(AgentBuilder):
             n_epochs_policy=4,
             batch_size=batch_size,
             eps_ppo=eps,
+            ent_coeff=ent_coeff,
             lam=lam,
             critic_fit_params=critic_fit_params)
 
