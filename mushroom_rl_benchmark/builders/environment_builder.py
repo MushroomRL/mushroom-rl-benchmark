@@ -27,7 +27,7 @@ class EnvironmentBuilder:
 
         """
         environment = getattr(mushroom_rl.environments, self.env_name)
-        return environment(*self.env_params.values())
+        return environment(**self.env_params)
 
     @staticmethod
     def set_eval_mode(env, eval):

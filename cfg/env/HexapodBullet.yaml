@@ -1,0 +1,54 @@
+%YAML 1.2
+---
+run_params:
+  n_runs: 25
+  n_epochs: 50
+  n_steps: 30000
+  n_episodes_test: 10
+env_params:
+  name: HexapodBullet
+  params:
+    #debug_gui: true
+agent_params:
+  A2C:
+    actor_lr: 7.0e-4
+    critic_lr: 7.0e-4
+    preprocessors: StandardizationPreprocessor
+  TRPO:
+    max_kl: 1.0e-2
+    critic_lr: 1.0e-3
+    n_steps_per_fit: 1000
+    preprocessors: StandardizationPreprocessor
+  PPO:
+    actor_lr: 3.0e-4
+    critic_lr: 3.0e-4
+    n_epochs_policy: 10
+    n_steps_per_fit: 2000
+    batch_size: 32
+    preprocessors: StandardizationPreprocessor
+  DDPG:
+    actor_lr: 1.0e-4
+    critic_lr: 1.0e-3
+    n_features: [400, 300]
+    initial_replay_size: 5000
+    max_replay_size: 1000000
+    tau: 1.0e-3
+    batch_size: 128
+  TD3:
+    actor_lr: 1.0e-3
+    critic_lr: 1.0e-3
+    n_features: [400, 300]
+    initial_replay_size: 10000
+    max_replay_size: 1000000
+    tau: 5.0e-3
+    batch_size: 100
+  SAC:
+    actor_lr: 1.0e-4
+    critic_lr: 3.0e-4
+    warmup_transitions: 10000
+    initial_replay_size: 5000
+    max_replay_size: 500000
+    n_features: 256
+    batch_size: 256
+    tau: 5.0e-3
+    lr_alpha: 3.0e-4
