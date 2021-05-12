@@ -50,12 +50,12 @@ class PPOBuilder(AgentBuilder):
     
     @classmethod
     def default(cls, eps=0.2, ent_coeff=0., n_epochs_policy=4, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None,
-                critic_network=Network, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000,
+                critic_network=Network, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000, std_0=1.0,
                 preprocessors=None, use_cuda=False, get_default_dict=False):
         defaults = locals()
         
         policy_params = dict(
-            std_0=1.,
+            std_0=std_0,
             n_features=n_features,
             use_cuda=use_cuda)
 
