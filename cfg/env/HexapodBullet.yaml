@@ -8,7 +8,7 @@ run_params:
 env_params:
   name: HexapodBullet
   params:
-    #debug_gui: true
+    debug_gui: true
 agent_params:
   A2C:
     actor_lr: 7.0e-4
@@ -24,6 +24,7 @@ agent_params:
     critic_lr: 3.0e-4
     n_epochs_policy: 10
     n_steps_per_fit: 2000
+    std_0: 0.1
     batch_size: 32
     preprocessors: StandardizationPreprocessor
   DDPG:
