@@ -86,6 +86,9 @@ class BenchmarkSuite:
         if environment_name in self._environment_dict:
             raise AttributeError(f'The environment {environment_name} has been already added to the benchmark')
 
+        if environment_builder_params is None:
+            environment_builder_params = dict()
+
         self._environment_dict[environment_name] = dict(
             build_params=environment_builder_params,
             run_params=run_params
@@ -214,8 +217,7 @@ class BenchmarkSuite:
         visualizer.show_report()
 
     def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
-        environment_name, environment_id = self._split_env_name(environment)
-        environment_params = self._update_environment_params(environment_name, environment_id, environment_params)
+        environment_id = self._get_env_id(environment)
 
         logger = BenchmarkLogger(
             log_dir=self.logger.get_path(),
@@ -223,13 +225,12 @@ class BenchmarkSuite:
             use_timestamp=False
         )
 
-        return self._create_experiment_base(agent_builder_params, agent_name, environment_id,
-                                            environment_name, environment_params, logger)
+        return self._create_experiment_base(agent_builder_params, agent_name, environment,
+                                            environment_id, environment_params, logger)
 
     def _create_experiment_sweep(self, environment, environment_params, agent_name, agent_builder_params, sweep_key,
                                  sweep_params):
-        environment_name, environment_id = self._split_env_name(environment)
-        environment_params = self._update_environment_params(environment_name, environment_id, environment_params)
+        environment_id = self._get_env_id(environment)
 
         logger = BenchmarkLogger(
             log_dir=self.logger.get_path(),
@@ -240,51 +241,39 @@ class BenchmarkSuite:
         agent_sweep_params = agent_builder_params.copy()
         agent_sweep_params.update(sweep_params)
 
-        return self._create_experiment_base(agent_sweep_params, agent_name, environment_id,
-                                            environment_name, environment_params, logger, sweep_key)
+        return self._create_experiment_base(agent_sweep_params, agent_name, environment,
+                                            environment_id, environment_params, logger, sweep_key)
 
-    def _create_experiment_base(self, agent_builder_params, agent_name, environment_id, environment_name,
+    def _create_experiment_base(self, agent_builder_params, agent_name, environment, environment_id,
                                 environment_params, logger, sweep_key=None):
         builder = getattr(mushroom_rl_benchmark.builders, f'{agent_name}Builder')
         agent_builder, agent_params = builder.default(get_default_dict=True, **agent_builder_params)
-        env_builder = EnvironmentBuilder(environment_name, environment_params)
+        env_builder = EnvironmentBuilder(environment, environment_params)
         self._add_parameters(agent_name, sweep_key, environment_id, agent_params)
         return BenchmarkExperiment(agent_builder, env_builder, logger)
 
-    def _add_parameters(self, agent_name, sweep_key, environment_name, params):
+    def _add_parameters(self, agent_name, sweep_key, environment_id, params):
 
-        if environment_name not in self._parameters_dict:
-            self._parameters_dict[environment_name] = dict()
+        if environment_id not in self._parameters_dict:
+            self._parameters_dict[environment_id] = dict()
 
         del params['cls']
         del params['use_cuda']
         del params['get_default_dict']
 
         if sweep_key is None:
-            self._parameters_dict[environment_name][agent_name] = params
+            self._parameters_dict[environment_id][agent_name] = params
         else:
-            if agent_name not in self._parameters_dict[environment_name]:
-                self._parameters_dict[environment_name][agent_name] = dict()
-            self._parameters_dict[environment_name][agent_name][sweep_key] = params
+            if agent_name not in self._parameters_dict[environment_id]:
+                self._parameters_dict[environment_id][agent_name] = dict()
+            self._parameters_dict[environment_id][agent_name][sweep_key] = params
 
     @staticmethod
-    def _split_env_name(environment):
+    def _get_env_id(environment):
         separator = '.'
 
         if separator in environment:
-            environment_name, environment_id = environment.split(separator)
-            return environment_name, environment_id
+            splitted = environment.split(separator)
+            return '_'.join(splitted[1:])
         else:
-            return environment, environment
-
-    @staticmethod
-    def _update_environment_params(environment_name, environment_id, environment_params):
-        if environment_params is None:
-            environment_params = dict()
-
-        if environment_name != environment_id:
-            environment_params = dict(
-                env_id=environment_id,
-                **environment_params)
-
-        return environment_params
+            return environment

@@ -1,5 +1,5 @@
 from copy import deepcopy
-import mushroom_rl.environments
+from mushroom_rl.core import Environment
 
 from mushroom_rl.environments import Atari
 
@@ -26,8 +26,7 @@ class EnvironmentBuilder:
         Build and return an environment
 
         """
-        environment = getattr(mushroom_rl.environments, self.env_name)
-        return environment(**self.env_params)
+        return Environment.make(self.env_name, **self.env_params)
 
     @staticmethod
     def set_eval_mode(env, eval):
