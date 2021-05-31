@@ -22,5 +22,11 @@ __all__ = [
     'RainbowBuilder',
     'SarsaLambdaContinuousBuilder',
     'TrueOnlineSarsaLambdaBuilder',
+    'QLearningBuilder',
+    'DoubleQLearningBuilder',
+    'SARSABuilder',
+    'SARSALambdaBuilder',
+    'SpeedyQLearningBuilder',
+    'WeightedQLearningBuilder',
     'EnvironmentBuilder'
 ]

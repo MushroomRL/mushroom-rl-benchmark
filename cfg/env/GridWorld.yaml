@@ -1,0 +1,39 @@
+%YAML 1.2
+---
+run_params:
+  n_runs: 5
+  n_epochs: 100
+  n_steps: 10000
+  n_steps_test: 1000
+env_params:
+  name: GridWorld
+  params:
+    height: 10
+    width: 10
+    goal: [0, 2]
+
+agent_params:
+  QLearning:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
+  DoubleQLearning:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
+  SpeedyQLearning:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
+  WeightedQLearning:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
+  SARSA:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
+  SARSALambda:
+    learning_rate: 0.9
+    epsilon: 0.1
+    epsilon_test: 0.
