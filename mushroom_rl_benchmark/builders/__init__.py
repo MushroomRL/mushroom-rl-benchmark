@@ -20,5 +20,7 @@ __all__ = [
     'CategoricalDQNBuilder',
     'NoisyDQNBuilder',
     'RainbowBuilder',
+    'SarsaLambdaContinuousBuilder',
+    'TrueOnlineSarsaLambdaBuilder',
     'EnvironmentBuilder'
 ]

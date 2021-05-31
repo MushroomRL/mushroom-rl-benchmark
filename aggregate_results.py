@@ -13,7 +13,7 @@ def get_args():
     arg_test.add_argument("-i", "--ignore", type=str, nargs='*', default=[],
                           help='Path of the top level folder dir')
 
-    args =parser.parse_args()
+    args = parser.parse_args()
 
     return Path(args.log_dir), args.ignore
 

@@ -258,7 +258,8 @@ class BenchmarkSuite:
             self._parameters_dict[environment_id] = dict()
 
         del params['cls']
-        del params['use_cuda']
+        if 'use_cuda' in params:
+            del params['use_cuda']
         del params['get_default_dict']
 
         if sweep_key is None:
