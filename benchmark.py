@@ -100,7 +100,10 @@ if __name__ == '__main__':
         if demo:
             run_params['n_runs'] = 4
             run_params['n_epochs'] = 10
-            run_params['n_steps'] = 15000
+            if 'n_steps' in run_params:
+                run_params['n_steps'] = 15000
+            else:
+                run_params['n_episodes'] = 10
             if 'n_episodes_test' in run_params:
                 run_params['n_episodes_test'] = 5
             else:
