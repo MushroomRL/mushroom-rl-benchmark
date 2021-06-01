@@ -96,7 +96,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps=None, n_episodes=None
 
         epoch_J.append(J)
         epoch_R.append(R)
-        epoch_V.append(V)
+        if agent_builder.compute_value_function:
+            epoch_V.append(V)
         if agent_builder.compute_policy_entropy:
             epoch_E.append(E)
 
@@ -104,7 +105,8 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps=None, n_episodes=None
         if J > best_J:
             best_J = float(J)
             best_R = float(R)
-            best_V = float(V)
+            if agent_builder.compute_value_function:
+                best_V = float(V)
             if agent_builder.compute_policy_entropy:
                 best_E = float(E)
             if save_agent:
@@ -115,12 +117,15 @@ def exec_run(agent_builder, env_builder, n_epochs, n_steps=None, n_episodes=None
 
     result = dict(
         J=np.array(epoch_J),
-        V=np.array(epoch_V),
         R=np.array(epoch_R),
         score=[best_J, best_R, best_V])
 
     if save_agent:
         result['agent'] = best_agent
+
+    if agent_builder.compute_value_function:
+        result['V'] = np.array(epoch_V)
+        result['score'].append(best_V)
     
     if agent_builder.compute_policy_entropy:
         result['E'] = np.array(epoch_E)
