@@ -32,7 +32,7 @@ class DQNBuilder(AgentBuilder):
         self.approximator_params = approximator_params
         self.alg_params = alg_params
 
-        super().__init__(n_steps_per_fit, compute_policy_entropy=False)
+        super().__init__(n_steps_per_fit=n_steps_per_fit, compute_policy_entropy=False)
 
     def build(self, mdp_info):
         self.approximator_params['input_shape'] = mdp_info.observation_space.shape

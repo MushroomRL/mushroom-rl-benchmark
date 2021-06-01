@@ -32,7 +32,7 @@ class PPOBuilder(AgentBuilder):
         self.actor_optimizer = actor_optimizer
         self.critic_params = critic_params
         self.alg_params = alg_params
-        super().__init__(n_steps_per_fit, preprocessors=preprocessors)
+        super().__init__(n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
 
     def build(self, mdp_info):
         policy = GaussianTorchPolicy(

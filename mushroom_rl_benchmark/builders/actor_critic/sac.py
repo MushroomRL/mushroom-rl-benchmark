@@ -35,7 +35,7 @@ class SACBuilder(AgentBuilder):
         self.critic_params = critic_params
         self.alg_params = alg_params
         self.n_q_samples = n_q_samples
-        super().__init__(n_steps_per_fit, compute_entropy_with_states=True, preprocessors=preprocessors)
+        super().__init__(n_steps_per_fit=n_steps_per_fit, compute_entropy_with_states=True, preprocessors=preprocessors)
 
     def build(self, mdp_info):
         actor_input_shape = mdp_info.observation_space.shape

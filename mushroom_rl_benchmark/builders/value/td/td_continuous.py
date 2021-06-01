@@ -32,7 +32,7 @@ class TDContinuousBuilder(AgentBuilder):
         self.epsilon = epsilon
         self.epsilon_test = epsilon_test
 
-        super().__init__(1, compute_policy_entropy=False)
+        super().__init__(n_steps_per_fit=1, compute_policy_entropy=False)
 
     def _build_function_approximation(self, mdp_info):
         tilings = Tiles.generate(self.n_tilings, [self.n_tiles] * mdp_info.observation_space.shape[0],

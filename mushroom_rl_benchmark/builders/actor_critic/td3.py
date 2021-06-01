@@ -36,7 +36,7 @@ class TD3Builder(AgentBuilder):
         self.actor_optimizer = actor_optimizer
         self.critic_params = critic_params
         self.alg_params = alg_params
-        super().__init__(n_steps_per_fit, compute_policy_entropy=False)
+        super().__init__(n_steps_per_fit=n_steps_per_fit, compute_policy_entropy=False)
 
     def build(self, mdp_info):
         actor_input_shape = mdp_info.observation_space.shape

@@ -101,7 +101,10 @@ if __name__ == '__main__':
             run_params['n_runs'] = 4
             run_params['n_epochs'] = 10
             run_params['n_steps'] = 15000
-            run_params['n_episodes_test'] = 5
+            if 'n_episodes_test' in run_params:
+                run_params['n_episodes_test'] = 5
+            else:
+                run_params['n_steps_test'] = 1000
 
         if sweep is None:
             suite.add_experiments(env, env_params, agents, agents_params, **run_params)

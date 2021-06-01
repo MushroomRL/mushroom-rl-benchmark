@@ -7,34 +7,30 @@ class AgentBuilder:
     Base class to spawn instances of a MushroomRL agent
 
     """
-    def __init__(self, n_steps_per_fit, compute_policy_entropy=True, compute_entropy_with_states=False,
-                 preprocessors=None):
+    def __init__(self, n_steps_per_fit=None, n_episodes_per_fit=None,
+                 compute_policy_entropy=True, compute_entropy_with_states=False,
+                 compute_value_function=True, preprocessors=None):
         """
         Initialize AgentBuilder
 
         """
+        assert (n_episodes_per_fit is None and n_steps_per_fit is not None) or \
+               (n_episodes_per_fit is not None and n_steps_per_fit is None)
+
         self._preprocessors = None
-        self.set_n_steps_per_fit(n_steps_per_fit)
+        self._n_steps_per_fit = n_steps_per_fit
+        self._n_episodes_per_fit = n_episodes_per_fit
         self.set_preprocessors(preprocessors)
         self.compute_policy_entropy = compute_policy_entropy
         self.compute_entropy_with_states = compute_entropy_with_states
+        self.compute_value_function = compute_value_function
 
-    def set_n_steps_per_fit(self, n_steps_per_fit):
+    def get_fit_params(self):
         """
-        Set n_steps_per_fit for the specific AgentBuilder
-
-        Args:
-            n_steps_per_fit: number of steps per fit.
+        Get n_steps_per_fit and n_episodes_per_fit for the specific AgentBuilder
 
         """
-        self._n_steps_per_fit = n_steps_per_fit
-
-    def get_n_steps_per_fit(self):
-        """
-        Get n_steps_per_fit for the specific AgentBuilder
-
-        """
-        return self._n_steps_per_fit
+        return dict(n_steps_per_fit=self._n_steps_per_fit, n_episodes_per_fit=self._n_episodes_per_fit)
 
     def set_preprocessors(self, preprocessors):
         """

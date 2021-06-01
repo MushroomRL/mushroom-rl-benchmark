@@ -1,4 +1,4 @@
-from mushroom_rl.algorithms.value import *
+from mushroom_rl.algorithms.value import QLearning, DoubleQLearning, SARSA, SpeedyQLearning, WeightedQLearning
 from mushroom_rl.policy import EpsGreedy
 from mushroom_rl.utils.parameters import Parameter
 
@@ -24,7 +24,7 @@ class TDFiniteBuilder(AgentBuilder):
         self.epsilon_test = epsilon_test
         self.alg_params = alg_params
 
-        super().__init__(1, compute_policy_entropy=False)
+        super().__init__(n_steps_per_fit=1, compute_policy_entropy=False)
 
     def build(self, mdp_info):
         policy = EpsGreedy(self.epsilon)
@@ -54,52 +54,32 @@ class TDFiniteBuilder(AgentBuilder):
             return builder
 
 
-class TDTraceBuilder(TDFiniteBuilder):
-    def __init__(self, learning_rate, epsilon, epsilon_test, lambda_coeff, trace):
-        """
-        Constructor.
-
-        lambda_coeff ([float, Parameter]): eligibility trace coefficient;
-        trace (str): type of eligibility trace to use.
-
-        """
-        super().__init__(learning_rate, epsilon, epsilon_test, lambda_coeff=lambda_coeff, trace=trace)
-
-    @classmethod
-    def default(cls, learning_rate=.9, epsilon=0.1, epsilon_test=0., lambda_coeff=0.9, trace='replacing',
-                get_default_dict=False):
-        defaults = locals()
-
-        builder = cls(learning_rate, epsilon, epsilon_test, lambda_coeff, trace)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
-
-
 class QLearningBuilder(TDFiniteBuilder):
     alg_class = QLearning
+
+    def __init__(self, learning_rate, epsilon, epsilon_test):
+        super().__init__(learning_rate, epsilon, epsilon_test)
 
 
 class SARSABuilder(TDFiniteBuilder):
     alg_class = SARSA
 
-
-class SARSALambdaBuilder(TDTraceBuilder):
-    alg_class = SARSALambda
-
-
-class QLambdaBuilder(TDTraceBuilder):
-    alg_class = QLambda
+    def __init__(self, learning_rate, epsilon, epsilon_test):
+        super().__init__(learning_rate, epsilon, epsilon_test)
 
 
 class SpeedyQLearningBuilder(TDFiniteBuilder):
     alg_class = SpeedyQLearning
 
+    def __init__(self, learning_rate, epsilon, epsilon_test):
+        super().__init__(learning_rate, epsilon, epsilon_test)
+
 
 class DoubleQLearningBuilder(TDFiniteBuilder):
     alg_class = DoubleQLearning
+
+    def __init__(self, learning_rate, epsilon, epsilon_test):
+        super().__init__(learning_rate, epsilon, epsilon_test)
 
     def compute_Q(self, agent, states):
         q_max_0 = agent.Q[0][states, :].max()

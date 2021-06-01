@@ -3,14 +3,14 @@
 run_params:
   n_runs: 25
   n_epochs: 100
-  n_steps: 10000
+  n_steps: 100
   n_steps_test: 1000
 env_params:
   name: GridWorld
   params:
     height: 10
     width: 10
-    goal: [0, 2]
+    goal: [8, 7]
 
 agent_params:
   QLearning:

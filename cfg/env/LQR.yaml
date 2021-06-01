@@ -1,0 +1,19 @@
+%YAML 1.2
+---
+run_params:
+  n_runs: 25
+  n_epochs: 100
+  n_episodes: 50
+  n_episodes_test: 10
+env_params:
+  name: LQR
+  params:
+    dimensions: 5
+
+agent_params:
+  REINFORCE:
+    alpha: 1.0e-2
+  GPOMDP:
+    alpha: 1.0e-2
+  eNAC:
+    alpha: 1.0e-2
