@@ -11,6 +11,10 @@ __all__ = [
     'REINFORCEBuilder',
     'GPOMDPBuilder',
     'eNACBuilder',
+    'PGPEBuilder',
+    'RWRBuilder',
+    'REPSBuilder',
+    'ConstrainedREPSBuilder',
     # Deep Actor Critic
     'A2CBuilder',
     'PPOBuilder',

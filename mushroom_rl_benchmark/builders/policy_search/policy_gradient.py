@@ -12,6 +12,7 @@ from mushroom_rl_benchmark.builders import AgentBuilder
 class PolicyGradientBuilder(AgentBuilder):
     """
     AgentBuilder for Policy Gradient Methods.
+    The current builder uses a state dependant gaussian with diagonal standard deviation and linear mean.
 
     """
     def __init__(self, n_episodes_per_fit, optimizer, **kwargs):

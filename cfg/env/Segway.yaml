@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+run_params:
+  n_runs: 25
+  n_epochs: 20
+  n_episodes: 100
+  n_episodes_test: 10
+env_params:
+  name: Segway
+  params:
+    random_start: False
+agent_params:
+  PGPE:
+    alpha: 3.0e-1
+  RWR:
+    beta: 1.0e-2
+  REPS:
+    eps: 5.0e-2
+  ConstrainedREPS:
+    eps: 5.0e-2
+    kappa: 1.0e-2

@@ -96,9 +96,7 @@ class BenchmarkExperiment:
             new_score = result['score']
 
             if new_score[0] > self.stats['best_J']:
-                self.set_and_save_stats(
-                    best_J=new_score[0],
-                    best_R=new_score[1])
+                self.set_and_save_stats(best_J=new_score[0], best_R=new_score[1])
 
                 if self.agent_builder.compute_value_function:
                     self.set_and_save_stats(best_V=new_score[2])
@@ -193,10 +191,7 @@ class BenchmarkExperiment:
                 self.extend_and_save_entropy(run_E)
 
             if new_score[0] > self.stats['best_J']:
-                self.set_and_save_stats(
-                    best_J=new_score[0],
-                    best_R=new_score[1]
-                )
+                self.set_and_save_stats(best_J=new_score[0], best_R=new_score[1])
 
                 if self.agent_builder.compute_value_function:
                     self.set_and_save_stats(best_V=new_score[2])
