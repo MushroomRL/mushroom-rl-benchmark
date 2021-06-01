@@ -27,7 +27,8 @@ class PolicyGradientBuilder(AgentBuilder):
         self.algorithm_params = dict(optimizer=optimizer)
         self.algorithm_params.update(**kwargs)
 
-        super().__init__(n_episodes_per_fit=n_episodes_per_fit, compute_policy_entropy=False)
+        super().__init__(n_episodes_per_fit=n_episodes_per_fit, compute_policy_entropy=False,
+                         compute_value_function=False)
 
     def build(self, mdp_info):
         mu = Regressor(LinearApproximator,
