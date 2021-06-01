@@ -23,6 +23,7 @@ __all__ = [
     'SarsaLambdaContinuousBuilder',
     'TrueOnlineSarsaLambdaBuilder',
     'QLearningBuilder',
+    'QLambdaBuilder',
     'DoubleQLearningBuilder',
     'SARSABuilder',
     'SARSALambdaBuilder',

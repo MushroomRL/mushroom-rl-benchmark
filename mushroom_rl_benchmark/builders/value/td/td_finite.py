@@ -54,34 +54,8 @@ class TDFiniteBuilder(AgentBuilder):
             return builder
 
 
-class QLearningBuilder(TDFiniteBuilder):
-    alg_class = QLearning
-
-    def __init__(self, learning_rate, epsilon, epsilon_test):
-        """
-        Constructor.
-
-
-        """
-        super().__init__(learning_rate, epsilon, epsilon_test)
-
-
-class SARSABuilder(TDFiniteBuilder):
-    alg_class = SARSA
-
-    def __init__(self, learning_rate, epsilon, epsilon_test):
-        """
-        Constructor.
-
-
-        """
-        super().__init__(learning_rate, epsilon, epsilon_test)
-
-
-class SARSALambdaBuilder(TDFiniteBuilder):
-    alg_class = SARSALambda
-
-    def __init__(self, learning_rate, epsilon, epsilon_test, lambda_coeff, trace='replacing'):
+class TDTraceBuilder(TDFiniteBuilder):
+    def __init__(self, learning_rate, epsilon, epsilon_test, lambda_coeff, trace):
         """
         Constructor.
 
@@ -104,28 +78,36 @@ class SARSALambdaBuilder(TDFiniteBuilder):
             return builder
 
 
-class DoubleQLearningBuilder(TDFiniteBuilder):
-    alg_class = DoubleQLearning
-
-    def __init__(self, learning_rate, epsilon, epsilon_test):
-        """
-        Constructor.
+class QLearningBuilder(TDFiniteBuilder):
+    alg_class = QLearning
 
 
-        """
-        super().__init__(learning_rate, epsilon, epsilon_test)
+class SARSABuilder(TDFiniteBuilder):
+    alg_class = SARSA
+
+
+class SARSALambdaBuilder(TDTraceBuilder):
+    alg_class = SARSALambda
+
+
+class QLambdaBuilder(TDTraceBuilder):
+    alg_class = QLambda
 
 
 class SpeedyQLearningBuilder(TDFiniteBuilder):
     alg_class = SpeedyQLearning
 
-    def __init__(self, learning_rate, epsilon, epsilon_test):
-        """
-        Constructor.
 
+class DoubleQLearningBuilder(TDFiniteBuilder):
+    alg_class = DoubleQLearning
 
-        """
-        super().__init__(learning_rate, epsilon, epsilon_test)
+    def compute_Q(self, agent, states):
+        q_max_0 = agent.Q[0][states, :].max()
+        q_max_1 = agent.Q[1][states, :].max()
+
+        q_max = (q_max_0 + q_max_1) / 2
+
+        return q_max
 
 
 class WeightedQLearningBuilder(TDFiniteBuilder):
@@ -140,7 +122,6 @@ class WeightedQLearningBuilder(TDFiniteBuilder):
                 the computation;
             precision (int, 1000): number of samples to use in the approximated
                 version.
-
 
         """
         super().__init__(learning_rate, epsilon, epsilon_test, sampling=sampling, precision=precision)
