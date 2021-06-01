@@ -30,8 +30,11 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
 
     run_dirs = list(work_dir.glob('{}_*'.format(dir_name)))
 
-    has_entropy = (work_dir / '{}_0/entropy.pkl'.format(dir_name)).exists()
+    has_entropy = (work_dir / f'{dir_name}_0/entropy.pkl').exists()
     console.info(f'has entropy: {has_entropy}')
+
+    has_value = (work_dir / f'{dir_name}_0/V.pkl').exists()
+    console.info(f'has value function: {has_value}')
 
     J = list()
     R = list()
@@ -49,7 +52,8 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
         try:
             J.extend(logger.load_J())
             R.extend(logger.load_R())
-            V.extend(logger.load_V())
+            if has_value:
+                V.extend(logger.load_V())
             if has_entropy:
                 E.extend(logger.load_entropy())
             if logger.exists_stats():
@@ -72,7 +76,8 @@ def aggregate_results(res_dir, res_id, console_log_dir=None):
 
         logger.save_J(J)
         logger.save_R(R)
-        logger.save_V(V)
+        if has_value:
+            logger.save_V(V)
         if has_entropy:
             logger.save_entropy(E)
         if best_stats is not None:

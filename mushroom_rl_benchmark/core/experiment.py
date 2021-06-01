@@ -84,26 +84,27 @@ class BenchmarkExperiment:
             run_parallel=False,
             use_threading=False,
             **run_params)
-        
-        cmp_E = self.agent_builder.compute_policy_entropy
 
         for run in trange(n_runs_completed, n_runs, leave=False):
             result = exec_run(self.agent_builder, self.env_builder, seed=run, quiet=False, **run_params)
             self.extend_and_save_J([result['J']])
             self.extend_and_save_R([result['R']])
-            self.extend_and_save_V([result['V']])
-            if cmp_E:
+            if self.agent_builder.compute_value_function:
+                self.extend_and_save_V([result['V']])
+            if self.agent_builder.compute_policy_entropy:
                 self.extend_and_save_entropy([result['E']])
             new_score = result['score']
 
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
                     best_J=new_score[0],
-                    best_R=new_score[1],
-                    best_Q=new_score[2])
+                    best_R=new_score[1])
 
-                if cmp_E:
-                    self.set_and_save_stats(best_E=new_score[3])
+                if self.agent_builder.compute_value_function:
+                    self.set_and_save_stats(best_V=new_score[2])
+
+                if self.agent_builder.compute_policy_entropy:
+                    self.set_and_save_stats(best_E=new_score[-1])
 
                 if 'agent' in result:
                     new_agent = result['agent']
@@ -151,8 +152,6 @@ class BenchmarkExperiment:
             run_parallel=True,
             **run_params
         )
-        
-        cmp_E = self.agent_builder.compute_policy_entropy
 
         self.logger.info('Starting experiment ...')
 
@@ -168,15 +167,16 @@ class BenchmarkExperiment:
             run_R = list()
             run_V = list()
             run_E = list()
-            new_score = [float("-inf"), 0, 0, 0] # J, R, Q, E
+            new_score = [float("-inf"), 0, 0, 0]  # J, R, Q, E
             new_agent = None
 
             for run in runs:
                 # Collect J, R, Q and E
                 run_J.append(run['J'])
                 run_R.append(run['R'])
-                run_V.append(run['V'])
-                if cmp_E:
+                if self.agent_builder.compute_value_function:
+                    run_V.append(run['V'])
+                if self.agent_builder.compute_policy_entropy:
                     run_E.append(run['E'])
 
                 # Check for best Agent (depends on J)
@@ -187,17 +187,22 @@ class BenchmarkExperiment:
 
             self.extend_and_save_J(run_J)
             self.extend_and_save_R(run_R)
-            self.extend_and_save_V(run_V)
-            if cmp_E:
+            if self.agent_builder.compute_value_function:
+                self.extend_and_save_V(run_V)
+            if self.agent_builder.compute_policy_entropy:
                 self.extend_and_save_entropy(run_E)
 
             if new_score[0] > self.stats['best_J']:
                 self.set_and_save_stats(
                     best_J=new_score[0],
-                    best_R=new_score[1],
-                    best_Q=new_score[2])
-                if cmp_E:
-                    self.set_and_save_stats(best_E=new_score[3])
+                    best_R=new_score[1]
+                )
+
+                if self.agent_builder.compute_value_function:
+                    self.set_and_save_stats(best_V=new_score[2])
+
+                if self.agent_builder.compute_policy_entropy:
+                    self.set_and_save_stats(best_E=new_score[-1])
 
                 if new_agent is not None:
                     self.logger.save_best_agent(new_agent)
