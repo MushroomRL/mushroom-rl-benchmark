@@ -136,6 +136,9 @@ class BenchmarkLogger(ConsoleLogger):
     def exists_policy_entropy(self):
         return self.get_path(self._file_entropy).exists()
 
+    def exists_value_function(self):
+        return self.get_path(self._file_V).exists()
+
     def save_best_agent(self, agent):
         agent.save(self.get_path(self._file_best_agent))
 

@@ -20,7 +20,7 @@ class BenchmarkVisualizer(object):
     """
     plot_counter = 0
 
-    def __init__(self, logger, data=None, has_entropy=None, id=1):
+    def __init__(self, logger, data=None, has_entropy=None, has_value=None, id=1):
         """
         Constructor.
 
@@ -37,10 +37,20 @@ class BenchmarkVisualizer(object):
         if has_entropy is None:
             if self.is_data_persisted:
                 self.has_entropy = self.logger.exists_policy_entropy()
+                self.has_value = self.logger.exists_value_function()
             else:
                 self.has_entropy = 'E' in self.data
+                self.has_value = 'V' in self.data
         else:
             self.has_entropy = has_entropy
+
+        if has_value is None:
+            if self.is_data_persisted:
+                self.has_value = self.logger.exists_value_function()
+            else:
+                self.has_value = 'V' in self.data
+        else:
+            self.has_value = has_value
 
     @property
     def is_data_persisted(self):
@@ -99,12 +109,21 @@ class BenchmarkVisualizer(object):
         plot_cnt = self.plot_counter
         self.plot_counter += 1
 
-        j_pos, r_pos, q_pos, e_pos = 131, 132, 133, 144
+        rows = 100
+        cols = 20
 
+        j_pos, r_pos, q_pos, e_pos = 1, 2, 3, 3
+
+        if self.has_value:
+            cols += 10
+            e_pos += 1
         if self.has_entropy:
-            j_pos += 10
-            r_pos += 10
-            q_pos += 10
+            cols += 10
+
+        j_pos += rows + cols
+        r_pos += rows + cols
+        q_pos += rows + cols
+        e_pos += rows + cols
 
         fig = plt.figure(plot_cnt * 10 + self.id, figsize=(24,6), dpi=80)
         j_ax = fig.add_subplot(j_pos, 
@@ -119,11 +138,12 @@ class BenchmarkVisualizer(object):
         r_ax.grid()
         plot_mean_conf(self.get_R(), r_ax)
 
-        v_ax = fig.add_subplot(q_pos,
-            ylabel='V', 
-            xlabel='epochs')
-        v_ax.grid()
-        plot_mean_conf(self.get_V(), v_ax)
+        if self.has_value:
+            v_ax = fig.add_subplot(q_pos,
+                ylabel='V',
+                xlabel='epochs')
+            v_ax.grid()
+            plot_mean_conf(self.get_V(), v_ax)
 
         if self.has_entropy:
             e_ax = fig.add_subplot(e_pos,
