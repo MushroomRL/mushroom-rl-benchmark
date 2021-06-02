@@ -15,6 +15,9 @@ __all__ = [
     'RWRBuilder',
     'REPSBuilder',
     'ConstrainedREPSBuilder',
+    # Classic Actor Critic
+    'StochasticACBuilder',
+    'COPDAQ_QBuilder',
     # Deep Actor Critic
     'A2CBuilder',
     'PPOBuilder',
