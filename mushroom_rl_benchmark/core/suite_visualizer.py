@@ -112,6 +112,14 @@ class BenchmarkSuiteVisualizer(object):
         Create report plot with matplotlib.
 
         """
+        if data_type == 'V':
+            has_value = False
+            for alg, logger in self._logger_dict[env].items():
+                if (selected_alg is None or alg.startswith(selected_alg + '_')) and logger.exists_value_function():
+                    has_value = True
+                    break
+            if not has_value:
+                return None
 
         if data_type == 'entropy':
             has_entropy = False
