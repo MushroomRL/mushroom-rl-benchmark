@@ -14,7 +14,7 @@ agent_params:
     alpha_theta: 1.0e-3
     alpha_v: 1.0e-1
     lambda_par: 0.9
-  COPDAQ_Q:
+  COPDAC_Q:
     std_eval: 1.0e-3
     alpha_theta: 5.0e-3
     alpha_omega: 5.0e-1

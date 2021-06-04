@@ -11,13 +11,13 @@ from mushroom_rl.features.tiles import Tiles
 from mushroom_rl.utils.parameters import Parameter
 
 
-class COPDAQ_QBuilder(AgentBuilder):
+class COPDAC_QBuilder(AgentBuilder):
     """
     Builder for the COPDAQ_Q actor critic algorithm.
     Using linear approximator with tiles for the mean and value function approximator.
 
     """
-    def __init__(self, std_exp, std_eval, alpha_theta, alpha_v, n_tilings, n_tiles, **kwargs):
+    def __init__(self, std_exp, std_eval, alpha_theta, alpha_omega, alpha_v, n_tilings, n_tiles, **kwargs):
         """
         Constructor.
 
@@ -25,6 +25,7 @@ class COPDAQ_QBuilder(AgentBuilder):
             std_exp (float): exploration standard deviation;
             std_eval (float): evaluation standard deviation;
             alpha_theta (Parameter): Learning rate for the policy;
+            alpha_omega (Parameter): Learning rate for the
             alpha_v (Parameter): Learning rate for the value function;
             n_tilings (int): number of tilings to be used as approximator;
             n_tiles (int): number of tiles for each state space dimension.
@@ -33,6 +34,7 @@ class COPDAQ_QBuilder(AgentBuilder):
         self._std_exp = std_exp
         self._std_eval = std_eval
         self._alpha_theta = alpha_theta
+        self._alpha_omega = alpha_omega
         self._alpha_v = alpha_v
         self._n_tilings = n_tilings
         self._n_tiles = n_tiles
@@ -76,7 +78,7 @@ class COPDAQ_QBuilder(AgentBuilder):
         alpha_omega_p = Parameter(alpha_omega / n_tilings)
         alpha_v_p = Parameter(alpha_v / n_tilings)
 
-        builder = cls(std_exp, std_eval, alpha_theta_p, alpha_v_p, n_tilings, n_tiles)
+        builder = cls(std_exp, std_eval, alpha_theta_p, alpha_omega_p, alpha_v_p, n_tilings, n_tiles)
 
         if get_default_dict:
             return builder, defaults
@@ -84,4 +86,4 @@ class COPDAQ_QBuilder(AgentBuilder):
             return builder
 
     def compute_Q(self, agent, states):
-        return agent._V(agent._phi(states)).mean()
+        return agent._V(agent._psi(states)).mean()
