@@ -159,7 +159,7 @@ class BenchmarkExperiment:
         with TqdmParallel(**parallel_settings) as parallel:
             runs = parallel(
                 (delayed(exec_run)(self.agent_builder.copy(), self.env_builder.copy(),
-                                  seed=seed, quiet=True, **run_params)
+                                  seed=seed, **run_params)
                 for seed in range(n_runs)),
                 total=n_runs
             )
