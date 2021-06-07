@@ -1,0 +1,22 @@
+%YAML 1.2
+---
+agent_type: SpeedyQLearningBuilder
+max_concurrent_runs: 5
+n_epochs: 100
+n_runs: 20
+n_runs_completed: 0
+n_steps: 100
+n_steps_test: 200
+parallel:
+  max_concurrent_runs: 5
+  threading: true
+run_parallel: true
+slurm:
+  aggregate_hours: 3
+  aggregate_minutes: 0
+  aggregation_job: true
+  hours: 24
+  memory: 4000
+  minutes: 0
+  only_print: false
+use_threading: true
