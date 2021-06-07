@@ -1,0 +1,51 @@
+%YAML 1.2
+---
+DoubleQLearning:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  learning_rate: ExponentialParameter
+QLambda:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  lambda_coeff: 0.9
+  learning_rate: ExponentialParameter
+  trace: replacing
+QLearning:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  learning_rate: ExponentialParameter
+SARSA:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  learning_rate: ExponentialParameter
+SARSALambda:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  lambda_coeff: 0.9
+  learning_rate: ExponentialParameter
+  trace: replacing
+SpeedyQLearning:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  learning_rate: ExponentialParameter
+WeightedQLearning:
+  epsilon: ExponentialParameter
+  epsilon_test: 0.0
+  exp_lr: 0.8
+  exp_policy: 0.5
+  learning_rate: ExponentialParameter
+  pi: EpsGreedy
+  precision: 1000
+  sampling: true
