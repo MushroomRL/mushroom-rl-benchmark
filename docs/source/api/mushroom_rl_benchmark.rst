@@ -35,3 +35,7 @@ Visualizer
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: mushroom_rl_benchmark.core.suite_visualizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
