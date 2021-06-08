@@ -1,0 +1,11 @@
+%YAML 1.2
+---
+GPOMDP:
+  alpha: 0.01
+  n_episodes_per_fit: 25
+REINFORCE:
+  alpha: 0.01
+  n_episodes_per_fit: 25
+eNAC:
+  alpha: 0.01
+  n_episodes_per_fit: 25

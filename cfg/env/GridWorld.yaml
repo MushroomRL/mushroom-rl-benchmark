@@ -14,30 +14,44 @@ env_params:
 
 agent_params:
   QLearning:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   QLambda:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   DoubleQLearning:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   SpeedyQLearning:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   WeightedQLearning:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   SARSA:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.
   SARSALambda:
-    learning_rate: 0.9
-    epsilon: 0.1
+    learning_rate: 1.
+    epsilon: 1.
+    decay_lr: .8
+    decay_eps: .5
     epsilon_test: 0.

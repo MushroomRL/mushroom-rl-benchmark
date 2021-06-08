@@ -2,7 +2,7 @@
 ---
 run_params:
   n_runs: 25
-  n_epochs: 20
+  n_epochs: 50
   n_episodes: 100
   n_episodes_test: 10
 env_params:
@@ -15,7 +15,7 @@ agent_params:
   RWR:
     beta: 1.0e-2
   REPS:
-    eps: 5.0e-2
+    eps: 5.0e-1
   ConstrainedREPS:
-    eps: 5.0e-2
+    eps: 5.0e-1
     kappa: 1.0e-2

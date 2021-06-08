@@ -40,7 +40,7 @@ class PolicyGradientBuilder(AgentBuilder):
                           input_shape=mdp_info.observation_space.shape,
                           output_shape=mdp_info.action_space.shape)
 
-        sigma_weights = 2 * np.ones(sigma.weights_size)
+        sigma_weights = .25 * np.ones(sigma.weights_size)
         sigma.set_weights(sigma_weights)
 
         policy = StateStdGaussianPolicy(mu, sigma)

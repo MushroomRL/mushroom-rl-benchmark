@@ -1,6 +1,6 @@
 from mushroom_rl.algorithms.value import QLearning, DoubleQLearning, SARSA, SpeedyQLearning, WeightedQLearning
 from mushroom_rl.policy import EpsGreedy
-from mushroom_rl.utils.parameters import Parameter
+from mushroom_rl.utils.parameters import ExponentialParameter, Parameter
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 
@@ -19,7 +19,7 @@ class TDFiniteBuilder(AgentBuilder):
             epsilon_test (Parameter): exploration coefficient for test.
 
         """
-        self.learning_rate = Parameter(learning_rate)
+        self.learning_rate = learning_rate
         self.epsilon = epsilon
         self.epsilon_test = epsilon_test
         self.alg_params = alg_params
@@ -43,7 +43,15 @@ class TDFiniteBuilder(AgentBuilder):
             agent.policy.set_epsilon(self.epsilon)
 
     @classmethod
-    def default(cls, learning_rate=.9, epsilon=0.1, epsilon_test=0., get_default_dict=False):
+    def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0., get_default_dict=False):
+        if decay_eps == 0:
+            epsilon = Parameter(value=epsilon)
+        else:
+            epsilon = ExponentialParameter(value=epsilon, exp=decay_eps)
+        if decay_lr == 0:
+            learning_rate = Parameter(value=learning_rate)
+        else:
+            learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
         defaults = locals()
 
         builder = cls(learning_rate, epsilon, epsilon_test)
@@ -107,8 +115,17 @@ class WeightedQLearningBuilder(TDFiniteBuilder):
         super().__init__(learning_rate, epsilon, epsilon_test, sampling=sampling, precision=precision)
 
     @classmethod
-    def default(cls, learning_rate=.9, epsilon=0.1, epsilon_test=0., sampling=True, precision=1000,
+    def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0., sampling=True,
+                precision=1000,
                 get_default_dict=False):
+        if decay_eps == 0:
+            epsilon = Parameter(value=epsilon)
+        else:
+            epsilon = ExponentialParameter(value=epsilon, exp=decay_eps)
+        if decay_lr == 0:
+            learning_rate = Parameter(value=learning_rate)
+        else:
+            learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
         defaults = locals()
 
         builder = cls(learning_rate, epsilon, epsilon_test, sampling, precision)

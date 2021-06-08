@@ -1,7 +1,7 @@
 from mushroom_rl.algorithms.value import TrueOnlineSARSALambda
 from mushroom_rl.policy import EpsGreedy
 
-from mushroom_rl.utils.parameters import Parameter
+from mushroom_rl.utils.parameters import ExponentialParameter, Parameter
 
 from .td_continuous import TDContinuousBuilder
 
@@ -26,11 +26,14 @@ class TrueOnlineSarsaLambdaBuilder(TDContinuousBuilder):
 
 
     @classmethod
-    def default(cls, alpha=.1, lambda_coeff=0.9, epsilon=0., epsilon_test=0., n_tilings=10, n_tiles=10,
+    def default(cls, alpha=.1, lambda_coeff=0.9, epsilon=0., decay_eps=0., epsilon_test=0., n_tilings=10, n_tiles=10,
                 get_default_dict=False):
+        if decay_eps == 0:
+            epsilon_p = Parameter(value=epsilon)
+        else:
+            epsilon_p = ExponentialParameter(value=epsilon, exp=decay_eps)
         defaults = locals()
 
-        epsilon_p = Parameter(value=epsilon)
         epsilon_test_p = Parameter(value=epsilon_test)
         policy = EpsGreedy(epsilon=epsilon_p)
 
