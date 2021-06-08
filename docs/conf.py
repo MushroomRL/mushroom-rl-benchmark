@@ -138,7 +138,22 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     #
-    # 'preamble': '',
+    'preamble': r'''
+\makeatletter
+\renewcommand{\pysigline}[1]{%
+                                            
+\setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
+
+\item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
+
+ \renewcommand{\pysiglinewithargsret}[1]{%
+                                           
+ \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
+
+ \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
+                                            
+\makeatother    
+''',
 
     # Latex figure (float) alignment
     #
