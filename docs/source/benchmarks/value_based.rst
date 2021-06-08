@@ -31,7 +31,7 @@ We provide the benchmarks for the following DQN algorithms:
 We consider the following environments in the benchmark
 
 .. toctree::
-    finite.rst
-    gym.rst
-    breakout.rst
+    value_based/finite.rst
+    value_based/gym.rst
+    value_based/atari.rst
 

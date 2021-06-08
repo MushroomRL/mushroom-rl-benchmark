@@ -19,16 +19,16 @@ Pendulum-v0
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/Pendulum-v0.yaml
+        .. literalinclude:: ../../../../results/params/Pendulum-v0.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../results/plots/Pendulum-v0/J.png
+        .. image:: ../../../../results/plots/Pendulum-v0/J.png
            :width: 400
-        .. image:: ../../../results/plots/Pendulum-v0/R.png
+        .. image:: ../../../../results/plots/Pendulum-v0/R.png
            :width: 400
-        .. image:: ../../../results/plots/Pendulum-v0/entropy.png
+        .. image:: ../../../../results/plots/Pendulum-v0/entropy.png
            :width: 400
 
 
@@ -41,15 +41,15 @@ LunarLanderContinuous-v2
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/LunarLanderContinuous-v2.yaml
+        .. literalinclude:: ../../../../results/params/LunarLanderContinuous-v2.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../results/plots/LunarLanderContinuous-v2/J.png
+        .. image:: ../../../../results/plots/LunarLanderContinuous-v2/J.png
            :width: 400
-        .. image:: ../../../results/plots/LunarLanderContinuous-v2/R.png
+        .. image:: ../../../../results/plots/LunarLanderContinuous-v2/R.png
            :width: 400
-        .. image:: ../../../results/plots/LunarLanderContinuous-v2/entropy.png
+        .. image:: ../../../../results/plots/LunarLanderContinuous-v2/entropy.png
            :width: 400
 

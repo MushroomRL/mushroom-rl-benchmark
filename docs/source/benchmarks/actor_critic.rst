@@ -19,7 +19,7 @@ We provide the benchmarks for the following Deep Actor-Critic algorithms:
 We consider the following environments in the benchmark
 
 .. toctree::
-    classic_control.rst
-    gym_control.rst
-    mujoco.rst
-    bullet.rst
+    actor_critic/classic_control.rst
+    actor_critic/gym.rst
+    actor_critic/mujoco.rst
+    actor_critic/bullet.rst

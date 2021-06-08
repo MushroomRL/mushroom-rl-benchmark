@@ -20,10 +20,6 @@ With MushroomRL Benchmarking you can:
 - Run experiments on a SLURM-based cluster.
 
 
-Basic run example
------------------
-
-
 Download and installation
 -------------------------
 
@@ -50,8 +46,11 @@ or to compile the pdf version:
     cd mushroom-rl-benchmark/docs
     make latexpdf
 
+
+Benchmarks
+----------
+
 .. toctree::
-   :hidden:
    :maxdepth: 2
    :caption: Benchmarks Results:
 
@@ -60,7 +59,6 @@ or to compile the pdf version:
    source/benchmarks/value_based.rst
 
 .. toctree::
-   :hidden:
    :maxdepth: 2
    :caption: API:
    :glob:

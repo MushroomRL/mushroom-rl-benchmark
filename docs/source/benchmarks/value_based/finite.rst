@@ -18,12 +18,12 @@ GridWorld
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/GridWorld.yaml
+        .. literalinclude:: ../../../../results/params/GridWorld.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../results/plots/GridWorld/J.png
+        .. image:: ../../../../results/plots/GridWorld/J.png
            :width: 400
-        .. image:: ../../../results/plots/GridWorld/R.png
+        .. image:: ../../../../results/plots/GridWorld/R.png
            :width: 400

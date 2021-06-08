@@ -18,4 +18,6 @@ We provide the benchmarks for the following Black-Box optimization algorithms:
 We consider the following environments in the benchmark
 
 .. toctree::
+    policy_search/classic_control.rst
+
 

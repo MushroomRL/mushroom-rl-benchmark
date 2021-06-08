@@ -19,12 +19,12 @@ InvertedPendulum
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/InvertedPendulum.yaml
+        .. literalinclude:: ../../../../results/params/InvertedPendulum.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../results/plots/InvertedPendulum/J.png
+        .. image:: ../../../../results/plots/InvertedPendulum/J.png
            :width: 400
-        .. image:: ../../../results/plots/InvertedPendulum/R.png
+        .. image:: ../../../../results/plots/InvertedPendulum/R.png
            :width: 400

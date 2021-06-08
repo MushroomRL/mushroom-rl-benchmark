@@ -1,5 +1,5 @@
-Breakout Environment Benchmark
-==============================
+Atari Environment Benchmark
+===========================
 
 ===============  ======
 Run Parameters
@@ -18,12 +18,12 @@ BreakoutDeterministic-v4
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../results/params/BreakoutDeterministic-v4.yaml
+        .. literalinclude:: ../../../../results/params/BreakoutDeterministic-v4.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../results/plots/BreakoutDeterministic-v4/J.png
+        .. image:: ../../../../results/plots/BreakoutDeterministic-v4/J.png
            :width: 400
-        .. image:: ../../../results/plots/BreakoutDeterministic-v4/R.png
+        .. image:: ../../../../results/plots/BreakoutDeterministic-v4/R.png
            :width: 400
