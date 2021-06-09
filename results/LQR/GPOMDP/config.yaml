@@ -1,15 +1,15 @@
 %YAML 1.2
 ---
 agent_type: GPOMDPBuilder
-max_concurrent_runs: 5
+max_concurrent_runs: -1
 n_episodes: 100
 n_episodes_test: 10
 n_epochs: 100
 n_runs: 25
 n_runs_completed: 0
 parallel:
-  max_concurrent_runs: 5
-  threading: true
+  max_concurrent_runs: -1
+  threading: false
 run_parallel: true
 slurm:
   aggregate_hours: 3
@@ -19,4 +19,4 @@ slurm:
   memory: 4000
   minutes: 0
   only_print: false
-use_threading: true
+use_threading: false

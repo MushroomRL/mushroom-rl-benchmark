@@ -9,8 +9,8 @@ env_params:
   name: LQR
   params:
     dimensions: 3
-    max_pos: 1
-    max_action: 1
+    max_pos: 1.
+    max_action: 1.
 
 agent_params:
   REINFORCE:

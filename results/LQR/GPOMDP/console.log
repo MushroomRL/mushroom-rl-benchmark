@@ -1,4 +1,4 @@
-08/06/2021 12:55:18 [INFO] Running BenchmarkExperiment parallel
-08/06/2021 12:55:18 [INFO] Number of used cores: 5
-08/06/2021 12:55:18 [INFO] Starting experiment ...
-08/06/2021 14:10:42 [INFO] Finished experiment.
+09/06/2021 15:16:18 [INFO] Running BenchmarkExperiment parallel
+09/06/2021 15:16:18 [INFO] Number of used cores: 16
+09/06/2021 15:16:18 [INFO] Starting experiment ...
+09/06/2021 15:25:06 [INFO] Finished experiment.
