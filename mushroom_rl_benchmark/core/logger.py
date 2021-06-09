@@ -50,6 +50,13 @@ class BenchmarkLogger(ConsoleLogger):
         super().__init__(self._log_id, self.get_path(), log_file_name='console')
 
     def set_log_dir(self, log_dir):
+        """
+        Set the directory for logging.
+
+        Args:
+            log_dir (str): path of the directory.
+
+        """
         if log_dir is None:
             default_dir = Path('logs')
             scratch_dir = Path('/work', 'scratch', os.getenv('USER'))
@@ -68,9 +75,22 @@ class BenchmarkLogger(ConsoleLogger):
         self._log_dir = log_dir
 
     def get_log_dir(self):
+        """
+        Returns:
+            The path of the logging directory.
+
+        """
         return str(self._log_dir)
 
     def set_log_id(self, log_id, use_timestamp=True):
+        """
+        Set the id of the logged folder.
+
+        Args:
+            log_id (str): id of the logged folder;
+            use_timestamp (bool, True): whether to use the timestamp or not.
+
+        """
         if log_id is None:
             log_id = 'benchmark'
         if use_timestamp:
@@ -83,12 +103,38 @@ class BenchmarkLogger(ConsoleLogger):
         self._log_id = log_id
 
     def get_log_id(self):
+        """
+        Returns:
+            The id of the logged folder.
+
+        """
         return self._log_id
 
     def get_path(self, filename=''):
+        """
+        Get the path of the given file. If no filename is given, it returns the path of the logging folder.
+
+        Args:
+            filename (str, ''): the name of the file.
+
+        Returns:
+            The complete path of the logged file.
+
+        """
         return self._log_dir / self._log_id / filename
 
     def get_params_path(self, filename=''):
+        """
+        Get the path of the parameters of the given file. If no filename is given, it returns the
+        path of the parameters folder.
+
+        Args:
+            filename (str, ''): the name of the file.
+
+        Returns:
+            The complete path of the logged file.
+
+        """
         params_dir = self._log_dir / self._log_id / 'params'
 
         if not params_dir.exists():
@@ -97,6 +143,18 @@ class BenchmarkLogger(ConsoleLogger):
         return params_dir / filename
 
     def get_figure_path(self, filename='', subfolder=None):
+        """
+        Get the path of the figures of the given file. If no filename is given, it returns the
+        path of the figures folder.
+
+        Args:
+            filename (str, ''): the name of the file;
+            subfolder (None): the name of a subfolder to add.
+
+        Returns:
+            The complete path of the logged file.
+
+        """
         figure_dir = Path(self._log_dir) / self._log_id / 'plots'
         if subfolder is not None:
             figure_dir = figure_dir / subfolder
@@ -106,27 +164,63 @@ class BenchmarkLogger(ConsoleLogger):
         return str(figure_dir / filename)
 
     def save_J(self, J):
+        """
+        Save the log of the cumulative discounted reward.
+
+        """
         self._save_pickle(self.get_path(self._file_J), J)
 
     def load_J(self):
+        """
+        Returns:
+            The log of the cumulative discounted reward.
+
+        """
         return self._load_pickle(self.get_path(self._file_J))
 
     def save_R(self, R):
+        """
+        Save the log of the cumulative reward.
+
+        """
         self._save_pickle(self.get_path(self._file_R), R)
 
     def load_R(self):
+        """
+        Returns:
+            The log of the cumulative reward.
+
+        """
         return self._load_pickle(self.get_path(self._file_R))
 
     def save_V(self, V):
+        """
+        Save the log of the value function.
+
+        """
         self._save_pickle(self.get_path(self._file_V), V)
 
     def load_V(self):
+        """
+        Returns:
+            The log of the value function.
+
+        """
         return self._load_pickle(self.get_path(self._file_V))
 
     def save_entropy(self, entropy):
+        """
+        Save the log of the entropy function.
+
+        """
         self._save_pickle(self.get_path(self._file_entropy), entropy)
 
     def load_entropy(self):
+        """
+        Returns:
+            The log of the entropy function.
+
+        """
         path = self.get_path(self._file_entropy)
         if path.exists():
             return self._load_pickle(path)
@@ -134,59 +228,170 @@ class BenchmarkLogger(ConsoleLogger):
             return None
 
     def exists_policy_entropy(self):
+        """
+        Returns:
+            True if the log of the entropy exists, False otherwise.
+
+        """
         return self.get_path(self._file_entropy).exists()
 
     def exists_value_function(self):
+        """
+        Returns:
+            True if the log of the value function exists, False otherwise.
+
+        """
         return self.get_path(self._file_V).exists()
 
     def save_best_agent(self, agent):
+        """
+        Save the best agent in the respective path.
+
+        Args:
+            agent (object): the agent to save.
+
+        """
         agent.save(self.get_path(self._file_best_agent))
 
     def save_last_agent(self, agent):
+        """
+        Save the last agent in the respective path.
+
+        Args:
+            agent (object): the agent to save.
+
+        """
         agent.save(self.get_path(self._file_last_agent))
 
     def exists_best_agent(self):
+        """
+        Returns:
+            True if the entropy file exists, False otherwise.
+
+        """
         return self.get_path(self._file_best_agent).exists()
 
     def load_best_agent(self):
+        """
+        Returns:
+            The best agent.
+
+        """
         return Serializable.load(self.get_path(self._file_best_agent))
 
     def load_last_agent(self):
+        """
+        Returns:
+            The last agent.
+
+        """
         return Serializable.load(self.get_path(self._file_last_agent))
 
     def save_environment_builder(self, env_builder):
+        """
+        Save the environment builder using the respective path.
+
+        Args:
+            env_builder (str): the environment builder to save.
+
+        """
         self._save_pickle(self.get_path(self._file_env_builder), env_builder)
 
     def load_environment_builder(self):
+        """
+        Returns:
+            The environment builder.
+
+        """
         return self._load_pickle(self.get_path(self._file_env_builder))
 
     def save_agent_builder(self, agent_builder):
+        """
+        Save the agent builder using the respective path.
+
+        Args:
+            agent_builder (str): the agent builder to save.
+
+        """
         self._save_pickle(self.get_path(self._file_agent_builder), agent_builder)
 
     def load_agent_builder(self):
+        """
+        Returns:
+            The agent builder.
+
+        """
         return self._load_pickle(self.get_path(self._file_agent_builder))
 
     def save_config(self, config):
+        """
+        Save the config file using the respective path.
+
+        Args:
+            config (str): the config file to save.
+
+        """
         self._save_yaml(self.get_path(self._file_config), config)
 
     def load_config(self):
+        """
+        Returns:
+            The config file.
+
+        """
         return self._load_yaml(self.get_path(self._file_config))
 
     def exists_stats(self):
+        """
+        Returns:
+            True if the entropy file exists, False otherwise.
+
+        """
         return self.get_path(self._file_stats).exists()
 
     def save_stats(self, stats):
+        """
+        Save the statistic file using the respective path.
+
+        Args:
+            stats (str): the statistics file to save.
+
+        """
         self._save_yaml(self.get_path(self._file_stats), stats)
 
     def load_stats(self):
+        """
+        Returns:
+            The statistics file.
+
+        """
         return self._load_yaml(self.get_path(self._file_stats))
 
     def save_params(self, env, params):
+        """
+        Save the parameters file.
+
+        Args:
+            env (str): the environment used;
+            params (str): the parameters file to save.
+
+        """
         file_name = env + '.yaml'
         primitive_params = dictionary_to_primitive(params)
         self._save_yaml(self.get_params_path(file_name), primitive_params)
 
     def save_figure(self, figure, figname, subfolder=None, as_pdf=False, transparent=True):
+        """
+        Save the figure file using the respective path.
+
+        Args:
+            figure (object): the figure to save;
+            figname (str): the name of the figure;
+            subfolder (str, None): optional subfolder where to save the figure;
+            as_pdf (bool, False): whether to save the figure in PDF or not;
+            transparent (bool, True): whether the figure should be transparent or not.
+
+        """
         extension = '.pdf' if as_pdf else '.png'
         figure.savefig(self.get_figure_path(figname + extension, subfolder), transparent=transparent)
 
