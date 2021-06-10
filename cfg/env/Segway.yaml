@@ -18,4 +18,4 @@ agent_params:
     eps: 5.0e-1
   ConstrainedREPS:
     eps: 5.0e-1
-    kappa: 1.0e-2
+    kappa: 1.0e-1
