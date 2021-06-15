@@ -64,18 +64,17 @@ def generate_slurm(exp_name, exp_dir_slurm, python_file, gres=None, project_name
     if gres:
         gres_option = f'#SBATCH --gres={gres}\n'
 
-
     if n_exp > 1:
         job_array_option += '#SBATCH -a 0-' + str(n_exp - 1) + (
             '%{}'.format(max_concurrent_runs) if max_concurrent_runs is not None else '') + '\n'
 
         text_output_file = '#SBATCH -o ' + exp_dir_slurm + '/%A_%a.out\n'
         text_output_file += '#SBATCH -e ' + exp_dir_slurm + '/%A_%a.err\n'
-        seed_specification = '\t\t--seed $SLURM_ARRAY_TASK_ID\n'
+        seed_specification = '--seed $SLURM_ARRAY_TASK_ID'
     else:
         text_output_file = '#SBATCH -o ' + exp_dir_slurm + '/%A.out\n'
         text_output_file += '#SBATCH -e ' + exp_dir_slurm + '/%A.err\n'
-        seed_specification = '\t\t--seed 0'
+        seed_specification = '--seed 0'
 
     code = f"""\
 #!/usr/bin/env bash
@@ -97,9 +96,7 @@ def generate_slurm(exp_name, exp_dir_slurm, python_file, gres=None, project_name
 echo "Starting Job $SLURM_JOB_ID, Index $SLURM_ARRAY_TASK_ID"
 
 # Program specific arguments
-CMD="python3 {python_file} \\
-\t\t${{@:1}}\\
-{seed_specification}
+CMD="python3 {python_file} ${{@:1}} {seed_specification}"
 
 echo \"$CMD\"
 eval $CMD
