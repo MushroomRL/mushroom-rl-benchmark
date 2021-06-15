@@ -16,7 +16,7 @@ class TD3Builder(AgentBuilder):
     """
 
     def __init__(self, policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params,
-                 n_steps_per_fit=1):
+                 n_steps_per_fit=1., preprocessors=None):
         """
         Constructor.
 
@@ -36,7 +36,7 @@ class TD3Builder(AgentBuilder):
         self.actor_optimizer = actor_optimizer
         self.critic_params = critic_params
         self.alg_params = alg_params
-        super().__init__(n_steps_per_fit, compute_policy_entropy=False)
+        super().__init__(n_steps_per_fit, preprocessors=preprocessors, compute_policy_entropy=False)
 
     def build(self, mdp_info):
         actor_input_shape = mdp_info.observation_space.shape
@@ -64,7 +64,7 @@ class TD3Builder(AgentBuilder):
     @classmethod
     def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork,
                 initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], tau=1e-3,
-                use_cuda=False, get_default_dict=False):
+                preprocessors=None, use_cuda=False, get_default_dict=False):
         defaults = locals()
         
         policy_class = ClippedGaussianPolicy
@@ -95,7 +95,7 @@ class TD3Builder(AgentBuilder):
             batch_size=batch_size,
             tau=tau)
 
-        builder = cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params)
+        builder = cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
 
         if get_default_dict:
             return builder, defaults

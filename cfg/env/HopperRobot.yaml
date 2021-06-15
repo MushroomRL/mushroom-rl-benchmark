@@ -6,10 +6,10 @@ run_params:
   n_steps: 30000
   n_episodes_test: 10
   save_agent: True
-  results_dir: '../logs/ant/'
+  results_dir: '../logs/hopper/'
   quiet: False
 env_params:
-  name: AntRobot
+  name: HopperRobot
   params:
     horizon: 1000
     gamma: 0.99
@@ -37,7 +37,7 @@ agent_params:
     actor_lr: 1.0e-3
     critic_lr: 1.0e-3
     n_features: [400, 300]
-    initial_replay_size: 10000
+    initial_replay_size: 1000
     max_replay_size: 1000000
     tau: 5.0e-3
     batch_size: 100
