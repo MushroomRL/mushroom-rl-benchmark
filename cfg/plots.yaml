@@ -25,13 +25,9 @@ y_limit:
 legend:
   BreakoutDeterministic-v4:
     R:
-      loc: 'center'
-      bbox_to_anchor: [0.5, .9]
-      ncol: 2
+      ncol: 3
     J:
-      loc: 'center'
-      bbox_to_anchor: [0.5, .9]
-      ncol: 2
+      ncol: 3
 
   Pendulum-v0:
     R:

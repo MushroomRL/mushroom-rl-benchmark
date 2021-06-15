@@ -101,7 +101,7 @@ class BenchmarkSuiteVisualizer(object):
         fontsize = legend_dict.pop('fontsize', 'x-large')
         frameon = legend_dict.pop('frameon', False)
         loc = legend_dict.pop('loc', 'center')
-        default_bbox = (0.5, 0.9) if data_type == 'entropy' else (0.5, 0.1)
+        default_bbox = (0.5, -0.25) if data_type == 'entropy' else (0.5, -0.25)
         bbox_to_anchor = legend_dict.pop('bbox_to_anchor', default_bbox)
         ncol = legend_dict.pop('ncol', len(self._logger_dict[env]) // 2)
         ax.legend(fontsize=fontsize, ncol=ncol, frameon=frameon,
