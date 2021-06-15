@@ -209,8 +209,8 @@ class BenchmarkExperiment:
         if save_plot:
             self.save_plot()
 
-    def run_slurm(self, n_runs, n_runs_completed=0, aggregation_job=True, aggregate_hours=3,
-                  aggregate_minutes=0, aggregate_seconds=0, only_print=False, **run_params):
+    def run_slurm(self, n_runs, n_runs_completed=0, aggregation_job=True, aggregate_hours=0,
+                  aggregate_minutes=5, aggregate_seconds=0, only_print=False, **run_params):
         """
         Execute the experiment with SLURM.
 
@@ -254,7 +254,9 @@ class BenchmarkExperiment:
             python_file=str(python_file_aggregate),
             hours=aggregate_hours,
             minutes=aggregate_minutes,
-            seconds=aggregate_seconds)
+            seconds=aggregate_seconds,
+            **slurm_params
+        )
 
         # save builder and aggregate script to path
         self.save_builders()
