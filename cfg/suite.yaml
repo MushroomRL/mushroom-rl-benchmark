@@ -6,7 +6,7 @@ suite_params:
   use_timestamp: true
   parallel:
     max_concurrent_runs: 5
-    threading: true
+    threading: false
   slurm:
     hours: 24
     minutes: 0
@@ -16,3 +16,4 @@ suite_params:
     aggregation_job: true
     memory: 4000
     # gres: 'gpu:rtx2080:1'
+    # partition: test24
