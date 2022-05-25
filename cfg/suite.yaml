@@ -14,6 +14,6 @@ suite_params:
     aggregate_minutes: 0
     only_print: false
     aggregation_job: true
-    memory: 4000
+    memory: 8000
     # gres: 'gpu:rtx2080:1'
-    # partition: test24
+    partition: test24

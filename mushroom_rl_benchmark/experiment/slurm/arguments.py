@@ -20,13 +20,15 @@ def read_arguments_run(arg_string=None):
     """
     parser = argparse.ArgumentParser()
 
-    arg_test = parser.add_argument_group('mushroom_rl_benchmark')
-    arg_test.add_argument("--log_dir", type=str, required=True)
-    arg_test.add_argument("--n_epochs", type=int, required=True)
-    arg_test.add_argument("--n_steps", type=int, default=None)
-    arg_test.add_argument('--n_steps_test', type=int, default=None)
-    arg_test.add_argument("--n_episodes_test", type=int, default=None)
-    arg_test.add_argument('--seed', type=int, default=None)
+    exp_args = parser.add_argument_group('mushroom_rl_benchmark')
+    exp_args.add_argument("--log_dir", type=str, required=True)
+    exp_args.add_argument("--n_epochs", type=int, required=True)
+    exp_args.add_argument("--n_steps", type=int, default=None)
+    exp_args.add_argument("--quiet", type=bool, default=True)
+    exp_args.add_argument("--save_agent", type=bool, default=False)
+    exp_args.add_argument('--n_steps_test', type=int, default=None)
+    exp_args.add_argument("--n_episodes_test", type=int, default=None)
+    exp_args.add_argument('--seed', type=int, default=None)
 
     if arg_string is not None:
         args = vars(parser.parse_args(arg_string))
