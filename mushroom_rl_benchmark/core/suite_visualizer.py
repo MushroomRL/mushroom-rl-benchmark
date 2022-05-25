@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from itertools import cycle
 
-from mushroom_rl_benchmark.utils import plot_mean_conf
+from mushroom_rl.utils.plot import plot_mean_conf
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 import mushroom_rl_benchmark.utils.metrics as metrics
 

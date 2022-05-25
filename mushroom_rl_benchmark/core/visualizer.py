@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 from mushroom_rl.core import Core
 
-from mushroom_rl_benchmark.utils import plot_mean_conf
+from mushroom_rl.utils.plot import plot_mean_conf
 from mushroom_rl_benchmark.core.logger import BenchmarkLogger
 
 import warnings
@@ -24,7 +24,7 @@ class BenchmarkVisualizer(object):
         """
         Constructor.
 
-        Args:
+        Args:plot_mean_conf
             logger (BenchmarkLogger): logger to be used;
             data (dict, None): dictionary with data points for visualization;
             has_entropy (bool, None): select if entropy is available for the algorithm.
