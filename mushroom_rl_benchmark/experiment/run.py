@@ -3,11 +3,8 @@ import torch
 import numpy as np
 from copy import deepcopy
 
-from mushroom_rl.core import Core
-from mushroom_rl.utils.dataset import compute_J, parse_dataset
-from mushroom_rl.core.logger import Logger
-
-from mushroom_rl_benchmark.utils import get_init_states
+from mushroom_rl.core import Core, Logger
+from mushroom_rl.utils.dataset import compute_J, parse_dataset, get_init_states
 
 from tqdm import trange
 

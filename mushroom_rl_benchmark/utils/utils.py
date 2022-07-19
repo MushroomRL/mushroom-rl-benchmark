@@ -1,27 +1,4 @@
-import numpy as np
 from inspect import signature
-
-from mushroom_rl.utils.frames import LazyFrames
-
-
-def get_init_states(dataset):
-    """
-    Get the initial states of a MushroomRL dataset
-
-    Args:
-        dataset (Dataset): a MushroomRL dataset.
-
-    """
-    pick = True
-    x_0 = list()
-    for d in dataset:
-        if pick:
-            if isinstance(d[0], LazyFrames):
-                x_0.append(np.array(d[0]))
-            else:
-                x_0.append(d[0])
-        pick = d[-1]
-    return np.array(x_0)
 
 
 def extract_arguments(args, method):
