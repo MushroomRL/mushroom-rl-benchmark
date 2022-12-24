@@ -1,19 +1,16 @@
 %YAML 1.2
 ---
 suite_params:
-  log_dir: logs
-  log_id: benchmark
+  exp_name: benchmark
+  #base_dir: None
   use_timestamp: true
-  parallel:
-    max_concurrent_runs: 5
-    threading: false
-  slurm:
-    hours: 24
-    minutes: 0
-    aggregate_hours: 3
-    aggregate_minutes: 0
-    only_print: false
-    aggregation_job: true
-    memory: 8000
-    # gres: 'gpu:rtx2080:1'
-    partition: test24
+  joblib_n_jobs: 1
+  n_cores: 1
+  memory_per_core: 8000
+  days: 1
+  hours: 0
+  minutes: 0
+  seconds: 0
+  # partition: test24
+  # gres: 'gpu:rtx2080:1'
+  # conda_env=CONDA_ENV,

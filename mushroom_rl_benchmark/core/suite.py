@@ -1,8 +1,9 @@
-import mushroom_rl_benchmark.builders
-from mushroom_rl_benchmark.builders import EnvironmentBuilder
-from mushroom_rl_benchmark.core.experiment import BenchmarkExperiment
-from mushroom_rl_benchmark.core.logger import BenchmarkLogger
-from mushroom_rl_benchmark.core.suite_visualizer import BenchmarkSuiteVisualizer
+import pkgutil
+
+from experiment_launcher import Launcher
+from experiment_launcher.utils import bool_local_cluster
+
+from mushroom_rl_benchmark.core.configuration import BenchmarkConfiguration
 
 
 class BenchmarkSuite:
@@ -10,271 +11,130 @@ class BenchmarkSuite:
     Class to orchestrate the execution of multiple experiments.
 
     """
-    def __init__(self, log_dir=None, log_id=None, use_timestamp=True, parallel=None, slurm=None):
+    def __init__(self, config_dir='cfg', n_seeds=25):
         """
         Constructor.
 
         Args:
-            log_dir (str): path to the log directory (Default: ./logs or /work/scratch/$USER)
-            log_id (str): log id (Default: benchmark[_YYYY-mm-dd-HH-MM-SS])
-            use_timestamp (bool): select if a timestamp should be appended to the log id
-            parallel (dict, None): parameters that are passed to the run_parallel method of the experiment
-            slurm (dict, None): parameters that are passed to the run_slurm method of the experiment
+            config_dir (str, 'cfg'): config directory;
+            n_seeds (int, 25): number of seeds to evaluate.
         
         """
-        self._experiment_structure = dict()
-        self._environment_dict = dict()
-        self._parameters_dict = dict()
-        self._parallel = parallel
-        self._slurm = slurm
-        self._is_sweep = None
-        self.logger = BenchmarkLogger(log_dir=log_dir, log_id=log_id, use_timestamp=use_timestamp)
+        self._config = BenchmarkConfiguration(config_dir)
 
-    def add_experiments(self, environment_name, environment_builder_params, agent_names_list,
-                        agent_builders_params, **run_params):
+        self._launcher = Launcher(
+            python_file="mushroom_rl_benchmark.core.run",
+            n_exps=n_seeds,
+            **self._config.suite_params
+        )
+
+        self._environment_dict = dict()
+        self._demo_run_params = None
+
+    def set_demo_run_params(self, n_epochs=10, n_steps=15000, n_episodes=10, n_episodes_test=5, n_steps_test=1000):
+        self._demo_run_params = dict(n_epochs=n_epochs,
+                                     n_steps=n_steps,
+                                     n_episodes=n_episodes,
+                                     n_episodes_test=n_episodes_test,
+                                     n_steps_test=n_steps_test)
+
+    def add_full_benchmark(self):
+        for env in self._config.envs:
+            self.add_environment(env)
+
+    def add_environment(self, environment_name):
+        """
+        Add all configured experiments for the same environment to the suite.
+
+        Args:
+            environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
+
+        """
+        agent_names_list = self._config.get_available_agents(environment_name)
+        self.add_experiments(environment_name, agent_names_list)
+
+    def add_experiments(self, environment_name, agent_names_list):
         """
         Add a set of experiments for the same environment to the suite.
 
         Args:
             environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
-            environment_builder_params (dict): parameters for the environment builder;
             agent_names_list (list): list of names of the agents for the experiments;
-            agent_builders_params (list): list of dictionaries containing the parameters for the agent builder;
-            run_params: Parameters that are passed to the run method of the experiment.
 
         """
-        assert self._is_sweep is False or self._is_sweep is None
-        self._is_sweep = False
+        for agent_name in agent_names_list:
+            self.add_experiment(environment_name, agent_name)
 
-        self.add_environment(environment_name, environment_builder_params, **run_params)
-
-        for agent_name, agent_params in zip(agent_names_list, agent_builders_params):
-            self.add_agent(environment_name, agent_name, agent_params)
-
-    def add_experiments_sweeps(self, environment_name, environment_builder_params, agent_names_list,
-                               agent_builders_params, sweeps_list, **run_params):
+    def add_experiment(self, environment_name, agent_name):
         """
-        Add a set of experiments sweeps for the same environment to the suite.
+        Add a single to the benchmarking suite.
 
         Args:
             environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
-            environment_builder_params (dict): parameters for the environment builder;
-            agent_names_list (list): list of names of the agents for the experiments;
-            agent_builders_params (list): list of dictionaries containing the parameters for the agent builder;
-            sweeps_list (list): list of dictionaries containing the parameter sweep to be executed;
-            run_params: Parameters that are passed to the run method of the experiment.
+            agent_name (str): name of the agent for the experiments.
 
         """
-        assert self._is_sweep is True or self._is_sweep is None
-        self._is_sweep = True
+        assert environment_name in self._config.envs
+        assert agent_name in self._config.get_available_agents(environment_name)
 
-        self.add_environment(environment_name, environment_builder_params, **run_params)
+        env_params, run_params, agent_params = self._config.get_experiment_params(environment_name, agent_name)
 
-        for agent_name, agent_params, sweep_dict in zip(agent_names_list, agent_builders_params, sweeps_list):
-            self.add_sweep(environment_name, agent_name, agent_params, sweep_dict)
+        if self._demo_run_params:
+            self._overwrite_run_parameters(run_params)
 
-    def add_environment(self, environment_name, environment_builder_params, **run_params):
+        # TODO FIXME env_params
+        self._launcher.add_experiment(env__=environment_name,
+                                      agent__=agent_name,
+                                      **agent_params,
+                                      **run_params
+                                      )
+
+    def run(self, exec_type=None):
         """
-        Add an environment to the benchmarking suite.
+        Run the benchmarking suite
 
         Args:
-            environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
-            environment_builder_params (dict): parameters for the environment builder;
-            run_params: Parameters that are passed to the run method of the experiment.
-
+            exec_type (str, None): type of benchmark running. you can choose between sequential, parallel and slurm.
+                If you append "_test" to slurm or parallel, a print will show the set of calls, instead of running
+                the benchmark
         """
-        if environment_name in self._environment_dict:
-            raise AttributeError(f'The environment {environment_name} has been already added to the benchmark')
-
-        if environment_builder_params is None:
-            environment_builder_params = dict()
-
-        self._environment_dict[environment_name] = dict(
-            build_params=environment_builder_params,
-            run_params=run_params
-        )
-
-        self._experiment_structure[environment_name] = dict()
-
-    def add_agent(self, environment_name, agent_name, agent_params):
-        """
-        Add an agent to the benchmarking suite.
-
-        Args:
-            environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
-            agent_name (str): name of the agent for the experiments;
-            agent_params (list): dictionary containing the parameters for the agent builder.
-
-        """
-        assert environment_name in self._environment_dict
-        assert self._is_sweep is False or self._is_sweep is None
-        self._is_sweep = False
-        if agent_name in self._experiment_structure[environment_name]:
-            raise AttributeError(
-                f'An experiment for environment {environment_name} and builders {agent_name} already exists.'
-            )
-
-        environment_builder_params = self._environment_dict[environment_name]['build_params']
-
-        try:
-            exp = self._create_experiment(environment_name, environment_builder_params, agent_name, agent_params)
-            self._experiment_structure[environment_name][agent_name] = exp
-        except AttributeError as e:
-            self.logger.error(
-                f'Unable to create experiment for the environment {environment_name} and agent {agent_name}'
-            )
-            self.logger.exception(e)
-
-    def add_sweep(self, environment_name, agent_name, agent_params, sweep_dict):
-        """
-        Add an agent sweep to the benchmarking suite.
-
-        Args:
-            environment_name (str): name of the environment for the experiment (E.g. Gym.Pendulum-v0);
-            agent_name (str): name of the agent for the experiments;
-            agent_params (list): dictionary containing the parameters for the agent builder;
-            sweep_dict (dict): dictionary with the sweep configurations.
-
-        """
-        assert environment_name in self._environment_dict
-        assert self._is_sweep is True or self._is_sweep is None
-        self._is_sweep = True
-
-        for sweep_key, sweep_params in sweep_dict.items():
-            sweep_name = agent_name + '_' + sweep_key
-            if sweep_name in self._experiment_structure[environment_name]:
-                raise AttributeError(
-                    f'An sweep for environment {environment_name}, builders {agent_name} '
-                    f'and sweep key {sweep_key} already exists.'
-                )
-
-            environment_builder_params = self._environment_dict[environment_name]['build_params']
-
-            try:
-                exp = self._create_experiment_sweep(environment_name, environment_builder_params,
-                                                    agent_name, agent_params, sweep_key, sweep_params)
-                self._experiment_structure[environment_name][sweep_name] = exp
-            except AttributeError as e:
-                self.logger.error(
-                    f'Unable to create sweep for environment {environment_name}, agent {agent_name} '
-                    f'and sweep key {sweep_key}'
-                )
-                self.logger.exception(e)
-
-    def run(self, exec_type='sequential'):
-        """
-        Run all experiments in the suite.
-
-        """
-        for environment, agents in self._experiment_structure.items():
-            for agent, exp in agents.items():
-                self.logger.info(f'Starting Experiment for {agent} on {environment}')
-                run_params = self._environment_dict[environment]['run_params']
-                exp.run(exec_type=exec_type, parallel=self._parallel, slurm=self._slurm, **run_params)
-
-    def print_experiments(self):
-        """
-        Print the experiments in the suite.
-
-        """
-        first = True
-        for env, agents in self._experiment_structure.items():
-            if not first:
-                self.logger.weak_line()
-            first = False
-            self.logger.info(f'Environment: {env}')
-            for agent, _ in agents.items():
-                self.logger.info('- ' + agent)
-
-    def save_parameters(self):
-        """
-        Save the experiment parameters in yaml files inside the parameters folder
-
-        """
-        for env, params in self._parameters_dict.items():
-            self.logger.save_params(env, params)
-
-    def save_plots(self, **plot_params):
-        """
-        Save the result plots to the log directory.
-
-        Args:
-            **plot_params: parameters to be passed to the suite visualizer.
-
-        """
-        visualizer = BenchmarkSuiteVisualizer(self.logger, self._is_sweep, **plot_params)
-        visualizer.save_reports()
-
-    def show_plots(self, **plot_params):
-        """
-        Display the result plots.
-
-        Args:
-            **plot_params: parameters to be passed to the suite visualizer.
-
-        """
-        visualizer = BenchmarkSuiteVisualizer(self.logger, self._is_sweep, **plot_params)
-        visualizer.show_report()
-
-    def _create_experiment(self, environment, environment_params, agent_name, agent_builder_params):
-        environment_id = self._get_env_id(environment)
-
-        logger = BenchmarkLogger(
-            log_dir=self.logger.get_path(),
-            log_id=f'{environment_id}/{agent_name}',
-            use_timestamp=False
-        )
-
-        return self._create_experiment_base(agent_builder_params, agent_name, environment,
-                                            environment_id, environment_params, logger)
-
-    def _create_experiment_sweep(self, environment, environment_params, agent_name, agent_builder_params, sweep_key,
-                                 sweep_params):
-        environment_id = self._get_env_id(environment)
-
-        logger = BenchmarkLogger(
-            log_dir=self.logger.get_path(),
-            log_id=f'{environment_id}/{agent_name}/{sweep_key}',
-            use_timestamp=False
-        )
-
-        agent_sweep_params = agent_builder_params.copy()
-        agent_sweep_params.update(sweep_params)
-
-        return self._create_experiment_base(agent_sweep_params, agent_name, environment,
-                                            environment_id, environment_params, logger, sweep_key)
-
-    def _create_experiment_base(self, agent_builder_params, agent_name, environment, environment_id,
-                                environment_params, logger, sweep_key=None):
-        builder = getattr(mushroom_rl_benchmark.builders, f'{agent_name}Builder')
-        agent_builder, agent_params = builder.default(get_default_dict=True, **agent_builder_params)
-        env_builder = EnvironmentBuilder(environment, environment_params)
-        self._add_parameters(agent_name, sweep_key, environment_id, agent_params)
-        return BenchmarkExperiment(agent_builder, env_builder, logger)
-
-    def _add_parameters(self, agent_name, sweep_key, environment_id, params):
-
-        if environment_id not in self._parameters_dict:
-            self._parameters_dict[environment_id] = dict()
-
-        del params['cls']
-        if 'use_cuda' in params:
-            del params['use_cuda']
-        del params['get_default_dict']
-
-        if sweep_key is None:
-            self._parameters_dict[environment_id][agent_name] = params
+        sequential = False
+        if exec_type is None:
+            local = bool_local_cluster()
+            test = False
+        elif exec_type == 'sequential':
+            local = True
+            sequential = True
+            test = False
+        elif exec_type == 'parallel':
+            local = True
+            test = False
+        elif exec_type == 'slurm':
+            local = False
+            test = False
+        elif exec_type == 'slurm_test':
+            local = False
+            test = True
+        elif exec_type == 'parallel_test':
+            local = True
+            test = True
+        elif exec_type == 'sequential_test':
+            local = True
+            sequential = True
+            test = True
         else:
-            if agent_name not in self._parameters_dict[environment_id]:
-                self._parameters_dict[environment_id][agent_name] = dict()
-            self._parameters_dict[environment_id][agent_name][sweep_key] = params
+            raise AttributeError('wrong execution type selected')
 
-    @staticmethod
-    def _get_env_id(environment):
-        separator = '.'
+        self._launcher.run(local, test, sequential)
 
-        if separator in environment:
-            splitted = environment.split(separator)
-            return '_'.join(splitted[1:])
+    def _overwrite_run_parameters(self, run_params):
+        run_params['n_runs'] = self._demo_run_params['n_runs']
+        run_params['n_epochs'] = self._demo_run_params['n_epochs']
+        if 'n_steps' in run_params:
+            run_params['n_steps'] = self._demo_run_params['n_steps']
         else:
-            return environment
+            run_params['n_episodes'] = self._demo_run_params['n_episodes']
+        if 'n_episodes_test' in run_params:
+            run_params['n_episodes_test'] = self._demo_run_params['n_episodes_test']
+        else:
+            run_params['n_steps_test'] = self._demo_run_params['n_steps_test']

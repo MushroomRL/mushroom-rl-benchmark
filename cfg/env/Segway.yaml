@@ -1,7 +1,6 @@
 %YAML 1.2
 ---
 run_params:
-  n_runs: 25
   n_epochs: 50
   n_episodes: 100
   n_episodes_test: 10

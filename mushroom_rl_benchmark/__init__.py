@@ -1,15 +1,7 @@
 __version__ = '1.1.0'
 
 try:
-    from .core import BenchmarkLogger, BenchmarkVisualizer, BenchmarkSuiteVisualizer,\
-        BenchmarkExperiment, BenchmarkSuite
+    from .core import BenchmarkConfiguration, BenchmarkExperiment, BenchmarkSuite
 
-    __all__ = [
-        'BenchmarkLogger',
-        'BenchmarkVisualizer',
-        'BenchmarkSuiteVisualizer',
-        'BenchmarkExperiment',
-        'BenchmarkSuite'
-    ]
 except ImportError as e:
-    __all__ = []
+    pass
