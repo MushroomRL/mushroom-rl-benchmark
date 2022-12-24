@@ -38,7 +38,7 @@ class TD3Builder(AgentBuilder):
         self.alg_params = alg_params
         super().__init__(n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors, compute_policy_entropy=False)
 
-    def build(self, mdp_info):
+    def _build(self, mdp_info):
         actor_input_shape = mdp_info.observation_space.shape
         action_scaling = (mdp_info.action_space.high - mdp_info.action_space.low)/2
         self.actor_params['input_shape'] = actor_input_shape

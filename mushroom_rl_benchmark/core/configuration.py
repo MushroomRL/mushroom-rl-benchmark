@@ -9,6 +9,12 @@ class BenchmarkConfiguration:
         with open(self._config_path / 'suite.yaml', 'r') as param_file:
             self._suite_params = yaml.safe_load(param_file)['suite_params']
 
+            if 'quiet' in self._suite_params:
+                self._quiet = self._suite_params['quiet']
+                del self._suite_params['quiet']
+            else:
+                self._quiet = True
+
         self._env_params = dict()
         env_cfg_dir = self._config_path / 'env'
         for env_config_path in env_cfg_dir.iterdir():
@@ -17,6 +23,10 @@ class BenchmarkConfiguration:
                 with open(env_config_path, 'r') as config_file:
                     yaml_file = yaml.safe_load(config_file)
                     self._env_params[env_name] = yaml_file
+
+    @property
+    def quiet(self):
+        return self._quiet
 
     @property
     def suite_params(self):

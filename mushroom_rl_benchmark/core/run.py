@@ -13,7 +13,7 @@ def experiment(agent: str = None,
                results_dir: str = '/logs',
                **kwargs):
 
-    exp = BenchmarkExperiment(agent, env, quiet, **kwargs)
+    exp = BenchmarkExperiment(agent, env, quiet=quiet, **kwargs)
 
     exp.run(save_agent, quiet, seed, results_dir)
 

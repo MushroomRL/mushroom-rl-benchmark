@@ -53,6 +53,9 @@ if __name__ == '__main__':
 
     suite = BenchmarkSuite(config_dir=cfg_dir, n_seeds=n_seeds)
 
+    if demo:
+        suite.set_demo_run_params()
+
     if 'all' in env_ids:
         logger.info('Running benchmark on all available environments')
         suite.add_full_benchmark()
@@ -66,9 +69,6 @@ if __name__ == '__main__':
                 for alg in algs:
                     logger.info(f'- {alg}')
                 suite.add_experiments(env, algs)
-
-    if demo:
-        suite.set_demo_run_params()
 
     logger.info('Running the benchmarks')
     logger.weak_line()

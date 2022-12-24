@@ -20,7 +20,7 @@ class AgentBuilder:
         self._preprocessors = None
         self._n_steps_per_fit = n_steps_per_fit
         self._n_episodes_per_fit = n_episodes_per_fit
-        self.set_preprocessors(preprocessors)
+        self._configure_preprocessors(preprocessors)
         self.compute_policy_entropy = compute_policy_entropy
         self.compute_entropy_with_states = compute_entropy_with_states
         self.compute_value_function = compute_value_function
@@ -32,37 +32,6 @@ class AgentBuilder:
         """
         return dict(n_steps_per_fit=self._n_steps_per_fit, n_episodes_per_fit=self._n_episodes_per_fit)
 
-    def set_preprocessors(self, preprocessors):
-        """
-        Set preprocessor for the specific AgentBuilder
-
-        Args:
-            preprocessors: list of preprocessor classes.
-
-        """
-
-        if preprocessors:
-            preprocessors = preprocessors if isinstance(preprocessors, list) else [preprocessors]
-            self._preprocessors = [getattr(m_prep, p) if isinstance(p, str)
-                                   else p
-                                   for p in preprocessors]
-        else:
-            self._preprocessors = list()
-
-    def get_preprocessors(self):
-        """
-        Get preprocessors for the specific AgentBuilder
-
-        """
-        return self._preprocessors
-
-    def copy(self):
-        """
-        Create a deepcopy of the AgentBuilder and return it
-
-        """
-        return deepcopy(self)
-
     def build(self, mdp_info):
         """
         Build and return the AgentBuilder
@@ -71,7 +40,10 @@ class AgentBuilder:
             mdp_info (MDPInfo): information about the environment.
 
         """
-        raise NotImplementedError('AgentBuilder is an abstract class')
+        agent = self._build(mdp_info)
+        self._set_preprocessors(agent, mdp_info)
+
+        return agent
 
     def compute_Q(self, agent, states):
         """
@@ -97,6 +69,28 @@ class AgentBuilder:
 
         """
         pass
+
+    def _build(self, mdp_info):
+        raise NotImplementedError('AgentBuilder is an abstract class')
+
+    def _set_preprocessors(self, agent, mdp_info):
+        for p in self._preprocessors:
+            agent.add_preprocessor(p(mdp_info))
+
+    def _configure_preprocessors(self, preprocessors):
+        """
+        Configure the preprocessors for the specific AgentBuilder
+
+        Args:
+            preprocessors: list of preprocessor classes.
+
+        """
+
+        if preprocessors:
+            preprocessors = preprocessors if isinstance(preprocessors, list) else [preprocessors]
+            self._preprocessors = [getattr(m_prep, p) for p in preprocessors]
+        else:
+            self._preprocessors = list()
     
     @classmethod
     def default(cls, get_default_dict=False, **kwargs):
@@ -105,3 +99,5 @@ class AgentBuilder:
 
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
+
+

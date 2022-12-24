@@ -31,7 +31,7 @@ class PolicyGradientBuilder(AgentBuilder):
         super().__init__(n_episodes_per_fit=n_episodes_per_fit, compute_policy_entropy=False,
                          compute_value_function=False)
 
-    def build(self, mdp_info):
+    def _build(self, mdp_info):
         mu = Regressor(LinearApproximator,
                        input_shape=mdp_info.observation_space.shape,
                        output_shape=mdp_info.action_space.shape)

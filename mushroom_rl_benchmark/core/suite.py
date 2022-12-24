@@ -4,6 +4,7 @@ from experiment_launcher import Launcher
 from experiment_launcher.utils import bool_local_cluster
 
 from mushroom_rl_benchmark.core.configuration import BenchmarkConfiguration
+from mushroom_rl_benchmark.utils import mask_env_parameters
 
 
 class BenchmarkSuite:
@@ -25,6 +26,7 @@ class BenchmarkSuite:
         self._launcher = Launcher(
             python_file="mushroom_rl_benchmark.core.run",
             n_exps=n_seeds,
+            compact_dirs=True,
             **self._config.suite_params
         )
 
@@ -79,14 +81,17 @@ class BenchmarkSuite:
 
         env_params, run_params, agent_params = self._config.get_experiment_params(environment_name, agent_name)
 
-        if self._demo_run_params:
+        if self._demo_run_params is not None:
             self._overwrite_run_parameters(run_params)
 
-        # TODO FIXME env_params
+        masked_env_params = mask_env_parameters(env_params)
+
         self._launcher.add_experiment(env__=environment_name,
-                                      agent__=agent_name,
+                                      agent=agent_name,
+                                      quiet=self._config.quiet,
                                       **agent_params,
-                                      **run_params
+                                      **run_params,
+                                      **masked_env_params
                                       )
 
     def run(self, exec_type=None):
@@ -128,7 +133,6 @@ class BenchmarkSuite:
         self._launcher.run(local, test, sequential)
 
     def _overwrite_run_parameters(self, run_params):
-        run_params['n_runs'] = self._demo_run_params['n_runs']
         run_params['n_epochs'] = self._demo_run_params['n_epochs']
         if 'n_steps' in run_params:
             run_params['n_steps'] = self._demo_run_params['n_steps']

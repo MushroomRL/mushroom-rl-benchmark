@@ -32,7 +32,7 @@ class TRPOBuilder(AgentBuilder):
         self.alg_params = alg_params
         super().__init__(n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
 
-    def build(self, mdp_info):
+    def _build(self, mdp_info):
         policy = GaussianTorchPolicy(
             Network,
             mdp_info.observation_space.shape,

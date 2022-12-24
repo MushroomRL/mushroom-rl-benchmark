@@ -44,7 +44,7 @@ class COPDAC_QBuilder(AgentBuilder):
 
         super().__init__(n_steps_per_fit=1, compute_policy_entropy=False)
 
-    def build(self, mdp_info):
+    def _build(self, mdp_info):
         tilings = Tiles.generate(self._n_tilings, [self._n_tiles] * mdp_info.observation_space.shape[0],
                                  mdp_info.observation_space.low, mdp_info.observation_space.high)
 

@@ -11,6 +11,7 @@ suite_params:
   hours: 0
   minutes: 0
   seconds: 0
+  quiet: False
   # partition: test24
   # gres: 'gpu:rtx2080:1'
   # conda_env=CONDA_ENV,
