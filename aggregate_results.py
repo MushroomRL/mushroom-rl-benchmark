@@ -2,7 +2,8 @@
 
 from pathlib import Path
 from argparse import ArgumentParser
-from mushroom_rl_benchmark.experiment.slurm.aggregate_results import aggregate_results
+
+from mushroom_rl_benchmark.utils import aggregate_results
 
 
 def get_args():
