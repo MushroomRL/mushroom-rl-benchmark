@@ -1,7 +1,7 @@
 from experiment_launcher import run_experiment
 from experiment_launcher.decorators import single_experiment_flat
 
-from mushroom_rl_benchmark import BenchmarkExperiment
+from mushroom_rl_benchmark.core import BenchmarkExperiment
 
 
 @single_experiment_flat

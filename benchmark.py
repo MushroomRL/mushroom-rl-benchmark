@@ -74,6 +74,3 @@ if __name__ == '__main__':
     logger.weak_line()
     suite.run(exec_type=exec_type)
 
-    if not test and exec_type != 'slurm':
-        logger.info('Saving the plots on disk')
-        #suite.save_plots(**plot_params)
