@@ -4,7 +4,7 @@ import yaml
 from pathlib import Path
 from argparse import ArgumentParser
 
-from mushroom_rl_benchmark import BenchmarkSuiteVisualizer, BenchmarkLogger
+from mushroom_rl_benchmark.core import BenchmarkSuiteVisualizer
 
 
 def get_args():
@@ -24,12 +24,12 @@ if __name__ == '__main__':
     path, sweep, show = get_args()
 
     plots_file = Path('cfg') / 'plots.yaml'
-    logger = BenchmarkLogger.from_path(path)
 
     with open(plots_file, 'r') as plots_file:
         plot_params = yaml.safe_load(plots_file)
 
-    visualizer = BenchmarkSuiteVisualizer(logger, sweep, **plot_params)
+    visualizer = BenchmarkSuiteVisualizer(path, sweep, **plot_params)
+
     if show:
         visualizer.show_reports(alg_sweep=sweep)
     visualizer.save_reports(as_pdf=False)

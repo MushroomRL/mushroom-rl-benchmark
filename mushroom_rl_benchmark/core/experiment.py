@@ -8,7 +8,7 @@ from mushroom_rl.utils.dataset import compute_J, parse_dataset, get_init_states
 
 import mushroom_rl_benchmark.builders
 from mushroom_rl_benchmark.builders import EnvironmentBuilder
-from mushroom_rl_benchmark.utils import extract_env_parameters
+from mushroom_rl_benchmark.utils.parameter_renaming import extract_env_parameters
 
 
 class BenchmarkExperiment:

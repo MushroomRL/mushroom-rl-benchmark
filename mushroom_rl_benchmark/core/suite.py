@@ -1,10 +1,8 @@
-import pkgutil
-
 from experiment_launcher import Launcher
 from experiment_launcher.utils import bool_local_cluster
 
-from mushroom_rl_benchmark.core.configuration import BenchmarkConfiguration
-from mushroom_rl_benchmark.utils import mask_env_parameters
+from mushroom_rl_benchmark.core import BenchmarkConfiguration
+from mushroom_rl_benchmark.utils.parameter_renaming import mask_env_parameters
 
 
 class BenchmarkSuite:
