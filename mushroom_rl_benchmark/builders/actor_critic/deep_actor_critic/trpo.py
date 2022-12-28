@@ -48,9 +48,7 @@ class TRPOBuilder(AgentBuilder):
     @classmethod
     def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, ent_coeff=0.0, lam=.95, batch_size=64,
                 n_features=32, critic_fit_params=None, n_steps_per_fit=3000, n_epochs_line_search=10, n_epochs_cg=100,
-                cg_damping=1e-2, cg_residual_tol=1e-10, std_0=1.0, preprocessors=None, use_cuda=False,
-                get_default_dict=False):
-        defaults = locals()
+                cg_damping=1e-2, cg_residual_tol=1e-10, std_0=1.0, preprocessors=None, use_cuda=False):
 
         policy_params = dict(
             std_0=std_0,
@@ -77,10 +75,5 @@ class TRPOBuilder(AgentBuilder):
             cg_residual_tol=cg_residual_tol,
             critic_fit_params=critic_fit_params)
 
-        builder = cls(policy_params, critic_params, alg_params,
-                      n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy_params, critic_params, alg_params,
+                   n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)

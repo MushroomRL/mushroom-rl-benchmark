@@ -24,9 +24,7 @@ class AveragedDQNBuilder(DQNBuilder):
 
     @classmethod
     def default(cls, lr=.0001, network=DQNNetwork, initial_replay_size=50000, max_replay_size=1000000,
-                batch_size=32, target_update_frequency=2500, n_steps_per_fit=1, n_approximators=10, use_cuda=False,
-                get_default_dict=False):
-        defaults = locals()
+                batch_size=32, target_update_frequency=2500, n_steps_per_fit=1, n_approximators=10, use_cuda=False):
         policy = EpsGreedy(epsilon=Parameter(value=1.))
 
         approximator_params = dict(
@@ -45,9 +43,4 @@ class AveragedDQNBuilder(DQNBuilder):
             target_update_frequency=target_update_frequency
         )
 
-        builder = cls(policy, TorchApproximator, approximator_params, alg_params, n_steps_per_fit)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy, TorchApproximator, approximator_params, alg_params, n_steps_per_fit)

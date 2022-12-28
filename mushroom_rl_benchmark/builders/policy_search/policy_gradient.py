@@ -48,16 +48,10 @@ class PolicyGradientBuilder(AgentBuilder):
         return self.alg_class(mdp_info, policy, **self.algorithm_params)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, alpha=1.0e-2, get_default_dict=False):
-        defaults = locals()
-
+    def default(cls, n_episodes_per_fit=25, alpha=1.0e-2):
         optimizer = AdaptiveOptimizer(eps=alpha)
-        builder = cls(n_episodes_per_fit, optimizer)
+        return cls(n_episodes_per_fit, optimizer)
 
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
 
     def compute_Q(self, agent, states):
         pass

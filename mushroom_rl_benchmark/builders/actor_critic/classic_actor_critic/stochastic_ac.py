@@ -65,19 +65,11 @@ class StochasticACBuilder(AgentBuilder):
                             value_function_features=psi, policy_features=phi)
 
     @classmethod
-    def default(cls, std_0=1.0, alpha_theta=1e-3, alpha_v=1e-1, lambda_par=0.9, n_tilings=10, n_tiles=11,
-                get_default_dict=False):
-        defaults = locals()
-
+    def default(cls, std_0=1.0, alpha_theta=1e-3, alpha_v=1e-1, lambda_par=0.9, n_tilings=10, n_tiles=11):
         alpha_theta_p = Parameter(alpha_theta / n_tilings)
         alpha_v_p = Parameter(alpha_v / n_tilings)
 
-        builder = cls(std_0, alpha_theta_p, alpha_v_p, lambda_par, n_tilings, n_tiles)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(std_0, alpha_theta_p, alpha_v_p, lambda_par, n_tilings, n_tiles)
 
     def compute_Q(self, agent, states):
         return agent._V(agent._psi(states)).mean()

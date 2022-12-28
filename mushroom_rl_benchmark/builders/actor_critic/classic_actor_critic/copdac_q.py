@@ -71,19 +71,13 @@ class COPDAC_QBuilder(AgentBuilder):
 
     @classmethod
     def default(cls, std_exp=1e-1, std_eval=1e-3, alpha_theta=5e-3, alpha_omega=5e-1, alpha_v=5e-1,
-                n_tilings=10, n_tiles=11, get_default_dict=False):
-        defaults = locals()
+                n_tilings=10, n_tiles=11):
 
         alpha_theta_p = Parameter(alpha_theta / n_tilings)
         alpha_omega_p = Parameter(alpha_omega / n_tilings)
         alpha_v_p = Parameter(alpha_v / n_tilings)
 
-        builder = cls(std_exp, std_eval, alpha_theta_p, alpha_omega_p, alpha_v_p, n_tilings, n_tiles)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(std_exp, std_eval, alpha_theta_p, alpha_omega_p, alpha_v_p, n_tilings, n_tiles)
 
     def compute_Q(self, agent, states):
         return agent._V(agent._psi(states)).mean()

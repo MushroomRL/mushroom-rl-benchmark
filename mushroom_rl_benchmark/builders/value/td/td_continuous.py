@@ -61,6 +61,6 @@ class TDContinuousBuilder(AgentBuilder):
             agent.policy.set_epsilon(self.epsilon)
 
     @classmethod
-    def default(cls, get_default_dict=False, **kwargs):
+    def default(cls, **kwargs):
         raise NotImplementedError
 

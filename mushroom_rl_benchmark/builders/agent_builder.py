@@ -93,7 +93,7 @@ class AgentBuilder:
             self._preprocessors = list()
     
     @classmethod
-    def default(cls, get_default_dict=False, **kwargs):
+    def default(cls, **kwargs):
         """
         Create a default initialization for the specific AgentBuilder and return it
 

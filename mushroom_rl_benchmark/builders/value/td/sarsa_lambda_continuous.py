@@ -32,13 +32,11 @@ class SarsaLambdaContinuousBuilder(TDContinuousBuilder):
                                      features, approximator_params)
 
     @classmethod
-    def default(cls, alpha=.1, lambda_coeff=0.9, epsilon=0., decay_eps=0., epsilon_test=0., n_tilings=10, n_tiles=10,
-                get_default_dict=False):
+    def default(cls, alpha=.1, lambda_coeff=0.9, epsilon=0., decay_eps=0., epsilon_test=0., n_tilings=10, n_tiles=10):
         if decay_eps == 0:
             epsilon_p = Parameter(value=epsilon)
         else:
             epsilon_p = ExponentialParameter(value=epsilon, exp=decay_eps)
-        defaults = locals()
 
         epsilon_test_p = Parameter(value=epsilon_test)
         policy = EpsGreedy(epsilon=epsilon_p)
@@ -46,10 +44,5 @@ class SarsaLambdaContinuousBuilder(TDContinuousBuilder):
         lambda_coeff_p = Parameter(lambda_coeff)
         learning_rate = Parameter(alpha / n_tilings)
 
-        builder = cls(policy, LinearApproximator, learning_rate, lambda_coeff_p, epsilon_p, epsilon_test_p,
-                      n_tilings=n_tilings, n_tiles=n_tiles)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy, LinearApproximator, learning_rate, lambda_coeff_p, epsilon_p, epsilon_test_p,
+                   n_tilings=n_tilings, n_tiles=n_tiles)

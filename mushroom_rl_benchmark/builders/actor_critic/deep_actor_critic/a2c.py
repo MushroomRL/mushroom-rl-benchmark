@@ -51,8 +51,7 @@ class A2CBuilder(AgentBuilder):
     @classmethod
     def default(cls, actor_lr=7e-4, critic_lr=7e-4, eps_actor=3e-3, eps_critic=1e-5, batch_size=64,
                 max_grad_norm=0.5, ent_coeff=1e-2, critic_network=Network, n_features=64,
-                preprocessors=None, use_cuda=False, get_default_dict=False):
-        defaults = locals()
+                preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=1.,
@@ -77,9 +76,4 @@ class A2CBuilder(AgentBuilder):
             max_grad_norm=max_grad_norm,
             ent_coeff=ent_coeff)
 
-        builder = cls(policy_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)

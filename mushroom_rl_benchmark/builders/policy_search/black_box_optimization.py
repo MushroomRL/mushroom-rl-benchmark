@@ -45,7 +45,7 @@ class BBOBuilder(AgentBuilder):
         return self.alg_class(mdp_info, dist, policy, **self.algorithm_params)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, alpha=1.0e-2, get_default_dict=False):
+    def default(cls, n_episodes_per_fit=25, alpha=1.0e-2):
         raise NotImplementedError
 
     def compute_Q(self, agent, states):
@@ -59,16 +59,10 @@ class PGPEBuilder(BBOBuilder):
         super().__init__(n_episodes_per_fit, optimizer=optimizer)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, alpha=3e-1, get_default_dict=False):
-        defaults = locals()
-
+    def default(cls, n_episodes_per_fit=25, alpha=3e-1):
         optimizer = AdaptiveOptimizer(alpha)
-        builder = cls(n_episodes_per_fit, optimizer)
+        return cls(n_episodes_per_fit, optimizer)
 
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
 
 
 class RWRBuilder(BBOBuilder):
@@ -78,15 +72,8 @@ class RWRBuilder(BBOBuilder):
         super().__init__(n_episodes_per_fit, beta=beta)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, beta=1e-2, get_default_dict=False):
-        defaults = locals()
-
-        builder = cls(n_episodes_per_fit, beta)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+    def default(cls, n_episodes_per_fit=25, beta=1e-2):
+        return cls(n_episodes_per_fit, beta)
 
 
 class REPSBuilder(BBOBuilder):
@@ -96,15 +83,9 @@ class REPSBuilder(BBOBuilder):
         super().__init__(n_episodes_per_fit, eps=eps)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, eps=5e-2, get_default_dict=False):
-        defaults = locals()
+    def default(cls, n_episodes_per_fit=25, eps=5e-2):
 
-        builder = cls(n_episodes_per_fit, eps)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(n_episodes_per_fit, eps)
 
 
 class ConstrainedREPSBuilder(BBOBuilder):
@@ -114,12 +95,5 @@ class ConstrainedREPSBuilder(BBOBuilder):
         super().__init__(n_episodes_per_fit, eps=eps, kappa=kappa)
 
     @classmethod
-    def default(cls, n_episodes_per_fit=25, eps=5e-2, kappa=1e-2, get_default_dict=False):
-        defaults = locals()
-
-        builder = cls(n_episodes_per_fit, eps, kappa)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+    def default(cls, n_episodes_per_fit=25, eps=5e-2, kappa=1e-2):
+        return cls(n_episodes_per_fit, eps, kappa)

@@ -43,7 +43,7 @@ class TDFiniteBuilder(AgentBuilder):
             agent.policy.set_epsilon(self.epsilon)
 
     @classmethod
-    def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0., get_default_dict=False):
+    def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0.):
         if decay_eps == 0:
             epsilon = Parameter(value=epsilon)
         else:
@@ -52,14 +52,8 @@ class TDFiniteBuilder(AgentBuilder):
             learning_rate = Parameter(value=learning_rate)
         else:
             learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
-        defaults = locals()
 
-        builder = cls(learning_rate, epsilon, epsilon_test)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(learning_rate, epsilon, epsilon_test)
 
 
 class QLearningBuilder(TDFiniteBuilder):
@@ -116,8 +110,7 @@ class WeightedQLearningBuilder(TDFiniteBuilder):
 
     @classmethod
     def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0., sampling=True,
-                precision=1000,
-                get_default_dict=False):
+                precision=1000):
         if decay_eps == 0:
             epsilon = Parameter(value=epsilon)
         else:
@@ -126,11 +119,5 @@ class WeightedQLearningBuilder(TDFiniteBuilder):
             learning_rate = Parameter(value=learning_rate)
         else:
             learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
-        defaults = locals()
 
-        builder = cls(learning_rate, epsilon, epsilon_test, sampling, precision)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(learning_rate, epsilon, epsilon_test, sampling, precision)

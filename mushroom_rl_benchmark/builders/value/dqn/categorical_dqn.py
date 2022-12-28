@@ -24,9 +24,7 @@ class CategoricalDQNBuilder(DQNBuilder):
     @classmethod
     def default(cls, lr=.0001, network=DQNFeatureNetwork, initial_replay_size=50000, max_replay_size=1000000,
                 batch_size=32, target_update_frequency=2500, n_features=512, n_steps_per_fit=1, v_min=-10, v_max=10,
-                n_atoms=51, use_cuda=False, get_default_dict=False):
-        defaults = locals()
-
+                n_atoms=51, use_cuda=False):
         policy = EpsGreedy(epsilon=Parameter(value=1.))
 
         approximator_params = dict(
@@ -47,9 +45,4 @@ class CategoricalDQNBuilder(DQNBuilder):
             target_update_frequency=target_update_frequency
         )
 
-        builder = cls(policy, TorchApproximator, approximator_params, alg_params, n_steps_per_fit)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy, TorchApproximator, approximator_params, alg_params, n_steps_per_fit)

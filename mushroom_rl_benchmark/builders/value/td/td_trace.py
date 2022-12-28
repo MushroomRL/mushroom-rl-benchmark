@@ -21,7 +21,7 @@ class TDTraceBuilder(TDFiniteBuilder):
 
     @classmethod
     def default(cls, learning_rate=.9, epsilon=0.1, decay_lr=0., decay_eps=0., epsilon_test=0., lambda_coeff=0.9,
-                trace='replacing', get_default_dict=False):
+                trace='replacing'):
         if decay_eps == 0:
             epsilon = Parameter(value=epsilon)
         else:
@@ -30,14 +30,8 @@ class TDTraceBuilder(TDFiniteBuilder):
             learning_rate = Parameter(value=learning_rate)
         else:
             learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
-        defaults = locals()
 
-        builder = cls(learning_rate, epsilon, epsilon_test, lambda_coeff, trace)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(learning_rate, epsilon, epsilon_test, lambda_coeff, trace)
 
 
 class SARSALambdaBuilder(TDTraceBuilder):

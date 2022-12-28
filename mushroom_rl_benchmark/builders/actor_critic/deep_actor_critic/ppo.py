@@ -51,8 +51,7 @@ class PPOBuilder(AgentBuilder):
     @classmethod
     def default(cls, eps=0.2, ent_coeff=0., n_epochs_policy=4, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None,
                 critic_network=Network, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000, std_0=1.0,
-                preprocessors=None, use_cuda=False, get_default_dict=False):
-        defaults = locals()
+                preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=std_0,
@@ -81,10 +80,5 @@ class PPOBuilder(AgentBuilder):
             lam=lam,
             critic_fit_params=critic_fit_params)
 
-        builder = cls(policy_params, actor_optimizer, critic_params, alg_params,
-                      n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy_params, actor_optimizer, critic_params, alg_params,
+                   n_steps_per_fit=n_steps_per_fit, preprocessors=preprocessors)

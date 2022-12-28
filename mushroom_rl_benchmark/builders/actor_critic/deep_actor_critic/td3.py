@@ -64,8 +64,7 @@ class TD3Builder(AgentBuilder):
     @classmethod
     def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork,
                 initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], tau=1e-3,
-                preprocessors=None, use_cuda=False, get_default_dict=False):
-        defaults = locals()
+                preprocessors=None, use_cuda=False):
         
         policy_class = ClippedGaussianPolicy
         policy_params = dict()
@@ -95,9 +94,5 @@ class TD3Builder(AgentBuilder):
             batch_size=batch_size,
             tau=tau)
 
-        builder = cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params, preprocessors=preprocessors)
-
-        if get_default_dict:
-            return builder, defaults
-        else:
-            return builder
+        return cls(policy_class, policy_params, actor_params, actor_optimizer, critic_params, alg_params,
+                   preprocessors=preprocessors)
