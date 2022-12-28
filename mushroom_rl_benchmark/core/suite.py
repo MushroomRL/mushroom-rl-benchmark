@@ -1,7 +1,7 @@
 from experiment_launcher import Launcher
 from experiment_launcher.utils import bool_local_cluster
 
-from mushroom_rl_benchmark.core import BenchmarkConfiguration
+from mushroom_rl_benchmark.core import BenchmarkConfiguration, BenchmarkParams
 from mushroom_rl_benchmark.utils.parameter_renaming import mask_env_parameters
 
 
@@ -20,6 +20,7 @@ class BenchmarkSuite:
         
         """
         self._config = BenchmarkConfiguration(config_dir)
+        self._param_logger = BenchmarkParams()
 
         self._launcher = Launcher(
             python_file="mushroom_rl_benchmark.core.run",
@@ -84,6 +85,8 @@ class BenchmarkSuite:
 
         masked_env_params = mask_env_parameters(env_params)
 
+        self._param_logger.add_experiment_params(environment_name, env_params, agent_name, agent_params, run_params)
+
         self._launcher.add_experiment(env__=environment_name,
                                       agent=agent_name,
                                       quiet=self._config.quiet,
@@ -128,6 +131,7 @@ class BenchmarkSuite:
         else:
             raise AttributeError('wrong execution type selected')
 
+        self._param_logger.save_params(self._launcher.log_dir(local))
         self._launcher.run(local, test, sequential)
 
     def _overwrite_run_parameters(self, run_params):
