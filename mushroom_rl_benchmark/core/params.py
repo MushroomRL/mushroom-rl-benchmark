@@ -10,6 +10,13 @@ from mushroom_rl_benchmark.utils import dictionary_to_primitive
 class BenchmarkParams:
     def __init__(self):
         self._params_dict = OrderedDict()
+        self._sweep_dict = OrderedDict()
+
+    def add_sweep_params(self, agent_name, sweep_name, sweep_params):
+        if agent_name not in self._sweep_dict:
+            self._sweep_dict[agent_name] = dict()
+
+        self._sweep_dict[agent_name][sweep_name] = sweep_params
 
     def add_experiment_params(self, env_name, env_params, agent_name, agent_params, run_params):
         self._add_env(env_name, env_params, run_params)
@@ -23,6 +30,11 @@ class BenchmarkParams:
         for env, params in self._params_dict.items():
             file_name = env + '.yaml'
             primitive_params = dictionary_to_primitive(params)
+            self._save_yaml(save_path / file_name, primitive_params)
+
+        if self._sweep_dict:
+            file_name = 'sweep.yaml'
+            primitive_params = dictionary_to_primitive(self._sweep_dict)
             self._save_yaml(save_path / file_name, primitive_params)
 
     def _add_env(self, env_name, env_params, run_params):

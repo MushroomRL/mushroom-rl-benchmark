@@ -13,9 +13,10 @@ from mushroom_rl_benchmark.utils.parameter_renaming import extract_env_parameter
 
 class BenchmarkExperiment:
     def __init__(self, agent_name, env, env_name, quiet, n_epochs, n_steps=None, n_episodes=None, n_steps_test=None,
-                 n_episodes_test=None, **kwargs):
+                 n_episodes_test=None, sweep_name='', **kwargs):
         self._agent_name = agent_name
         self._env = env
+        self._sweep_name = sweep_name
 
         env_parameters, agent_parameters = extract_env_parameters(kwargs)
 
@@ -58,13 +59,18 @@ class BenchmarkExperiment:
             mdp.env.seed(seed)
         agent = self._agent_builder.build(mdp.info)
 
-        logger = Logger(self._agent_name, results_dir=results_dir, seed=seed)
+        logger_name = self._sweep_name if self._sweep_name else self._agent_name
+        logger = Logger(logger_name, results_dir=results_dir, seed=seed)
         core = Core(agent, mdp)
 
         if not quiet:
             logger.strong_line()
             logger.info('Starting experiment:')
-            logger.info(f'Environment: {self._env}, Agent: {self._agent_name}, seed: {seed}')
+            if self._sweep_name:
+                logger.info(f'Environment: {self._env}, Agent: {self._agent_name}, Sweep: {self._sweep_name},'
+                            f' seed: {seed}')
+            else:
+                logger.info(f'Environment: {self._env}, Agent: {self._agent_name}, seed: {seed}')
             logger.strong_line()
 
         results_dict = self._evaluate_agent(core, self._eval_params, self._agent_builder, self._env_builder)
