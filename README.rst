@@ -40,7 +40,7 @@ The script for starting the benchmarks takes following arguments:
 
 ::
 
-    usage: benchmark.py [-h] -e ENV [ENV ...] [-a ALGORITHM [ALGORITHM ...]] [-s SEEDS] [-x {sequential,parallel,slurm}] [-t] [-d]
+    usage: benchmark.py [-h] -e ENV [ENV ...] [-a ALGORITHM [ALGORITHM ...]] [-s SEEDS] [-x {sequential,parallel,slurm}] [-p PARAMETER_SWEEP] [-t] [-d]
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -54,8 +54,11 @@ The script for starting the benchmarks takes following arguments:
                             Number of seed per experiment
       -x {sequential,parallel,slurm}, --execution_type {sequential,parallel,slurm}
                             Execution type for the benchmark.
+      -p PARAMETER_SWEEP, --parameter-sweep PARAMETER_SWEEP
+                            Sweep configuration file to be used by the benchmark.
       -t, --test            Flag to test the script and NOT execute the benchmark.
       -d, --demo            Flag to run a reduced version of the benchmark.
+
 
 
 
@@ -65,6 +68,12 @@ The agent and environment parameters used for benchmarking the agents on an envi
 ::
 
     cfg/env/*
+
+The available parameter sweeps can be found in:
+
+::
+
+    cfg/sweep/*
 
 The parameters used to configure the main folder, the log id and the execution backend (parallel or slurm) and are
 located in:
