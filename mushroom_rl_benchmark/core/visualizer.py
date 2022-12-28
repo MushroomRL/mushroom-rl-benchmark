@@ -38,9 +38,10 @@ class BenchmarkSuiteVisualizer(object):
         self._logger = Logger('plots', path)
         self._is_sweep = is_sweep
 
-        path = self._logger.path.parent
+        self._path = self._logger.path.parent
 
-        self._loader_dict = {}
+        self._loader_dict = dict()
+        self._sweep_algs_dict = dict()
         self._color_cycle = dict() if color_cycle is None else color_cycle
         self._line_cycle = dict()
         self._lines = ["-", "--", "-.", ":"]
@@ -48,9 +49,9 @@ class BenchmarkSuiteVisualizer(object):
         self._legend_dict = dict() if legend is None else legend
 
         if is_sweep:
-            self._load_sweep(path)
+            self._load_sweep(self._path)
         else:
-            self._load_benchmark(path)
+            self._load_benchmark(self._path)
 
     def _load_benchmark(self, path):
         alg_count = 0
@@ -76,10 +77,12 @@ class BenchmarkSuiteVisualizer(object):
             if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
                 env = env_dir.name
                 self._loader_dict[env] = dict()
+                self._sweep_algs_dict[env] = []
 
                 for alg_dir in env_dir.iterdir():
                     if alg_dir.is_dir():
                         alg = alg_dir.name
+                        self._sweep_algs_dict[env].append(alg)
 
                         line_cycler = cycle(self._lines)
                         for sweep_dir in alg_dir.iterdir():
@@ -131,7 +134,7 @@ class BenchmarkSuiteVisualizer(object):
 
         figure.savefig(file_path, transparent=transparent)
 
-    def get_report(self, env, data_type, selected_alg=None):
+    def get_report(self, env, data_type, selected_alg=None, add_title=False):
         """
         Create report plot with matplotlib.
 
@@ -158,6 +161,13 @@ class BenchmarkSuiteVisualizer(object):
 
         plot_id = self.plot_counter * 1000
         fig = plt.figure(plot_id, figsize=(8, 6), dpi=80)
+
+        if add_title:
+            figure_title = env
+            if selected_alg:
+                figure_title += ' -- ' + selected_alg
+            fig.suptitle(figure_title)
+
         ax = plt.axes()
         ax.set_xlabel('# Epochs', fontweight='bold')
         ax.set_ylabel(data_type, fontweight='bold', rotation=0 if len(data_type) == 1 else 90)
@@ -253,13 +263,12 @@ class BenchmarkSuiteVisualizer(object):
         for env in self._loader_dict.keys():
             for data_type in ['J', 'R', 'V', 'E']:
                 if alg_sweep:
-                    env_dir = self._logger.path / env
-                    for alg_dir in env_dir.iterdir():
-                        alg = alg_dir.name
+                    for alg in self._sweep_algs_dict[env]:
                         fig = self.get_report(env, data_type, alg)
 
                         if fig is not None:
-                            self._save_figure(fig, data_type, env + '/' + alg, as_pdf=as_pdf, transparent=transparent)
+                            self._save_figure(fig, data_type, env + '/' + alg,
+                                              as_pdf=as_pdf, transparent=transparent)
                             plt.close(fig)
                 else:
                     fig = self.get_report(env, data_type)
@@ -282,13 +291,12 @@ class BenchmarkSuiteVisualizer(object):
             for data_type in ['J', 'R', 'V']:
                 for metric in ['max', 'convergence']:
                     if alg_sweep:
-                        env_dir = self._logger.path / env
-                        for alg_dir in env_dir.iterdir():
-                            alg = alg_dir.name
+                        for alg in self._sweep_algs_dict[env]:
                             fig = self.get_boxplot(env, metric, data_type, alg)
 
                             if fig is not None:
-                                self._save_figure(fig, f'{metric}_{data_type}', env + '/' + alg,
+                                subfolder = env + '/' + alg + '/'
+                                self._save_figure(fig, f'{metric}_{data_type}', subfolder,
                                                   as_pdf=as_pdf, transparent=transparent)
                                 plt.close(fig)
                     else:
@@ -310,10 +318,10 @@ class BenchmarkSuiteVisualizer(object):
         for env in self._loader_dict.keys():
             for data_type in ['J', 'R', 'V', 'E']:
                 if alg_sweep:
-                    for alg in self._loader_dict[env].keys():
-                        self.get_report(env, data_type, alg)
+                    for alg in self._sweep_algs_dict[env]:
+                        self.get_report(env, data_type, alg, add_title=True)
                 else:
-                    self.get_report(env, data_type)
+                    self.get_report(env, data_type, add_title=True)
 
             plt.show()
 

@@ -11,7 +11,7 @@ def get_args():
     parser = ArgumentParser()
     parser.add_argument("-d", "--directory", type=str, required=True,
                           help='Benchmark directory where the plots generation is needed')
-    parser.add_argument("-p", "--parameter-sweep", action='store_true',
+    parser.add_argument("-p", "--is-sweep", action='store_true',
                         help='Flag to consider the benchmark as a parameter sweep.')
     parser.add_argument("-s", "--show", action='store_true',
                         help='Flag to show the plots and not only save them.')
