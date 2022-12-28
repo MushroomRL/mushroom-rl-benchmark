@@ -70,29 +70,29 @@ class BenchmarkSuiteVisualizer(object):
                         self._loader_dict[env][alg] = alg_loader
                         alg_count += 1
 
-    # def _load_sweep(self, path):
-    #     alg_count = 0
-    #     for env_dir in path.iterdir():
-    #         if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
-    #             env = env_dir.name
-    #             self._logger_dict[env] = dict()
-    #
-    #             for alg_dir in env_dir.iterdir():
-    #                 if alg_dir.is_dir():
-    #                     alg = alg_dir.name
-    #
-    #                     line_cycler = cycle(self._lines)
-    #                     for sweep_dir in alg_dir.iterdir():
-    #                         if sweep_dir.is_dir():
-    #                             sweep_name = alg + '_' + sweep_dir.name
-    #
-    #                             if sweep_name not in self._color_cycle:
-    #                                 self._color_cycle[sweep_name] = 'C' + str(alg_count)
-    #                                 self._line_cycle[sweep_name] = next(line_cycler)
-    #
-    #                             sweep_logger = BenchmarkLogger.from_path(sweep_dir)
-    #                             self._logger_dict[env][sweep_name] = sweep_logger
-    #                     alg_count += 1
+    def _load_sweep(self, path):
+        alg_count = 0
+        for env_dir in path.iterdir():
+            if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
+                env = env_dir.name
+                self._loader_dict[env] = dict()
+
+                for alg_dir in env_dir.iterdir():
+                    if alg_dir.is_dir():
+                        alg = alg_dir.name
+
+                        line_cycler = cycle(self._lines)
+                        for sweep_dir in alg_dir.iterdir():
+                            if sweep_dir.is_dir():
+                                sweep_name = alg + '_' + sweep_dir.name
+
+                                if sweep_name not in self._color_cycle:
+                                    self._color_cycle[sweep_name] = 'C' + str(alg_count)
+                                    self._line_cycle[sweep_name] = next(line_cycler)
+
+                                sweep_logger = BenchmarkDataLoader(sweep_dir)
+                                self._loader_dict[env][sweep_name] = sweep_logger
+                        alg_count += 1
 
     def _legend(self, ax, env, data_type):
         if env in self._legend_dict and data_type in self._legend_dict[env]:
@@ -247,7 +247,7 @@ class BenchmarkSuiteVisualizer(object):
         Args:
             as_pdf (bool, True): whether to save the reports as pdf files or png;
             transparent (bool, True): If true, the figure background is transparent and not white;
-            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
+            alg_sweep (bool, False): If true, the method will generate a separate figure for each algorithm sweep.
 
         """
         for env in self._loader_dict.keys():
@@ -275,7 +275,7 @@ class BenchmarkSuiteVisualizer(object):
         Args:
             as_pdf (bool, True): whether to save the reports as pdf files or png;
             transparent (bool, True): If true, the figure background is transparent and not white;
-            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
+            alg_sweep (bool, False): If true, the method will generate a separate figure for each algorithm sweep.
 
         """
         for env in self._loader_dict.keys():
@@ -303,7 +303,7 @@ class BenchmarkSuiteVisualizer(object):
         Method to show a report of the training metrics from a performend experiment.
 
         Args:
-            alg_sweep (bool, False): If true, thw method will generate a separate figure for each algorithm sweep.
+            alg_sweep (bool, False): If true, the method will generate a separate figure for each algorithm sweep.
 
         """
         matplotlib.use(default_backend)
