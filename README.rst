@@ -6,7 +6,7 @@ MushroomRL Benchmark
     :target: https://mushroom-rl-benchmark.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-**MushroomRL Benchmarking: Benchmarking tool for the MushroomRL environment.**
+**MushroomRL Benchmarking: Benchmarking tool for the MushroomRL library.**
 
 .. contents:: **Contents of this document:**
    :depth: 2
