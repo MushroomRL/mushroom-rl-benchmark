@@ -1,5 +1,5 @@
 from experiment_launcher import Launcher
-from experiment_launcher.utils import bool_local_cluster
+from experiment_launcher.utils import is_local
 
 from mushroom_rl_benchmark.core import BenchmarkConfiguration, BenchmarkParams
 from mushroom_rl_benchmark.utils.parameter_renaming import mask_env_parameters
@@ -24,8 +24,8 @@ class BenchmarkSuite:
         self._param_logger = BenchmarkParams()
 
         self._launcher = Launcher(
-            python_file="mushroom_rl_benchmark.core.run",
-            n_exps=n_seeds,
+            exp_file="mushroom_rl_benchmark.core.run",
+            n_seeds=n_seeds,
             compact_dirs=True,
             **self._config.suite_params
         )
@@ -99,7 +99,7 @@ class BenchmarkSuite:
                                        sweep_name)
         else:
             self._launcher.add_experiment(env__=environment_name,
-                                          agent=agent_name,
+                                          agent__=agent_name,
                                           quiet=self._config.quiet,
                                           **agent_params,
                                           **run_params,
@@ -117,7 +117,7 @@ class BenchmarkSuite:
             new_params.update(sweep_params)
             self._launcher.add_experiment(env__=environment_name,
                                           agent__=agent_name,
-                                          sweep_name=sweep_name,
+                                          sweep_name__=sweep_name,
                                           quiet=self._config.quiet,
                                           **new_params,
                                           **run_params,
@@ -134,7 +134,7 @@ class BenchmarkSuite:
         """
         sequential = False
         if exec_type is None:
-            local = bool_local_cluster()
+            local = is_local()
             test = False
         elif exec_type == 'sequential':
             local = True

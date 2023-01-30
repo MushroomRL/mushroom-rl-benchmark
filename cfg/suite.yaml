@@ -4,7 +4,7 @@ suite_params:
   exp_name: benchmark
   # base_dir: None
   use_timestamp: true
-  joblib_n_jobs: 1
+  n_exps_in_parallel: 1
   n_cores: 1
   memory_per_core: 8000
   days: 1

@@ -14,9 +14,9 @@ def experiment(agent: str = None,
                results_dir: str = '/logs',
                **kwargs):
 
-    exp = BenchmarkExperiment(agent, env, sweep_name=sweep_name, quiet=quiet, **kwargs)
+    exp = BenchmarkExperiment(agent, env, results_dir, sweep_name=sweep_name, quiet=quiet, **kwargs)
 
-    exp.run(save_agent, quiet, seed, results_dir)
+    exp.run(save_agent, quiet, seed)
 
 
 if __name__ == '__main__':

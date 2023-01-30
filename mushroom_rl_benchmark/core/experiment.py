@@ -2,6 +2,7 @@ import sys
 import torch
 import numpy as np
 from tqdm import trange
+from pathlib import Path
 
 from mushroom_rl.core import Core, Logger
 from mushroom_rl.utils.dataset import compute_J, parse_dataset, get_init_states
@@ -12,11 +13,12 @@ from mushroom_rl_benchmark.utils.parameter_renaming import extract_env_parameter
 
 
 class BenchmarkExperiment:
-    def __init__(self, agent_name, env, env_name, quiet, n_epochs, n_steps=None, n_episodes=None, n_steps_test=None,
-                 n_episodes_test=None, sweep_name='', **kwargs):
+    def __init__(self, agent_name, env, results_dir, env_name, quiet, n_epochs, n_steps=None, n_episodes=None,
+                 n_steps_test=None, n_episodes_test=None, sweep_name='', **kwargs):
         self._agent_name = agent_name
         self._env = env
         self._sweep_name = sweep_name
+        self._results_dir = Path(results_dir).parent
 
         env_parameters, agent_parameters = extract_env_parameters(kwargs)
 
@@ -49,7 +51,7 @@ class BenchmarkExperiment:
 
         self._n_epochs = n_epochs
 
-    def run(self, save_agent, quiet, seed, results_dir):
+    def run(self, save_agent, quiet, seed):
 
         np.random.seed(seed)
         torch.manual_seed(seed)
@@ -60,7 +62,7 @@ class BenchmarkExperiment:
         agent = self._agent_builder.build(mdp.info)
 
         logger_name = self._sweep_name if self._sweep_name else self._agent_name
-        logger = Logger(logger_name, results_dir=results_dir, seed=seed)
+        logger = Logger(logger_name, results_dir=self._results_dir, seed=seed)
         core = Core(agent, mdp)
 
         if not quiet:
