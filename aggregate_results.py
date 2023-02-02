@@ -25,7 +25,9 @@ if __name__ == '__main__':
     path, sweep, ignore = get_args()
 
     for env_dir in path.iterdir():
-        if env_dir.is_dir() and env_dir.name != 'plots' and env_dir.name not in ignore:
+        if env_dir.is_dir() \
+                and env_dir.name not in ['plots', 'params', 'slurm_logs', 'slurm_files'] \
+                and env_dir.name not in ignore:
             for alg_dir in env_dir.iterdir():
                 if alg_dir.is_dir() and alg_dir.name != 'plots'and alg_dir.name not in ignore:
                     if sweep:
