@@ -12,9 +12,12 @@ class BenchmarkDataLoader:
         return np.load(self._path / filename)
 
     def load_aggregate_file(self, name):
-        filename = f'{name}.npy'
+        if self.file_found(name):
+            filename = f'{name}.npy'
 
-        return np.load(self._path / filename)
+            return np.load(self._path / filename)
+        else:
+            return None
 
     def file_found(self, filename):
         file = self._path / f'{filename}.npy'

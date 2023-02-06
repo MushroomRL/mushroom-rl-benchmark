@@ -1,0 +1,20 @@
+{
+  "agent": "A2C",
+  "env": "HalfCheetah-v3",
+  "sweep_name": "",
+  "quiet": false,
+  "save_agent": false,
+  "seed": 24,
+  "results_dir": "/work/scratch/dt11kypo/benchmark_2023-02-02_18-35-47/HalfCheetah-v3/A2C",
+  "actor_lr": 0.0007,
+  "critic_lr": 0.0007,
+  "preprocessors": "StandardizationPreprocessor",
+  "n_epochs": 50,
+  "n_steps": 30000,
+  "n_episodes_test": 10,
+  "env_name": "Gym.HalfCheetah-v3",
+  "env_params_horizon": 1000,
+  "env_params_gamma": 0.99,
+  "git_hash": "e90924b2015bec3c7385ee4cb5e9bb9d92d07b99",
+  "git_url": "git@github.com:MushroomRL/mushroom-rl-benchmark.git"
+}

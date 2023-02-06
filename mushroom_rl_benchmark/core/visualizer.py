@@ -56,7 +56,7 @@ class BenchmarkSuiteVisualizer(object):
     def _load_benchmark(self, path):
         alg_count = 0
         for env_dir in path.iterdir():
-            if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
+            if env_dir.is_dir() and env_dir.name not in ['plots', 'params', 'slurm_files', 'slurm_logs']:
                 env = env_dir.name
                 self._loader_dict[env] = dict()
 
@@ -186,6 +186,7 @@ class BenchmarkSuiteVisualizer(object):
                 else:
                     color = next(default_color_cycle)
                     line = '-'
+
                 data = loader.load_aggregate_file(data_type)
 
                 if data is not None:

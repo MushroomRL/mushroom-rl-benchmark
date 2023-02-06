@@ -1,6 +1,8 @@
 import numpy as np
 from pathlib import Path
 
+from samba.dcerpc.dcerpc import working
+
 from mushroom_rl.core import Logger
 
 from mushroom_rl_benchmark.core import BenchmarkDataLoader
@@ -15,8 +17,6 @@ def aggregate_results(res_dir, res_id, log_console=False):
         log_console (bool,False): whether to log the console output.
 
     """
-    n_seeds = 2
-
     work_dir = Path(res_dir, res_id)
     loader = BenchmarkDataLoader(work_dir)
 
@@ -30,6 +30,8 @@ def aggregate_results(res_dir, res_id, log_console=False):
 
     has_value = (work_dir / 'V-0.npy').exists()
     logger.info(f'has value function: {has_value}')
+
+    n_seeds = len([file for file in work_dir.glob(f"J-*.npy")])
 
     J_list = list()
     R_list = list()
