@@ -1,8 +1,6 @@
 import numpy as np
 from pathlib import Path
 
-from samba.dcerpc.dcerpc import working
-
 from mushroom_rl.core import Logger
 
 from mushroom_rl_benchmark.core import BenchmarkDataLoader
