@@ -13,7 +13,8 @@ from mushroom_rl_benchmark.utils.parameter_renaming import extract_env_parameter
 
 
 class BenchmarkExperiment:
-    def __init__(self, agent_name, env, results_dir, env_name, quiet, n_epochs, n_steps=None, n_episodes=None,
+    def __init__(self, agent_name, env, results_dir, env_name, quiet, show_progress_bar,
+                 n_epochs, n_steps=None, n_episodes=None,
                  n_steps_test=None, n_episodes_test=None, sweep_name='', **kwargs):
         self._agent_name = agent_name
         self._env = env
@@ -28,7 +29,7 @@ class BenchmarkExperiment:
 
         self._learn_params = dict(
             render=False,
-            quiet=quiet
+            quiet=quiet or not show_progress_bar
         )
 
         if n_steps is None and n_episodes is not None:
@@ -40,7 +41,8 @@ class BenchmarkExperiment:
 
         self._eval_params = dict(
             render=False,
-            quiet=quiet)
+            quiet=quiet or not show_progress_bar
+        )
 
         if n_steps_test is None and n_episodes_test is not None:
             self._eval_params['n_episodes'] = n_episodes_test
@@ -51,7 +53,7 @@ class BenchmarkExperiment:
 
         self._n_epochs = n_epochs
 
-    def run(self, save_agent, quiet, seed):
+    def run(self, save_agent, quiet, show_progress_bar, seed):
 
         np.random.seed(seed)
         torch.manual_seed(seed)
@@ -83,7 +85,7 @@ class BenchmarkExperiment:
         if not quiet:
             logger.epoch_info(0, **results_dict)
 
-        for epoch in trange(self._n_epochs, disable=quiet, leave=False):
+        for epoch in trange(self._n_epochs, disable=quiet or not show_progress_bar, leave=False):
             try:
                 core.learn(**self._learn_params, **self._agent_builder.get_fit_params())
             except:

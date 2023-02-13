@@ -101,6 +101,7 @@ class BenchmarkSuite:
             self._launcher.add_experiment(env__=environment_name,
                                           agent__=agent_name,
                                           quiet=self._config.quiet,
+                                          show_progress_bar=self._config.show_progress_bar,
                                           **agent_params,
                                           **run_params,
                                           **masked_env_params)
@@ -119,6 +120,7 @@ class BenchmarkSuite:
                                           agent__=agent_name,
                                           sweep_name__=sweep_name,
                                           quiet=self._config.quiet,
+                                          show_progress_bar=self._config.show_progress_bar,
                                           **new_params,
                                           **run_params,
                                           **masked_env_params)

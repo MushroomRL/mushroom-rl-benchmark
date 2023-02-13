@@ -15,6 +15,12 @@ class BenchmarkConfiguration:
             else:
                 self._quiet = True
 
+            if 'show_progress_bar' in self._suite_params:
+                self._show_progress_bar = self._suite_params['show_progress_bar']
+                del self._suite_params['show_progress_bar']
+            else:
+                self._show_progress_bar = True
+
         self._env_params = dict()
         env_cfg_dir = self._config_path / 'env'
         for env_config_path in env_cfg_dir.iterdir():
@@ -36,6 +42,10 @@ class BenchmarkConfiguration:
     @property
     def quiet(self):
         return self._quiet
+
+    @property
+    def show_progress_bar(self):
+        return self._show_progress_bar
 
     @property
     def suite_params(self):

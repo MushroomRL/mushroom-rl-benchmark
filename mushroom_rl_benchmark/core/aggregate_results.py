@@ -21,8 +21,8 @@ def aggregate_results(res_dir, res_id, log_console=False):
     loader = BenchmarkDataLoader(work_dir)
 
     logger = Logger(work_dir.name, results_dir=work_dir.parent, log_console=log_console)
-    logger.strong_line()
-    logger.info(f'Env: {work_dir.parent.name} Alg: {res_id}')
+    logger.weak_line()
+    logger.info(f'Environment: {work_dir.parent.name}, Agent: {res_id}')
     logger.info(f'path {work_dir}')
 
     has_entropy = (work_dir / 'E-0.npy').exists()
@@ -40,6 +40,8 @@ def aggregate_results(res_dir, res_id, log_console=False):
 
     skip_cnt = 0
 
+    failed_seeds = list()
+    found_seeds = list()
     for seed in range(n_seeds):
         try:
             J = loader.load_run_file('J', seed)
@@ -55,15 +57,23 @@ def aggregate_results(res_dir, res_id, log_console=False):
                 E = loader.load_run_file('E', seed)
                 E_list.append(E)
 
-            logger.info(f'Run {seed} OK')
-        except Exception as e:
-            logger.info(f'Run {seed} ERROR')
+            found_seeds.append(seed)
+
+        except FileNotFoundError:
+            failed_seeds.append(seed)
             skip_cnt += 1
-            print(e)
+        except Exception as e:
+            logger.exception(e)
+
+    if len(failed_seeds) > 0:
+        logger.warning(f'NUMBER OF FAILED RUNS {len(failed_seeds)}/{n_seeds}')
+        logger.warning(f'Failed seeds: {str(failed_seeds)}')
 
     J_len = np.array([len(J) for J in J_list])
     max_len = max(J_len)
     completed = np.argwhere(J_len == max_len).flatten()
+    incomplete_seeds = np.argwhere(J_len < max_len).flatten()
+    incomplete_count = len(incomplete_seeds)
     skip_cnt += len(J_list) - len(completed)
 
     J_np = np.array([J_list[i] for i in completed])
@@ -74,8 +84,10 @@ def aggregate_results(res_dir, res_id, log_console=False):
         E_np = np.array([E_list[i] for i in completed])
 
     if skip_cnt < n_seeds:
-        if skip_cnt > 0:
-            logger.warning(f'NUMBER OF FAILED RUNS: {skip_cnt}/{n_seeds}')
+        if incomplete_count > 0:
+            total = incomplete_count + len(completed)
+            logger.warning(f'NUMBER OF INCOMPLETE RUNS: {incomplete_count}/{total}')
+            logger.warning(f'Incomplete seeds: {str(np.array(found_seeds)[incomplete_seeds])}')
         else:
             logger.info('All runs succeeded')
         logger.log_numpy_array(J=J_np, R=R_np)
