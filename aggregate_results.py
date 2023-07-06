@@ -11,8 +11,8 @@ def get_args():
     arg_test = parser.add_argument_group('benchmark parameters')
     arg_test.add_argument("-d", "--log-dir", type=str, required=True,
                           help='Path of the top level folder dir')
-    arg_test.add_argument("-p", "--is-sweep", action='store_true',
-                          help='Path of the top level folder dir')
+    arg_test.add_argument("-s", "--is-sweep", action='store_true',
+                          help='If the logs are from a parameter sweep or not')
     arg_test.add_argument("-i", "--ignore", type=str, nargs='*', default=[],
                           help='Folders to ignore')
 
