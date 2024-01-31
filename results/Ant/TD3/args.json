@@ -1,0 +1,28 @@
+{
+  "agent": "TD3",
+  "env": "Ant",
+  "sweep_name": "",
+  "quiet": false,
+  "show_progress_bar": false,
+  "save_agent": false,
+  "seed": 24,
+  "results_dir": "./logs/benchmark_2024-01-25_14-19-43/Ant/TD3",
+  "actor_lr": 0.001,
+  "critic_lr": 0.001,
+  "n_features": [
+    400,
+    300
+  ],
+  "initial_replay_size": 10000,
+  "max_replay_size": 1000000,
+  "tau": 0.005,
+  "batch_size": 100,
+  "n_epochs": 50,
+  "n_steps": 30000,
+  "n_episodes_test": 10,
+  "env_name": "Gym.Ant-v4",
+  "env_params_horizon": 1000,
+  "env_params_gamma": 0.99,
+  "git_hash": "14f2694d29b5ce772733c3e48cbba43adc1e3ac9",
+  "git_url": "https://github.com/MushroomRL/mushroom-rl-benchmark.git"
+}

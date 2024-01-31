@@ -1,0 +1,144 @@
+31/01/2024 11:07:05 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:05 [INFO] Environment: Hopper, Agent: TRPO
+31/01/2024 11:07:05 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/TRPO
+31/01/2024 11:07:05 [INFO] has entropy: True
+31/01/2024 11:07:05 [INFO] has value function: True
+31/01/2024 11:07:06 [INFO] All runs succeeded
+31/01/2024 11:07:06 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:06 [INFO] Environment: Hopper, Agent: SAC
+31/01/2024 11:07:06 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/SAC
+31/01/2024 11:07:06 [INFO] has entropy: True
+31/01/2024 11:07:06 [INFO] has value function: True
+31/01/2024 11:07:06 [INFO] All runs succeeded
+31/01/2024 11:07:07 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:07 [INFO] Environment: Hopper, Agent: PPO
+31/01/2024 11:07:07 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/PPO
+31/01/2024 11:07:07 [INFO] has entropy: True
+31/01/2024 11:07:07 [INFO] has value function: True
+31/01/2024 11:07:07 [INFO] All runs succeeded
+31/01/2024 11:07:07 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:07 [INFO] Environment: Hopper, Agent: A2C
+31/01/2024 11:07:07 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/A2C
+31/01/2024 11:07:07 [INFO] has entropy: True
+31/01/2024 11:07:07 [INFO] has value function: True
+31/01/2024 11:07:12 [INFO] All runs succeeded
+31/01/2024 11:07:12 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:12 [INFO] Environment: Hopper, Agent: TD3
+31/01/2024 11:07:12 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/TD3
+31/01/2024 11:07:12 [INFO] has entropy: False
+31/01/2024 11:07:12 [INFO] has value function: True
+31/01/2024 11:07:12 [INFO] All runs succeeded
+31/01/2024 11:07:12 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:12 [INFO] Environment: Hopper, Agent: DDPG
+31/01/2024 11:07:12 [INFO] path logs/benchmark_2024-01-25_14-19-43/Hopper/DDPG
+31/01/2024 11:07:12 [INFO] has entropy: False
+31/01/2024 11:07:12 [INFO] has value function: True
+31/01/2024 11:07:12 [INFO] All runs succeeded
+31/01/2024 11:07:12 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:12 [INFO] Environment: Walker2d, Agent: PPO
+31/01/2024 11:07:12 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/PPO
+31/01/2024 11:07:12 [INFO] has entropy: True
+31/01/2024 11:07:12 [INFO] has value function: True
+31/01/2024 11:07:13 [INFO] All runs succeeded
+31/01/2024 11:07:13 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:13 [INFO] Environment: Walker2d, Agent: TRPO
+31/01/2024 11:07:13 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/TRPO
+31/01/2024 11:07:13 [INFO] has entropy: True
+31/01/2024 11:07:13 [INFO] has value function: True
+31/01/2024 11:07:13 [INFO] All runs succeeded
+31/01/2024 11:07:13 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:13 [INFO] Environment: Walker2d, Agent: A2C
+31/01/2024 11:07:13 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/A2C
+31/01/2024 11:07:13 [INFO] has entropy: True
+31/01/2024 11:07:13 [INFO] has value function: True
+31/01/2024 11:07:13 [INFO] All runs succeeded
+31/01/2024 11:07:13 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:13 [INFO] Environment: Walker2d, Agent: TD3
+31/01/2024 11:07:13 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/TD3
+31/01/2024 11:07:13 [INFO] has entropy: False
+31/01/2024 11:07:13 [INFO] has value function: True
+31/01/2024 11:07:13 [INFO] All runs succeeded
+31/01/2024 11:07:14 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:14 [INFO] Environment: Walker2d, Agent: SAC
+31/01/2024 11:07:14 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/SAC
+31/01/2024 11:07:14 [INFO] has entropy: True
+31/01/2024 11:07:14 [INFO] has value function: True
+31/01/2024 11:07:14 [INFO] All runs succeeded
+31/01/2024 11:07:14 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:14 [INFO] Environment: Walker2d, Agent: DDPG
+31/01/2024 11:07:14 [INFO] path logs/benchmark_2024-01-25_14-19-43/Walker2d/DDPG
+31/01/2024 11:07:14 [INFO] has entropy: False
+31/01/2024 11:07:14 [INFO] has value function: True
+31/01/2024 11:07:14 [INFO] All runs succeeded
+31/01/2024 11:07:14 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:14 [INFO] Environment: Ant, Agent: TRPO
+31/01/2024 11:07:14 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/TRPO
+31/01/2024 11:07:14 [INFO] has entropy: True
+31/01/2024 11:07:14 [INFO] has value function: True
+31/01/2024 11:07:14 [INFO] All runs succeeded
+31/01/2024 11:07:14 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:14 [INFO] Environment: Ant, Agent: TD3
+31/01/2024 11:07:14 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/TD3
+31/01/2024 11:07:14 [INFO] has entropy: False
+31/01/2024 11:07:14 [INFO] has value function: True
+31/01/2024 11:07:15 [INFO] All runs succeeded
+31/01/2024 11:07:15 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:15 [INFO] Environment: Ant, Agent: A2C
+31/01/2024 11:07:15 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/A2C
+31/01/2024 11:07:15 [INFO] has entropy: True
+31/01/2024 11:07:15 [INFO] has value function: True
+31/01/2024 11:07:15 [INFO] All runs succeeded
+31/01/2024 11:07:15 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:15 [INFO] Environment: Ant, Agent: PPO
+31/01/2024 11:07:15 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/PPO
+31/01/2024 11:07:15 [INFO] has entropy: True
+31/01/2024 11:07:15 [INFO] has value function: True
+31/01/2024 11:07:15 [INFO] All runs succeeded
+31/01/2024 11:07:15 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:15 [INFO] Environment: Ant, Agent: SAC
+31/01/2024 11:07:15 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/SAC
+31/01/2024 11:07:15 [INFO] has entropy: True
+31/01/2024 11:07:15 [INFO] has value function: True
+31/01/2024 11:07:16 [INFO] All runs succeeded
+31/01/2024 11:07:16 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:16 [INFO] Environment: Ant, Agent: DDPG
+31/01/2024 11:07:16 [INFO] path logs/benchmark_2024-01-25_14-19-43/Ant/DDPG
+31/01/2024 11:07:16 [INFO] has entropy: False
+31/01/2024 11:07:16 [INFO] has value function: True
+31/01/2024 11:07:16 [INFO] All runs succeeded
+31/01/2024 11:07:16 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:16 [INFO] Environment: HalfCheetah, Agent: TRPO
+31/01/2024 11:07:16 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/TRPO
+31/01/2024 11:07:16 [INFO] has entropy: True
+31/01/2024 11:07:16 [INFO] has value function: True
+31/01/2024 11:07:16 [INFO] All runs succeeded
+31/01/2024 11:07:16 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:16 [INFO] Environment: HalfCheetah, Agent: TD3
+31/01/2024 11:07:16 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/TD3
+31/01/2024 11:07:16 [INFO] has entropy: False
+31/01/2024 11:07:16 [INFO] has value function: True
+31/01/2024 11:07:17 [INFO] All runs succeeded
+31/01/2024 11:07:17 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:17 [INFO] Environment: HalfCheetah, Agent: A2C
+31/01/2024 11:07:17 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/A2C
+31/01/2024 11:07:17 [INFO] has entropy: True
+31/01/2024 11:07:17 [INFO] has value function: True
+31/01/2024 11:07:17 [INFO] All runs succeeded
+31/01/2024 11:07:17 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:17 [INFO] Environment: HalfCheetah, Agent: PPO
+31/01/2024 11:07:17 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/PPO
+31/01/2024 11:07:17 [INFO] has entropy: True
+31/01/2024 11:07:17 [INFO] has value function: True
+31/01/2024 11:07:17 [INFO] All runs succeeded
+31/01/2024 11:07:17 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:17 [INFO] Environment: HalfCheetah, Agent: DDPG
+31/01/2024 11:07:17 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/DDPG
+31/01/2024 11:07:17 [INFO] has entropy: False
+31/01/2024 11:07:17 [INFO] has value function: True
+31/01/2024 11:07:18 [INFO] All runs succeeded
+31/01/2024 11:07:18 [INFO] ---------------------------------------------------------------------------------------------------
+31/01/2024 11:07:18 [INFO] Environment: HalfCheetah, Agent: SAC
+31/01/2024 11:07:18 [INFO] path logs/benchmark_2024-01-25_14-19-43/HalfCheetah/SAC
+31/01/2024 11:07:18 [INFO] has entropy: True
+31/01/2024 11:07:18 [INFO] has value function: True
+31/01/2024 11:07:18 [INFO] All runs succeeded

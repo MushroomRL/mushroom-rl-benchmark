@@ -18,16 +18,16 @@ Hopper-v3
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../../results/params/Hopper-v3.yaml
+        .. literalinclude:: ../../../../results/params/Hopper.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../../results/plots/Hopper-v3/J.png
+        .. image:: ../../../../results/plots/Hopper/J.png
            :width: 400
-        .. image:: ../../../../results/plots/Hopper-v3/R.png
+        .. image:: ../../../../results/plots/Hopper/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Hopper-v3/entropy.png
+        .. image:: ../../../../results/plots/Hopper/entropy.png
            :width: 400
 
 
@@ -40,16 +40,16 @@ Walker2d-v3
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../../results/params/Walker2d-v3.yaml
+        .. literalinclude:: ../../../../results/params/Walker2d.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../../results/plots/Walker2d-v3/J.png
+        .. image:: ../../../../results/plots/Walker2d/J.png
            :width: 400
-        .. image:: ../../../../results/plots/Walker2d-v3/R.png
+        .. image:: ../../../../results/plots/Walker2d/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Walker2d-v3/entropy.png
+        .. image:: ../../../../results/plots/Walker2d/entropy.png
            :width: 400
 
 
@@ -64,16 +64,16 @@ HalfCheetah-v3
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../../results/params/HalfCheetah-v3.yaml
+        .. literalinclude:: ../../../../results/params/HalfCheetah.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../../results/plots/HalfCheetah-v3/J.png
+        .. image:: ../../../../results/plots/HalfCheetah/J.png
            :width: 400
-        .. image:: ../../../../results/plots/HalfCheetah-v3/R.png
+        .. image:: ../../../../results/plots/HalfCheetah/R.png
            :width: 400
-        .. image:: ../../../../results/plots/HalfCheetah-v3/entropy.png
+        .. image:: ../../../../results/plots/HalfCheetah/entropy.png
            :width: 400
 
 
@@ -86,15 +86,15 @@ Ant-v3
     .. container:: leftside
 
         .. highlight:: yaml
-        .. literalinclude:: ../../../../results/params/Ant-v3.yaml
+        .. literalinclude:: ../../../../results/params/Ant.yaml
             :lines: 3-
 
     .. container:: rightside
 
-        .. image:: ../../../../results/plots/Ant-v3/J.png
+        .. image:: ../../../../results/plots/Ant/J.png
            :width: 400
-        .. image:: ../../../../results/plots/Ant-v3/R.png
+        .. image:: ../../../../results/plots/Ant/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Ant-v3/entropy.png
+        .. image:: ../../../../results/plots/Ant/entropy.png
            :width: 400
 

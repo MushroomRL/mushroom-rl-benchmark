@@ -1,0 +1,3 @@
+pybullet build time: May 20 2022 19:44:17
+/var/spool/slurmd/job781481/slurm_script: line 36: 29182 Killed                  python3 /home/hendawy/code/mushroom-rl-benchmark/mushroom_rl_benchmark/core/run.py --seed $SLURM_ARRAY_TASK_ID --results_dir ./logs/benchmark_2024-01-25_14-19-43/Walker2d/TD3 --quiet False --show_progress_bar False --actor_lr 0.001 --critic_lr 0.001 --n_features 400 300 --initial_replay_size 1000 --max_replay_size 1000000 --tau 0.005 --batch_size 100 --n_epochs 50 --n_steps 30000 --n_episodes_test 10 --env_name Gym.Walker2d-v4 --env_params_horizon 1000 --env_params_gamma 0.99 --env Walker2d --agent TD3
+slurmstepd: error: Detected 1 oom_kill event in StepId=781481.batch. Some of the step tasks have been OOM Killed.

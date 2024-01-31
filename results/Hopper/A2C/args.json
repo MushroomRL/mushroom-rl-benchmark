@@ -1,0 +1,21 @@
+{
+  "agent": "A2C",
+  "env": "Hopper",
+  "sweep_name": "",
+  "quiet": false,
+  "show_progress_bar": false,
+  "save_agent": false,
+  "seed": 23,
+  "results_dir": "./logs/benchmark_2024-01-25_14-19-43/Hopper/A2C",
+  "actor_lr": 0.0007,
+  "critic_lr": 0.0007,
+  "preprocessors": "StandardizationPreprocessor",
+  "n_epochs": 50,
+  "n_steps": 30000,
+  "n_episodes_test": 10,
+  "env_name": "Gym.Hopper-v4",
+  "env_params_horizon": 1000,
+  "env_params_gamma": 0.99,
+  "git_hash": "14f2694d29b5ce772733c3e48cbba43adc1e3ac9",
+  "git_url": "https://github.com/MushroomRL/mushroom-rl-benchmark.git"
+}
