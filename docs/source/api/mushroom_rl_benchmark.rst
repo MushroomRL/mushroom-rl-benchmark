@@ -8,6 +8,24 @@ Suite
    :members:
    :undoc-members:
    :show-inheritance:
+   
+
+Configuration
+-------------
+
+.. automodule:: mushroom_rl_benchmark.core.configuration
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   
+Params
+------
+
+.. automodule:: mushroom_rl_benchmark.core.params
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 
 Experiment
@@ -18,24 +36,21 @@ Experiment
    :undoc-members:
    :show-inheritance:
 
-Logger
-------
+   
+Data Aggregation
+----------------
 
-.. automodule:: mushroom_rl_benchmark.core.logger
+.. automodule:: mushroom_rl_benchmark.core.aggregate_results
    :members:
    :undoc-members:
    :show-inheritance:
+
 
 
 Visualizer
 ----------
 
 .. automodule:: mushroom_rl_benchmark.core.visualizer
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. automodule:: mushroom_rl_benchmark.core.suite_visualizer
    :members:
    :undoc-members:
    :show-inheritance:

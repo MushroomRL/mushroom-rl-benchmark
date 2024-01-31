@@ -9,6 +9,7 @@ from mushroom_rl_benchmark.core import BenchmarkDataLoader
 def aggregate_results(res_dir, res_id, log_console=False):
     """
     Function to aggregate the benchmark results from running in SLURM mode.
+    
     Args:
         res_dir (str): path to the result directory;
         res_id (str): log id of the result directory;

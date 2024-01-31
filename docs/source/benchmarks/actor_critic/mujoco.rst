@@ -27,7 +27,7 @@ Hopper-v3
            :width: 400
         .. image:: ../../../../results/plots/Hopper/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Hopper/entropy.png
+        .. image:: ../../../../results/plots/Hopper/E.png
            :width: 400
 
 
@@ -49,7 +49,7 @@ Walker2d-v3
            :width: 400
         .. image:: ../../../../results/plots/Walker2d/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Walker2d/entropy.png
+        .. image:: ../../../../results/plots/Walker2d/E.png
            :width: 400
 
 
@@ -73,7 +73,7 @@ HalfCheetah-v3
            :width: 400
         .. image:: ../../../../results/plots/HalfCheetah/R.png
            :width: 400
-        .. image:: ../../../../results/plots/HalfCheetah/entropy.png
+        .. image:: ../../../../results/plots/HalfCheetah/E.png
            :width: 400
 
 
@@ -95,6 +95,6 @@ Ant-v3
            :width: 400
         .. image:: ../../../../results/plots/Ant/R.png
            :width: 400
-        .. image:: ../../../../results/plots/Ant/entropy.png
+        .. image:: ../../../../results/plots/Ant/E.png
            :width: 400
 

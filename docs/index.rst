@@ -54,9 +54,7 @@ Benchmarks
    :maxdepth: 2
    :caption: Benchmarks Results:
 
-   source/benchmarks/policy_search.rst
    source/benchmarks/actor_critic.rst
-   source/benchmarks/value_based.rst
 
 .. toctree::
    :maxdepth: 2
