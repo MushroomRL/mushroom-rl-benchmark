@@ -10,8 +10,8 @@ n_steps          30000
 n_episodes_test  10
 ===============  ======
 
-Pendulum-v0
------------
+Pendulum
+--------
 
 
 .. container:: twocol
@@ -32,8 +32,8 @@ Pendulum-v0
            :width: 400
 
 
-LunarLanderContinuous-v2
-------------------------
+LunarLanderContinuous
+---------------------
 
 
 .. container:: twocol

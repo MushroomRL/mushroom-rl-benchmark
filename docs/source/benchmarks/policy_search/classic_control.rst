@@ -33,7 +33,7 @@ n_episodes_test  10
 
 
 LQR
-------
+---
 
 ===============  ======
 Run Parameters

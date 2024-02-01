@@ -10,8 +10,8 @@ n_steps          250000
 n_episodes_test  125000
 ===============  ======
 
-BreakoutDeterministic-v4
-------------------------
+BreakoutDeterministic
+---------------------
 
 .. container:: twocol
 

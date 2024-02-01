@@ -10,8 +10,8 @@ n_steps          1000
 n_episodes_test  10
 ===============  ======
 
-MountainCar-v0
---------------
+MountainCar
+-----------
 
 
 .. container:: twocol

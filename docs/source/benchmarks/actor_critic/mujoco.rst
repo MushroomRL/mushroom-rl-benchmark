@@ -10,8 +10,8 @@ n_steps          30000
 n_episodes_test  10
 ===============  ======
 
-Hopper-v3
----------
+Hopper
+------
 
 .. container:: twocol
 
@@ -32,8 +32,8 @@ Hopper-v3
 
 
 
-Walker2d-v3
------------
+Walker2d
+--------
 
 .. container:: twocol
 
@@ -56,8 +56,8 @@ Walker2d-v3
 
 
 
-HalfCheetah-v3
---------------
+HalfCheetah
+-----------
 
 .. container:: twocol
 
@@ -77,8 +77,8 @@ HalfCheetah-v3
            :width: 400
 
 
-Ant-v3
-------
+Ant
+---
 
 
 .. container:: twocol
