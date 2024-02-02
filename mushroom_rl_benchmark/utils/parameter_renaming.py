@@ -6,6 +6,9 @@ __env_param_prefix__ = 'env_params_'
 def mask_env_parameters(env_parameters):
     masked_env_parameters = dict(env_name=env_parameters['name'])
 
+    if env_parameters['params'] is None:
+        env_parameters['params'] = dict()
+        
     for key, value in env_parameters['params'].items():
         masked_key = __env_param_prefix__ + key
         masked_env_parameters[masked_key] = value
