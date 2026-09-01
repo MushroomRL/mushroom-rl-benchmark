@@ -1,11 +1,11 @@
-import numpy as np
 import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import SAC
+from mushroom_rl.approximators.parametric.networks import ActorNetwork, CriticNetwork
+from mushroom_rl.utils.torch_utils import TorchUtils
 
 from mushroom_rl_benchmark.builders import AgentBuilder
-from mushroom_rl_benchmark.builders.network import SACActorNetwork as ActorNetwork, SACCriticNetwork as CriticNetwork
 
 
 class SACBuilder(AgentBuilder):
@@ -44,31 +44,25 @@ class SACBuilder(AgentBuilder):
         self.actor_sigma_params['input_shape'] = actor_input_shape
         self.actor_sigma_params['output_shape'] = mdp_info.action_space.shape
 
-        critic_input_shape = (actor_input_shape[0] + mdp_info.action_space.shape[0],)
-        self.critic_params["input_shape"] = critic_input_shape
+        self.critic_params['input_shape'] = [actor_input_shape, mdp_info.action_space.shape]
         sac = SAC(mdp_info, self.actor_mu_params, self.actor_sigma_params, self.actor_optimizer, self.critic_params,
                   **self.alg_params)
         return sac
 
     def compute_Q(self, agent, states):
-        Q = list()
-        for state in states:
-            s = np.array([state for i in range(self.n_q_samples)])
-            a = np.array([agent.policy.draw_action(state) for i in range(self.n_q_samples)])
-            Q.append(agent._critic_approximator(s, a).mean())
-        return np.array(Q).mean()
+        states = TorchUtils.to_float_tensor(states)
+        sampled_states = states.repeat_interleave(self.n_q_samples, dim=0)
+        actions = agent.policy.draw_action(sampled_states)
+        q = agent._critic_approximator.predict(sampled_states, actions, prediction='min')
+        return q.mean()
     
     @classmethod
     def default(cls, actor_lr=3e-4, actor_network=ActorNetwork, critic_lr=3e-4, critic_network=CriticNetwork,
                 initial_replay_size=64, max_replay_size=50000, n_features=64, warmup_transitions=100,
                 batch_size=64, tau=5e-3, lr_alpha=3e-3, preprocessors=None, target_entropy=None, use_cuda=False):
 
-        actor_mu_params = dict(network=actor_network,
-                            n_features=n_features,
-                            use_cuda=use_cuda)
-        actor_sigma_params = dict(network=actor_network,
-                                n_features=n_features,
-                                use_cuda=use_cuda)
+        actor_mu_params = dict(network=actor_network, n_features=n_features)
+        actor_sigma_params = dict(network=actor_network, n_features=n_features)
 
         actor_optimizer = {'class': optim.Adam,
                         'params': {'lr': actor_lr}}
@@ -78,8 +72,7 @@ class SACBuilder(AgentBuilder):
                                         'params': {'lr': critic_lr}},
                             loss=F.mse_loss,
                             n_features=n_features,
-                            output_shape=(1,),
-                            use_cuda=use_cuda)
+                            output_shape=(1,))
         
         alg_params = dict(
             initial_replay_size=initial_replay_size,

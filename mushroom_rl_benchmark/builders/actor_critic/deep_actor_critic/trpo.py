@@ -2,10 +2,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import TRPO
+from mushroom_rl.approximators.parametric.networks import ActorNetwork, FeedForwardNetwork
 from mushroom_rl.policy import GaussianTorchPolicy
 
 from mushroom_rl_benchmark.builders import AgentBuilder
-from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 
 class TRPOBuilder(AgentBuilder):
@@ -34,11 +34,11 @@ class TRPOBuilder(AgentBuilder):
 
     def _build(self, mdp_info):
         policy = GaussianTorchPolicy(
-            Network,
+            ActorNetwork,
             mdp_info.observation_space.shape,
             mdp_info.action_space.shape,
             **self.policy_params)
-        self.critic_params["input_shape"] = mdp_info.observation_space.shape
+        self.critic_params['input_shape'] = mdp_info.observation_space.shape
         self.alg_params['critic_params'] = self.critic_params
         return TRPO(mdp_info, policy, **self.alg_params)
 
@@ -46,14 +46,14 @@ class TRPOBuilder(AgentBuilder):
         return agent._V(states).mean()
     
     @classmethod
-    def default(cls, critic_lr=3e-4, critic_network=Network, max_kl=1e-2, ent_coeff=0.0, lam=.95, batch_size=64,
+    def default(cls, critic_lr=3e-4, critic_network=FeedForwardNetwork, max_kl=1e-2, ent_coeff=0.0, lam=.95,
+                batch_size=64,
                 n_features=32, critic_fit_params=None, n_steps_per_fit=3000, n_epochs_line_search=10, n_epochs_cg=100,
                 cg_damping=1e-2, cg_residual_tol=1e-10, std_0=1.0, preprocessors=None, use_cuda=False):
 
         policy_params = dict(
             std_0=std_0,
-            n_features=n_features,
-            use_cuda=use_cuda)
+            n_features=n_features)
 
         critic_params = dict(
             network=critic_network,

@@ -1,6 +1,6 @@
 from mushroom_rl.algorithms.value import QLearning, DoubleQLearning, SARSA, SpeedyQLearning, WeightedQLearning
 from mushroom_rl.policy import EpsGreedy
-from mushroom_rl.utils.parameters import ExponentialParameter, Parameter
+from mushroom_rl.rl_utils.parameters import DecayParameter, Parameter
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 
@@ -32,9 +32,7 @@ class TDFiniteBuilder(AgentBuilder):
         return self.alg_class(mdp_info, policy, self.learning_rate, **self.alg_params)
 
     def compute_Q(self, agent, states):
-        q_max = agent.Q[states, :].max()
-
-        return q_max
+        return agent.Q[states, :].max(axis=-1).mean()
 
     def set_eval_mode(self, agent, eval):
         if eval:
@@ -47,12 +45,12 @@ class TDFiniteBuilder(AgentBuilder):
         if decay_eps == 0:
             epsilon = Parameter(value=epsilon)
         else:
-            epsilon = ExponentialParameter(value=epsilon, exp=decay_eps)
+            epsilon = DecayParameter(value=epsilon, exp=decay_eps)
         if decay_lr == 0:
             learning_rate = Parameter(value=learning_rate)
         else:
-            learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
-
+            learning_rate = DecayParameter(value=learning_rate, exp=decay_lr)
+        epsilon_test = Parameter(value=epsilon_test)
         return cls(learning_rate, epsilon, epsilon_test)
 
 
@@ -84,12 +82,9 @@ class DoubleQLearningBuilder(TDFiniteBuilder):
         super().__init__(learning_rate, epsilon, epsilon_test)
 
     def compute_Q(self, agent, states):
-        q_max_0 = agent.Q[0][states, :].max()
-        q_max_1 = agent.Q[1][states, :].max()
-
-        q_max = (q_max_0 + q_max_1) / 2
-
-        return q_max
+        q_0 = agent.Q[0][states, :].max(axis=-1)
+        q_1 = agent.Q[1][states, :].max(axis=-1)
+        return ((q_0 + q_1) / 2).mean()
 
 
 class WeightedQLearningBuilder(TDFiniteBuilder):
@@ -114,10 +109,10 @@ class WeightedQLearningBuilder(TDFiniteBuilder):
         if decay_eps == 0:
             epsilon = Parameter(value=epsilon)
         else:
-            epsilon = ExponentialParameter(value=epsilon, exp=decay_eps)
+            epsilon = DecayParameter(value=epsilon, exp=decay_eps)
         if decay_lr == 0:
             learning_rate = Parameter(value=learning_rate)
         else:
-            learning_rate = ExponentialParameter(value=learning_rate, exp=decay_lr)
-
+            learning_rate = DecayParameter(value=learning_rate, exp=decay_lr)
+        epsilon_test = Parameter(value=epsilon_test)
         return cls(learning_rate, epsilon, epsilon_test, sampling, precision)

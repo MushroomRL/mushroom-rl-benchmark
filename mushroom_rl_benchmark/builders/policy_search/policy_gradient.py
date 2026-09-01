@@ -2,9 +2,8 @@ import numpy as np
 
 from mushroom_rl.algorithms.policy_search import REINFORCE, GPOMDP, eNAC
 from mushroom_rl.approximators.parametric import LinearApproximator
-from mushroom_rl.approximators.regressor import Regressor
 from mushroom_rl.policy import StateStdGaussianPolicy
-from mushroom_rl.utils.optimizers import AdaptiveOptimizer
+from mushroom_rl.rl_utils.optimizers import AdaptiveOptimizer
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 
@@ -32,13 +31,11 @@ class PolicyGradientBuilder(AgentBuilder):
                          compute_value_function=False)
 
     def _build(self, mdp_info):
-        mu = Regressor(LinearApproximator,
-                       input_shape=mdp_info.observation_space.shape,
-                       output_shape=mdp_info.action_space.shape)
+        mu = LinearApproximator(input_shape=mdp_info.observation_space.shape,
+                                output_shape=mdp_info.action_space.shape)
 
-        sigma = Regressor(LinearApproximator,
-                          input_shape=mdp_info.observation_space.shape,
-                          output_shape=mdp_info.action_space.shape)
+        sigma = LinearApproximator(input_shape=mdp_info.observation_space.shape,
+                                   output_shape=mdp_info.action_space.shape)
 
         sigma_weights = .25 * np.ones(sigma.weights_size)
         sigma.set_weights(sigma_weights)
@@ -51,7 +48,6 @@ class PolicyGradientBuilder(AgentBuilder):
     def default(cls, n_episodes_per_fit=25, alpha=1.0e-2):
         optimizer = AdaptiveOptimizer(eps=alpha)
         return cls(n_episodes_per_fit, optimizer)
-
 
     def compute_Q(self, agent, states):
         pass

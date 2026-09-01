@@ -2,10 +2,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import A2C
+from mushroom_rl.approximators.parametric.networks import ActorNetwork, FeedForwardNetwork
 from mushroom_rl.policy import GaussianTorchPolicy
 
 from mushroom_rl_benchmark.builders import AgentBuilder
-from mushroom_rl_benchmark.builders.network import A2CNetwork as Network
 
 
 class A2CBuilder(AgentBuilder):
@@ -36,11 +36,11 @@ class A2CBuilder(AgentBuilder):
 
     def _build(self, mdp_info):
         policy = GaussianTorchPolicy(
-            Network,
+            ActorNetwork,
             mdp_info.observation_space.shape,
             mdp_info.action_space.shape,
             **self.policy_params)
-        self.critic_params["input_shape"] = mdp_info.observation_space.shape
+        self.critic_params['input_shape'] = mdp_info.observation_space.shape
         self.alg_params['critic_params'] = self.critic_params
         self.alg_params['actor_optimizer'] = self.actor_optimizer
         return A2C(mdp_info, policy, **self.alg_params)
@@ -50,16 +50,16 @@ class A2CBuilder(AgentBuilder):
     
     @classmethod
     def default(cls, actor_lr=7e-4, critic_lr=7e-4, eps_actor=3e-3, eps_critic=1e-5, batch_size=64,
-                max_grad_norm=0.5, ent_coeff=1e-2, critic_network=Network, n_features=64,
+                max_grad_norm=0.5, ent_coeff=1e-2, critic_network=FeedForwardNetwork, n_features=64,
                 preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=1.,
             n_features=n_features,
-            use_cuda=False)
+            activation='tanh')
 
         actor_optimizer = {
-            'class': optim.RMSprop,
+            'class': optim.Adam,
             'params': {'lr': actor_lr, 'eps': eps_actor}}
 
         critic_params = dict(

@@ -1,7 +1,7 @@
 from mushroom_rl.algorithms.value import TrueOnlineSARSALambda
 from mushroom_rl.policy import EpsGreedy
 
-from mushroom_rl.utils.parameters import ExponentialParameter, Parameter
+from mushroom_rl.rl_utils.parameters import DecayParameter, Parameter
 
 from .td_continuous import TDContinuousBuilder
 
@@ -19,10 +19,9 @@ class TrueOnlineSarsaLambdaBuilder(TDContinuousBuilder):
         super().__init__(policy, learning_rate, lambda_coeff, epsilon, epsilon_test, n_tilings, n_tiles)
 
     def build(self, mdp_info):
-        features, approximator_params = self._build_function_approximation(mdp_info)
+        _, approximator_params = self._build_function_approximation(mdp_info)
 
-        return TrueOnlineSARSALambda(mdp_info, self.policy, self.learning_rate, self.lambda_coeff, features,
-                                     approximator_params)
+        return TrueOnlineSARSALambda(mdp_info, self.policy, self.learning_rate, self.lambda_coeff, approximator_params)
 
 
     @classmethod
@@ -30,8 +29,7 @@ class TrueOnlineSarsaLambdaBuilder(TDContinuousBuilder):
         if decay_eps == 0:
             epsilon_p = Parameter(value=epsilon)
         else:
-            epsilon_p = ExponentialParameter(value=epsilon, exp=decay_eps)
-
+            epsilon_p = DecayParameter(value=epsilon, exp=decay_eps)
         epsilon_test_p = Parameter(value=epsilon_test)
         policy = EpsGreedy(epsilon=epsilon_p)
 

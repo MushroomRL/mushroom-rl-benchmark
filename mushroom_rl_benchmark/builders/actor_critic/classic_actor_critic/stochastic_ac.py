@@ -4,11 +4,10 @@ from mushroom_rl_benchmark.builders import AgentBuilder
 
 from mushroom_rl.algorithms.actor_critic import StochasticAC
 from mushroom_rl.policy import StateLogStdGaussianPolicy
-from mushroom_rl.approximators import Regressor
 from mushroom_rl.approximators.parametric import LinearApproximator
 from mushroom_rl.features import Features
 from mushroom_rl.features.tiles import Tiles
-from mushroom_rl.utils.parameters import Parameter
+from mushroom_rl.rl_utils.parameters import Parameter
 
 
 class StochasticACBuilder(AgentBuilder):
@@ -43,26 +42,25 @@ class StochasticACBuilder(AgentBuilder):
         tilings = Tiles.generate(self._n_tilings, [self._n_tiles]*mdp_info.observation_space.shape[0],
                                  mdp_info.observation_space.low, mdp_info.observation_space.high)
 
-        phi = Features(tilings=tilings)
+        phi = Features(tilings)
 
-        tilings_v = tilings + Tiles.generate(1, [1, 1], mdp_info.observation_space.low, mdp_info.observation_space.high)
+        tilings_v = tilings + Tiles.generate(1, [1] * mdp_info.observation_space.shape[0],
+                                             mdp_info.observation_space.low, mdp_info.observation_space.high)
 
-        psi = Features(tilings=tilings_v)
+        psi = Features(tilings_v)
 
-        input_shape = (phi.size,)
+        input_shape = mdp_info.observation_space.shape
 
-        mu = Regressor(LinearApproximator, input_shape=input_shape,
-                       output_shape=mdp_info.action_space.shape)
+        mu = LinearApproximator(input_shape=input_shape, output_shape=mdp_info.action_space.shape, phi=phi)
 
-        std = Regressor(LinearApproximator, input_shape=input_shape,
-                        output_shape=mdp_info.action_space.shape)
+        std = LinearApproximator(input_shape=input_shape, output_shape=mdp_info.action_space.shape, phi=phi)
 
         std.set_weights(np.log(self._std_0) / self._n_tilings * np.ones(std.weights_size))
 
         policy = StateLogStdGaussianPolicy(mu, std)
 
-        return StochasticAC(mdp_info, policy, self._alpha_theta, self._alpha_v, lambda_par=.9,
-                            value_function_features=psi, policy_features=phi)
+        return StochasticAC(mdp_info, policy, self._alpha_theta, self._alpha_v, lambda_par=self._lambda_par,
+                            value_function_features=psi)
 
     @classmethod
     def default(cls, std_0=1.0, alpha_theta=1e-3, alpha_v=1e-1, lambda_par=0.9, n_tilings=10, n_tiles=11):

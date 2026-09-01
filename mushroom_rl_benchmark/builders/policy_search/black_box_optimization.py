@@ -2,10 +2,9 @@ import numpy as np
 
 from mushroom_rl.algorithms.policy_search import PGPE, RWR, REPS, ConstrainedREPS
 from mushroom_rl.policy import DeterministicPolicy
-from mushroom_rl.distributions import GaussianDiagonalDistribution
+from mushroom_rl.distributions import GaussianCholeskyDistribution
 from mushroom_rl.approximators.parametric import LinearApproximator
-from mushroom_rl.approximators.regressor import Regressor
-from mushroom_rl.utils.optimizers import AdaptiveOptimizer
+from mushroom_rl.rl_utils.optimizers import AdaptiveOptimizer
 
 from mushroom_rl_benchmark.builders import AgentBuilder
 
@@ -32,15 +31,14 @@ class BBOBuilder(AgentBuilder):
                          compute_value_function=False)
 
     def _build(self, mdp_info):
-        approximator = Regressor(LinearApproximator,
-                                 input_shape=mdp_info.observation_space.shape,
-                                 output_shape=mdp_info.action_space.shape)
+        approximator = LinearApproximator(input_shape=mdp_info.observation_space.shape,
+                                          output_shape=mdp_info.action_space.shape)
 
         n_weights = approximator.weights_size
         mu = np.zeros(n_weights)
-        sigma = 2e-0 * np.ones(n_weights)
-        policy = DeterministicPolicy(approximator)
-        dist = GaussianDiagonalDistribution(mu, sigma)
+        sigma = 2.0 * np.eye(n_weights)
+        policy = DeterministicPolicy(mu=approximator)
+        dist = GaussianCholeskyDistribution(mu, sigma)
 
         return self.alg_class(mdp_info, dist, policy, **self.algorithm_params)
 
@@ -60,9 +58,8 @@ class PGPEBuilder(BBOBuilder):
 
     @classmethod
     def default(cls, n_episodes_per_fit=25, alpha=3e-1):
-        optimizer = AdaptiveOptimizer(alpha)
+        optimizer = AdaptiveOptimizer(eps=alpha)
         return cls(n_episodes_per_fit, optimizer)
-
 
 
 class RWRBuilder(BBOBuilder):
@@ -84,7 +81,6 @@ class REPSBuilder(BBOBuilder):
 
     @classmethod
     def default(cls, n_episodes_per_fit=25, eps=5e-2):
-
         return cls(n_episodes_per_fit, eps)
 
 

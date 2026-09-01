@@ -1,7 +1,5 @@
 from mushroom_rl.features import Features
 from mushroom_rl.features.tiles import Tiles
-from mushroom_rl.utils.parameters import Parameter
-
 from mushroom_rl_benchmark.builders import AgentBuilder
 
 
@@ -38,11 +36,12 @@ class TDContinuousBuilder(AgentBuilder):
         tilings = Tiles.generate(self.n_tilings, [self.n_tiles] * mdp_info.observation_space.shape[0],
                                  mdp_info.observation_space.low,
                                  mdp_info.observation_space.high)
-        features = Features(tilings=tilings)
+        features = Features(tilings)
 
-        approximator_params = dict(input_shape=(features.size,),
+        approximator_params = dict(input_shape=mdp_info.observation_space.shape,
                                    output_shape=(mdp_info.action_space.n,),
-                                   n_actions=mdp_info.action_space.n)
+                                   n_actions=mdp_info.action_space.n,
+                                   phi=features)
 
         return features, approximator_params
 
@@ -50,9 +49,7 @@ class TDContinuousBuilder(AgentBuilder):
         raise NotImplementedError
 
     def compute_Q(self, agent, states):
-        q_max = agent.Q(agent.phi(states)).max()
-
-        return q_max
+        return agent.Q(states).max(axis=-1).mean()
 
     def set_eval_mode(self, agent, eval):
         if eval:
@@ -63,4 +60,3 @@ class TDContinuousBuilder(AgentBuilder):
     @classmethod
     def default(cls, **kwargs):
         raise NotImplementedError
-

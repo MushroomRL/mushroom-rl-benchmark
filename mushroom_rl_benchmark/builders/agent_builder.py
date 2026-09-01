@@ -1,5 +1,4 @@
-from copy import deepcopy
-import mushroom_rl.utils.preprocessors as m_prep
+import mushroom_rl.rl_utils.preprocessors as m_prep
 
 
 class AgentBuilder:
@@ -40,10 +39,7 @@ class AgentBuilder:
             mdp_info (MDPInfo): information about the environment.
 
         """
-        agent = self._build(mdp_info)
-        self._set_preprocessors(agent, mdp_info)
-
-        return agent
+        return self._build(mdp_info)
 
     def compute_Q(self, agent, states):
         """
@@ -73,9 +69,12 @@ class AgentBuilder:
     def _build(self, mdp_info):
         raise NotImplementedError('AgentBuilder is an abstract class')
 
-    def _set_preprocessors(self, agent, mdp_info):
-        for p in self._preprocessors:
-            agent.add_preprocessor(p(mdp_info))
+    def get_preprocessors(self):
+        """
+        Get preprocessors for the specific AgentBuilder
+
+        """
+        return self._preprocessors
 
     def _configure_preprocessors(self, preprocessors):
         """
@@ -88,7 +87,7 @@ class AgentBuilder:
 
         if preprocessors:
             preprocessors = preprocessors if isinstance(preprocessors, list) else [preprocessors]
-            self._preprocessors = [getattr(m_prep, p) for p in preprocessors]
+            self._preprocessors = [getattr(m_prep, p) if isinstance(p, str) else p for p in preprocessors]
         else:
             self._preprocessors = list()
     
@@ -99,5 +98,3 @@ class AgentBuilder:
 
         """
         raise NotImplementedError('AgentBuilder is an abstract class')
-
-

@@ -1,45 +1,38 @@
 import torch.nn.functional as F
 import torch.optim as optim
 
-from mushroom_rl.algorithms.value import DQN
 from mushroom_rl.approximators.parametric import TorchApproximator
+from mushroom_rl.approximators.parametric.networks import AtariNetwork
 from mushroom_rl.policy import EpsGreedy
-from mushroom_rl.utils.parameters import LinearParameter, Parameter
-from mushroom_rl.utils.replay_memory import PrioritizedReplayMemory
-
-from mushroom_rl_benchmark.builders.network import DQNNetwork
+from mushroom_rl.rl_utils.parameters import LinearParameter, Parameter
+from mushroom_rl.rl_utils.replay_memory import PrioritizedReplayMemory
 
 from .dqn import DQNBuilder
 
 
 class PrioritizedDQNBuilder(DQNBuilder):
     def build(self, mdp_info):
-        self.approximator_params['input_shape'] = mdp_info.observation_space.shape
-        self.approximator_params['output_shape'] = (mdp_info.action_space.n,)
-        self.approximator_params['n_actions'] = mdp_info.action_space.n
-
-        replay_memory = PrioritizedReplayMemory(self.alg_params['initial_replay_size'],
-            self.alg_params['max_replay_size'], alpha=.6,
-            beta=LinearParameter(.4, threshold_value=1, n=25000000 // 4)
-        )
-        self.alg_params['replay_memory'] = replay_memory
-        self.epsilon = LinearParameter(value=1, threshold_value=.05, n=1000000)
-        self.epsilon_test = Parameter(value=.01)
-
-        return DQN(mdp_info, self.policy, self.approximator, self.approximator_params, **self.alg_params)
+        self.alg_params['replay_memory'] = {
+            'class': PrioritizedReplayMemory,
+            'params': {
+                'alpha': .6,
+                'beta': LinearParameter(.4, threshold_value=1., n=25000000 // 4, backend='torch'),
+            },
+        }
+        return super().build(mdp_info)
 
     @classmethod
-    def default(cls, lr=.0001, network=DQNNetwork, initial_replay_size=50000, max_replay_size=1000000,
-                batch_size=32, target_update_frequency=2500, n_steps_per_fit=1, use_cuda=False):
-        policy = EpsGreedy(epsilon=Parameter(value=1.))
+    def default(cls, lr=.0001, network=AtariNetwork, initial_replay_size=50000, max_replay_size=1000000,
+                batch_size=32, target_update_frequency=2500, n_features=512, n_steps_per_fit=1, use_cuda=False):
+        policy = EpsGreedy(Parameter(1.0, backend='torch'), backend='torch')
 
         approximator_params = dict(
             network=network,
+            n_features=n_features,
             optimizer={
                 'class': optim.Adam,
                 'params': {'lr': lr}},
-            loss=F.smooth_l1_loss,
-            use_cuda=use_cuda)
+            loss=F.smooth_l1_loss)
 
         alg_params = dict(
             initial_replay_size=initial_replay_size,

@@ -1,12 +1,11 @@
-import numpy as np
 import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import DDPG
+from mushroom_rl.approximators.parametric.networks import ActorNetwork, CriticNetwork
 from mushroom_rl.policy import OrnsteinUhlenbeckPolicy
 
 from mushroom_rl_benchmark.builders import AgentBuilder
-from mushroom_rl_benchmark.builders.network import DDPGActorNetwork as ActorNetwork, DDPGCriticNetwork as CriticNetwork
 
 
 class DDPGBuilder(AgentBuilder):
@@ -40,13 +39,9 @@ class DDPGBuilder(AgentBuilder):
 
     def _build(self, mdp_info):
         actor_input_shape = mdp_info.observation_space.shape
-        action_scaling = (mdp_info.action_space.high - mdp_info.action_space.low)/2
         self.actor_params['input_shape'] = actor_input_shape
         self.actor_params['output_shape'] = mdp_info.action_space.shape
-        self.actor_params['action_scaling'] = action_scaling
-        critic_input_shape = (actor_input_shape[0] + mdp_info.action_space.shape[0],)
-        self.critic_params["input_shape"] = critic_input_shape
-        self.critic_params["action_shape"] = mdp_info.action_space.shape
+        self.critic_params['input_shape'] = [actor_input_shape, mdp_info.action_space.shape]
         return DDPG(mdp_info, self.policy_class, self.policy_params, self.actor_params, self.actor_optimizer,
                     self.critic_params, **self.alg_params)
 
@@ -54,7 +49,7 @@ class DDPGBuilder(AgentBuilder):
         actions = agent._actor_approximator(states)
         q_max = agent._critic_approximator(states, actions)
         return q_max.mean()
-    
+
     @classmethod
     def default(cls, actor_lr=1e-4, actor_network=ActorNetwork, critic_lr=1e-3, critic_network=CriticNetwork,
                 initial_replay_size=500, max_replay_size=50000, batch_size=64, n_features=[80, 80], tau=1e-3,
@@ -62,13 +57,12 @@ class DDPGBuilder(AgentBuilder):
 
         policy_class = OrnsteinUhlenbeckPolicy
         policy_params = dict(
-            sigma=np.ones(1) * .2, 
+            sigma=.2,
             theta=.15, dt=1e-2)
-            
+
         actor_params = dict(
             network=actor_network,
-            n_features=n_features,
-            use_cuda=use_cuda)
+            n_features=n_features)
 
         actor_optimizer = {
             'class': optim.Adam,
@@ -77,13 +71,12 @@ class DDPGBuilder(AgentBuilder):
         critic_params = dict(
             network=critic_network,
             optimizer={
-                'class': optim.Adam, 
+                'class': optim.Adam,
                 'params': {'lr': critic_lr}},
             loss=F.mse_loss,
             n_features=n_features,
-            output_shape=(1,),
-            use_cuda=use_cuda)
-        
+            output_shape=(1,))
+
         alg_params = dict(
             initial_replay_size=initial_replay_size,
             max_replay_size=max_replay_size,

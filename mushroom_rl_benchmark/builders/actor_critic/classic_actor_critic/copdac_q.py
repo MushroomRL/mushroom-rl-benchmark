@@ -4,11 +4,10 @@ from mushroom_rl_benchmark.builders import AgentBuilder
 
 from mushroom_rl.algorithms.actor_critic import COPDAC_Q
 from mushroom_rl.policy import GaussianPolicy
-from mushroom_rl.approximators import Regressor
 from mushroom_rl.approximators.parametric import LinearApproximator
 from mushroom_rl.features import Features
 from mushroom_rl.features.tiles import Tiles
-from mushroom_rl.utils.parameters import Parameter
+from mushroom_rl.rl_utils.parameters import Parameter
 
 
 class COPDAC_QBuilder(AgentBuilder):
@@ -48,12 +47,11 @@ class COPDAC_QBuilder(AgentBuilder):
         tilings = Tiles.generate(self._n_tilings, [self._n_tiles] * mdp_info.observation_space.shape[0],
                                  mdp_info.observation_space.low, mdp_info.observation_space.high)
 
-        phi = Features(tilings=tilings)
+        phi = Features(tilings)
 
-        input_shape = (phi.size,)
+        input_shape = mdp_info.observation_space.shape
 
-        mu = Regressor(LinearApproximator, input_shape=input_shape,
-                       output_shape=mdp_info.action_space.shape)
+        mu = LinearApproximator(input_shape=input_shape, output_shape=mdp_info.action_space.shape, phi=phi)
 
         self._sigma_exp = self._std_exp * np.eye(mdp_info.action_space.shape[0])
         self._sigma_eval = self._std_eval * np.eye(mdp_info.action_space.shape[0])
@@ -61,7 +59,7 @@ class COPDAC_QBuilder(AgentBuilder):
         policy = GaussianPolicy(mu, self._sigma_exp)
 
         return COPDAC_Q(mdp_info, policy, mu, self._alpha_theta, self._alpha_omega, self._alpha_v,
-                        value_function_features=phi, policy_features=phi)
+                        value_function_features=phi)
 
     def set_eval_mode(self, agent, eval):
         if eval:
@@ -72,7 +70,6 @@ class COPDAC_QBuilder(AgentBuilder):
     @classmethod
     def default(cls, std_exp=1e-1, std_eval=1e-3, alpha_theta=5e-3, alpha_omega=5e-1, alpha_v=5e-1,
                 n_tilings=10, n_tiles=11):
-
         alpha_theta_p = Parameter(alpha_theta / n_tilings)
         alpha_omega_p = Parameter(alpha_omega / n_tilings)
         alpha_v_p = Parameter(alpha_v / n_tilings)

@@ -3,37 +3,32 @@ import torch.optim as optim
 
 from mushroom_rl.algorithms.value import AveragedDQN
 from mushroom_rl.approximators.parametric import TorchApproximator
+from mushroom_rl.approximators.parametric.networks import AtariNetwork
 from mushroom_rl.policy import EpsGreedy
-from mushroom_rl.utils.parameters import LinearParameter, Parameter
-
-from mushroom_rl_benchmark.builders.network import DQNNetwork
+from mushroom_rl.rl_utils.parameters import Parameter
 
 from .dqn import DQNBuilder
 
 
 class AveragedDQNBuilder(DQNBuilder):
-    def build(self, mdp_info):
-        self.approximator_params['input_shape'] = mdp_info.observation_space.shape
-        self.approximator_params['output_shape'] = (mdp_info.action_space.n,)
-        self.approximator_params['n_actions'] = mdp_info.action_space.n
-        self.alg_params['approximator_params'] = self.approximator_params
-        self.epsilon = LinearParameter(value=1, threshold_value=.05, n=1000000)
-        self.epsilon_test = Parameter(value=.01)
+    algorithm = AveragedDQN
 
-        return AveragedDQN(mdp_info, self.policy, self.approximator, **self.alg_params)
+    def build(self, mdp_info):
+        return super().build(mdp_info)
 
     @classmethod
-    def default(cls, lr=.0001, network=DQNNetwork, initial_replay_size=50000, max_replay_size=1000000,
-                batch_size=32, target_update_frequency=2500, n_steps_per_fit=1, n_approximators=10, use_cuda=False):
-        policy = EpsGreedy(epsilon=Parameter(value=1.))
+    def default(cls, lr=.0001, network=AtariNetwork, initial_replay_size=50000, max_replay_size=1000000,
+                batch_size=32, target_update_frequency=2500, n_features=512, n_steps_per_fit=1, n_approximators=10,
+                use_cuda=False):
+        policy = EpsGreedy(Parameter(1.0, backend='torch'), backend='torch')
 
         approximator_params = dict(
             network=network,
+            n_features=n_features,
             optimizer={
                 'class': optim.Adam,
                 'params': {'lr': lr}},
-            loss=F.smooth_l1_loss,
-            use_cuda=use_cuda)
+            loss=F.smooth_l1_loss)
 
         alg_params = dict(
             initial_replay_size=initial_replay_size,

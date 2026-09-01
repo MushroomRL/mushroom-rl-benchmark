@@ -1,7 +1,7 @@
 from copy import deepcopy
-from mushroom_rl.core import Environment
 
-from mushroom_rl.environments import Atari
+import mushroom_rl.environments  # noqa: F401
+from mushroom_rl.core import Environment
 
 
 class EnvironmentBuilder:
@@ -38,11 +38,7 @@ class EnvironmentBuilder:
             eval (bool): flag for activating evaluation mode.
 
         """
-        if isinstance(env, Atari):
-            if eval:
-                env.set_episode_end(False)
-            else:
-                env.set_episode_end(True)
+        pass
 
     def copy(self):
         """

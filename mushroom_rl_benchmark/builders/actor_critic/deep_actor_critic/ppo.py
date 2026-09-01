@@ -2,10 +2,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 from mushroom_rl.algorithms.actor_critic import PPO
+from mushroom_rl.approximators.parametric.networks import ActorNetwork, FeedForwardNetwork
 from mushroom_rl.policy import GaussianTorchPolicy
 
 from mushroom_rl_benchmark.builders import AgentBuilder
-from mushroom_rl_benchmark.builders.network import TRPONetwork as Network
 
 
 class PPOBuilder(AgentBuilder):
@@ -36,11 +36,11 @@ class PPOBuilder(AgentBuilder):
 
     def _build(self, mdp_info):
         policy = GaussianTorchPolicy(
-            Network,
+            ActorNetwork,
             mdp_info.observation_space.shape,
             mdp_info.action_space.shape,
             **self.policy_params)
-        self.critic_params["input_shape"] = mdp_info.observation_space.shape
+        self.critic_params['input_shape'] = mdp_info.observation_space.shape
         self.alg_params['critic_params'] = self.critic_params
         self.alg_params['actor_optimizer'] = self.actor_optimizer
         return PPO(mdp_info, policy, **self.alg_params)
@@ -50,13 +50,12 @@ class PPOBuilder(AgentBuilder):
     
     @classmethod
     def default(cls, eps=0.2, ent_coeff=0., n_epochs_policy=4, actor_lr=3e-4, critic_lr=3e-4, critic_fit_params=None,
-                critic_network=Network, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000, std_0=1.0,
-                preprocessors=None, use_cuda=False):
+                critic_network=FeedForwardNetwork, lam=.95, batch_size=64, n_features=32, n_steps_per_fit=3000,
+                std_0=1.0, preprocessors=None, use_cuda=False):
         
         policy_params = dict(
             std_0=std_0,
-            n_features=n_features,
-            use_cuda=use_cuda)
+            n_features=n_features)
 
         actor_optimizer = {
             'class': optim.Adam,
@@ -73,7 +72,7 @@ class PPOBuilder(AgentBuilder):
             output_shape=(1,))
 
         alg_params = dict(
-            n_epochs_policy=4,
+            n_epochs_policy=n_epochs_policy,
             batch_size=batch_size,
             eps_ppo=eps,
             ent_coeff=ent_coeff,
