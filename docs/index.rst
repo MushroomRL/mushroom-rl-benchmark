@@ -16,8 +16,9 @@ benchmark tasks.
 
 With MushroomRL Benchmarking you can:
 
-- Run the benchmarks in a local machine, both sequentially and in parallel fashion
-- Run experiments on a SLURM-based cluster.
+- Run benchmark jobs locally or with Hydra's Joblib launcher.
+- Submit the same benchmark jobs to Slurm with Hydra Submitit.
+- Persist and plot return, value-function, and policy-entropy metrics.
 
 
 Download and installation
@@ -30,7 +31,7 @@ Installation can be done running
 ::
 
     cd mushroom-rl-benchmark
-    pip install -e .[all]
+    pip install -e .
 
 To compile the documentation:
 
@@ -54,7 +55,9 @@ Benchmarks
    :maxdepth: 2
    :caption: Benchmarks Results:
 
+   source/benchmarks/policy_search.rst
    source/benchmarks/actor_critic.rst
+   source/benchmarks/value_based.rst
 
 .. toctree::
    :maxdepth: 2
@@ -62,4 +65,3 @@ Benchmarks
    :glob:
 
    source/api/*
-
