@@ -40,7 +40,7 @@ The script for starting the benchmarks takes following arguments:
 
 ::
 
-    usage: benchmark.py [-h] -e ENV [ENV ...] [-a ALGORITHM [ALGORITHM ...]] [-s SEEDS] [-x {sequential,parallel,slurm}] [-p PARAMETER_SWEEP] [-t] [-d]
+    usage: benchmark.py [-h] -e ENV [ENV ...] [-a ALGORITHM [ALGORITHM ...]] [-s SEEDS] [-x {sequential,parallel,slurm}] [-t] [-d] [-o OUTPUT_DIR] [--quiet] [--override HYDRA_OVERRIDE]
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -52,12 +52,15 @@ The script for starting the benchmarks takes following arguments:
                             Algorithms to be used by the benchmark. Use 'all' to select all the algorithms defined in the config file.
       -s SEEDS, --seeds SEEDS
                             Number of seed per experiment
-      -x {sequential,parallel,slurm}, --execution_type {sequential,parallel,slurm}
+      -x {sequential,parallel,slurm}, --execution-type {sequential,parallel,slurm}
                             Execution type for the benchmark.
-      -p PARAMETER_SWEEP, --parameter-sweep PARAMETER_SWEEP
-                            Sweep configuration file to be used by the benchmark.
       -t, --test            Flag to test the script and NOT execute the benchmark.
       -d, --demo            Flag to run a reduced version of the benchmark.
+      -o OUTPUT_DIR, --output-dir OUTPUT_DIR
+                            Result directory.
+      --quiet               Disable experiment logs and progress bars.
+      --override HYDRA_OVERRIDE
+                            Additional Hydra override; repeat for multiple overrides.
 
 
 
@@ -69,18 +72,11 @@ The agent and environment parameters used for benchmarking the agents on an envi
 
     cfg/env/*
 
-The available parameter sweeps can be found in:
+The Hydra launcher profiles are located in:
 
 ::
 
-    cfg/sweep/*
-
-The parameters used to configure the main folder, the log id and the execution backend (parallel or slurm) and are
-located in:
-
-::
-
-    cfg/suite.yaml
+    cfg/profile/*
 
 The parameters to customize the plots are located in:
 
@@ -110,6 +106,9 @@ To run the full benchmark for all environments, on a SLURM cluster call the scri
 
     $ ./benchmark.py -e all -x slurm
 
+Multiple environments and algorithms can be listed on the same command line. Hydra Submitit submits the resulting
+environment, algorithm and seed combinations as a SLURM job array.
+
 Create Plots
 ------------
 
@@ -117,6 +116,6 @@ If you need to create the plots for a benchmarking folder, you can call the foll
 
 .. code:: shell
 
-    $ ./create_plots -d <BenchmarkDir>
+    $ ./create_plots.py -d <BenchmarkDir>
 
 where `BenchmarkDir` is the directory of your benchmark, e.g. "logs/benchmark"

@@ -1,13 +1,15 @@
 # GitIgnore for Mushroom Benchmark
 
-# Default excluded folders
 mushroom_rl_benchmark.egg-info/
 __pycache__/
+.pytest_cache/
 .vscode/
+.idea/
 .ipynb_*/
+.venv/
 logs/
 venv/
-results/*/*/run_*
+docs/_build/
 *.err
 *.out
 
@@ -15,11 +17,3 @@ results/*/*/run_*
 .DS_Store
 *.un~
 *.ipynb
-
-# Custom excluded files
-mltrain.py
-heaptrack.*
-mprofile*
-
-# PyCharm
-.idea/
