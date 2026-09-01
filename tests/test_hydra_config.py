@@ -9,12 +9,11 @@ from mushroom_rl_benchmark.core import BenchmarkConfiguration
 
 def test_all_environment_configs_and_launcher_profiles_compose():
     config_dir = Path(__file__).parents[1] / 'cfg'
-    configuration = BenchmarkConfiguration(config_dir)
-    experiment = configuration.experiment('GridWorld', 'QLearning')
+    experiment = dict(env_id='GridWorld', agent_name='QLearning')
     ConfigStore.instance().store(group='experiment', name='test_job', node=experiment)
 
     with initialize_config_dir(config_dir=str(config_dir), version_base=None):
-        for profile in ('basic', 'parallel', 'slurm'):
+        for profile in ('sequential', 'parallel', 'slurm'):
             profile_config = compose(config_name='benchmark',
                                      overrides=['+experiment=test_job', f'profile={profile}'],
                                      return_hydra_config=True)
@@ -32,11 +31,25 @@ def test_programmatic_configuration_uses_the_same_environment_files():
     config_dir = Path(__file__).parents[1] / 'cfg'
     config = BenchmarkConfiguration(config_dir)
 
-    experiment = config.experiment('GridWorld', 'QLearning')
+    env_params, run_params, _ = config.get_experiment_params('GridWorld', 'QLearning')
 
-    assert experiment['env_name'] == 'GridWorld'
-    assert experiment['env_params']['goal'] == [8, 7]
-    assert experiment['run_params']['n_runs'] == 25
+    assert config.get_environment_id('GridWorld') == 'GridWorld'
+    assert env_params['name'] == 'GridWorld'
+    assert env_params['params']['goal'] == [8, 7]
+    assert run_params['n_runs'] == 25
+
+
+def test_flattened_benchmark_job_composes_at_the_root():
+    config_dir = Path(__file__).parents[1] / 'cfg'
+    job = dict(experiment=dict(env_id='GridWorld', agent_name='QLearning'), seed=2)
+    ConfigStore.instance().store(group='benchmark_job', name='test_job', node=job, package='_global_')
+
+    with initialize_config_dir(config_dir=str(config_dir), version_base=None):
+        config = compose(config_name='benchmark', overrides=['+benchmark_job=test_job'])
+
+    assert config.experiment.env_id == 'GridWorld'
+    assert config.experiment.agent_name == 'QLearning'
+    assert config.seed == 2
 
 
 def test_configuration_expands_all_and_explicit_selections():
@@ -48,12 +61,12 @@ def test_configuration_expands_all_and_explicit_selections():
     assert len(all_experiments) == expected
 
     selected = config.select(['Ant', 'Walker2d'], ['PPO', 'TD3'])
-    assert [(job['env_id'], job['agent_name']) for job in selected] == [
-        ('Ant-v5', 'PPO'),
-        ('Ant-v5', 'TD3'),
-        ('Walker2d-v5', 'PPO'),
-        ('Walker2d-v5', 'TD3'),
-    ]
+    assert selected == (
+        ('Ant', 'PPO'),
+        ('Ant', 'TD3'),
+        ('Walker2d', 'PPO'),
+        ('Walker2d', 'TD3'),
+    )
 
     with pytest.raises(ValueError, match='QLearning is not configured for Ant'):
         config.select(['Ant'], ['QLearning'])
