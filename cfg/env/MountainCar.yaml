@@ -1,11 +1,13 @@
 %YAML 1.2
 ---
+id: MountainCar-v0
 run_params:
+  n_runs: 25
   n_epochs: 100
   n_steps: 1000
   n_episodes_test: 10
 env_params:
-  name: Gym.MountainCar-v0
+  name: Gymnasium.MountainCar-v0
   params:
 agent_params:
   SarsaLambdaContinuous:
@@ -14,4 +16,3 @@ agent_params:
   TrueOnlineSarsaLambda:
     alpha: 0.1
     epsilon: 0
-

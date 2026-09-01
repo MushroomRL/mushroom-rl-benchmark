@@ -1,11 +1,13 @@
 %YAML 1.2
 ---
+id: ALE_Breakout-v5
 run_params:
+  n_runs: 5
   n_epochs: 100
   n_steps: 250000
   n_steps_test: 125000
 env_params:
-  name: Atari.BreakoutDeterministic-v4
+  name: Atari.ALE/Breakout-v5
   params:
 agent_params:
   #DQN:

@@ -17,28 +17,29 @@ color_cycle:
   NoisyDQN: C7
   Rainbow: C8
 
-y_limit:
-#      V:
-#        'ymin': -450
-#        'ymax': -50
-
-legend:
-  BreakoutDeterministic-v4:
+settings:
+  ALE_Breakout-v5:
     R:
-      ncol: 3
+      legend:
+        ncol: 3
     J:
-      ncol: 3
+      legend:
+        ncol: 3
 
-  Pendulum-v0:
+  Pendulum-v1:
     R:
-      fontsize: 'large'
-      ncol: 4
+      legend:
+        fontsize: large
+        ncol: 4
     J:
-      fontsize: 'large'
-      ncol: 4
-    entropy:
-      fontsize: 'large'
-      ncol: 4
+      legend:
+        fontsize: large
+        ncol: 4
+    E:
+      legend:
+        fontsize: large
+        ncol: 4
     V:
-      fontsize: 'large'
-      ncol: 4
+      legend:
+        fontsize: large
+        ncol: 4

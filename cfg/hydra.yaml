@@ -1,0 +1,8 @@
+hydra:
+  job:
+    chdir: false
+  run:
+    dir: ${output_root}/${experiment.env_id}/${experiment.agent_name}/${seed}
+  sweep:
+    dir: ${output_root}
+    subdir: ${experiment.env_id}/${experiment.agent_name}/${seed}

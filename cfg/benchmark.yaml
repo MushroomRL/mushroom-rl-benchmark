@@ -1,0 +1,9 @@
+# @package _global_
+
+defaults:
+  - hydra
+  - profile: basic
+  - _self_
+
+log_console: true
+output_root: outputs/${now:%Y-%m-%d_%H-%M-%S}

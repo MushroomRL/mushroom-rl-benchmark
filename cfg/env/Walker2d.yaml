@@ -1,11 +1,13 @@
 %YAML 1.2
 ---
+id: Walker2d-v5
 run_params:
+  n_runs: 25
   n_epochs: 50
   n_steps: 30000
   n_episodes_test: 10
 env_params:
-  name: Gym.Walker2d-v4
+  name: Gymnasium.Walker2d-v5
   params:
     horizon: 1000
     gamma: 0.99

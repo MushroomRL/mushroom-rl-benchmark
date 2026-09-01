@@ -1,11 +1,13 @@
 %YAML 1.2
 ---
+id: Pendulum-v1
 run_params:
+  n_runs: 25
   n_epochs: 10
   n_steps: 30000
   n_episodes_test: 10
 env_params:
-  name: Gym.Pendulum-v0
+  name: Gymnasium.Pendulum-v1
   params:
     horizon: 200
     gamma: 0.99
