@@ -1,3 +1,0 @@
-pyyaml
-mushroom-rl>=1.9.0
-experiment-launcher

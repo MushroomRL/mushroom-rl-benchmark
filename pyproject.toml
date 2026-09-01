@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mushroom-rl-benchmark"
+dynamic = ["version"]
+description = "A Python toolkit for creating and running benchmarks with MushroomRL."
+readme = "README.rst"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    {name = "Davide Tateo", email = "davide.tateo90@gmail.com"},
+    {name = "Benedikt Voelker", email = "mushroom@benedikt-voelker.de"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "hydra-core>=1.3,<1.4",
+    "hydra-joblib-launcher>=1.2,<1.3",
+    "hydra-submitit-launcher>=1.2,<1.3",
+    "mushroom-rl[all,box2d]>=2.0.0rc2,<3",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+]
+
+[project.urls]
+Documentation = "https://mushroom-rl-benchmark.readthedocs.io/"
+Repository = "https://github.com/MushroomRL/mushroom-rl-benchmark"
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+include = ["mushroom_rl_benchmark*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mushroom_rl_benchmark.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

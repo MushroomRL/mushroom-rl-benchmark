@@ -15,19 +15,26 @@ MushroomRL Benchmark
 What is MushroomRL Benchmark?
 =============================
 
-MushroomRL Benchmark is a benchmarking framework that aims to provide the RL research community with a powerful but easy
-to use framework to design, execute and present scientifically sound experimentsfor deep RL algorithms. The benchmarking
-framework builds on top of MushroomRL and utilizes the wide number of algorithms and environments that MushroomRL 
+MushroomRL Benchmark is a benchmarking framework that aims to provide the RL research community with a powerful but
+easy-to-use framework to design, execute and present scientifically sound experiments for deep RL algorithms. The
+benchmarking framework builds on MushroomRL and utilizes the wide range of algorithms and environments that MushroomRL
 provides.
 
 Installation
 ------------
 
-You can do a minimal installation of ``mushroom_rl_benchmark`` with:
+Install ``mushroom_rl_benchmark`` and the supported MushroomRL environments with:
 
 ::
 
-    $ pip install  -e .
+    $ pip install -e .
+
+
+Documentation dependencies follow MushroomRL's documentation setup:
+
+::
+
+    $ pip install -r docs/requirements.txt
 
 
 Launch predefined benchmarks
@@ -36,7 +43,7 @@ Launch predefined benchmarks
 We provide a simple script `benchmark.py` to easily run benchmarks from configuration files.
 You must have both mushroom-rl and mushroom-rl-benchmark packages installed.
 
-The script for starting the benchmarks takes following arguments:
+The script for starting the benchmarks takes the following arguments:
 
 ::
 
@@ -51,7 +58,7 @@ The script for starting the benchmarks takes following arguments:
       -a ALGORITHM [ALGORITHM ...], --algorithm ALGORITHM [ALGORITHM ...]
                             Algorithms to be used by the benchmark. Use 'all' to select all the algorithms defined in the config file.
       -s SEEDS, --seeds SEEDS
-                            Number of seed per experiment
+                            Number of seeds per experiment
       -x {sequential,parallel,slurm}, --execution-type {sequential,parallel,slurm}
                             Execution type for the benchmark.
       -t, --test            Flag to test the script and NOT execute the benchmark.
