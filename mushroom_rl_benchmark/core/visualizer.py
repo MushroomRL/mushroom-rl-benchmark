@@ -22,16 +22,15 @@ class BenchmarkSuiteVisualizer(object):
     """
     plot_counter = 0
 
-    def __init__(self, path, is_sweep, color_cycle=None, y_limit=None, legend=None):
+    def __init__(self, path, is_sweep=False, color_cycle=None, settings=None):
         """
         Constructor.
 
         Args:
             path (str, Path): path to the directory to visualize;
-            is_sweep (bool): whether the benchmark is a parameter sweep;
+            is_sweep (bool, False): whether the benchmark is a parameter sweep;
             color_cycle (dict, None): dictionary with colors to be used for each algorithm;
-            y_limit (dict, None): dictionary with environment specific plot limits.
-            legend (dict, None): dictionary with environment specific legend parameters.
+            settings (dict, None): per-environment and per-metric plot settings.
 
         """
         assert is_sweep is not None
@@ -45,8 +44,7 @@ class BenchmarkSuiteVisualizer(object):
         self._color_cycle = dict() if color_cycle is None else color_cycle
         self._line_cycle = dict()
         self._lines = ["-", "--", "-.", ":"]
-        self._y_limit = dict() if y_limit is None else y_limit
-        self._legend_dict = dict() if legend is None else legend
+        self._settings = dict() if settings is None else settings
 
         if is_sweep:
             self._load_sweep(self._path)
@@ -56,7 +54,7 @@ class BenchmarkSuiteVisualizer(object):
     def _load_benchmark(self, path):
         alg_count = 0
         for env_dir in path.iterdir():
-            if env_dir.is_dir() and env_dir.name not in ['plots', 'params', 'slurm_files', 'slurm_logs']:
+            if env_dir.is_dir() and env_dir.name not in ['plots', 'params']:
                 env = env_dir.name
                 self._loader_dict[env] = dict()
 
@@ -98,17 +96,15 @@ class BenchmarkSuiteVisualizer(object):
                         alg_count += 1
 
     def _legend(self, ax, env, data_type):
-        if env in self._legend_dict and data_type in self._legend_dict[env]:
-            legend_dict = self._legend_dict[env][data_type]
-        else:
-            legend_dict = dict()
+        plot_settings = self._settings.get(env, {}).get(data_type, {})
+        legend_dict = dict(plot_settings.get('legend', {}))
 
         fontsize = legend_dict.pop('fontsize', 'x-large')
         frameon = legend_dict.pop('frameon', False)
         loc = legend_dict.pop('loc', 'center')
         default_bbox = (0.5, -0.25) if data_type == 'E' else (0.5, -0.25)
         bbox_to_anchor = legend_dict.pop('bbox_to_anchor', default_bbox)
-        ncol = legend_dict.pop('ncol', len(self._loader_dict[env]) // 2)
+        ncol = legend_dict.pop('ncol', max(1, len(self._loader_dict[env]) // 2))
         ax.legend(fontsize=fontsize, ncol=ncol, frameon=frameon,
                   loc=loc, bbox_to_anchor=bbox_to_anchor, **legend_dict)
 
@@ -128,7 +124,7 @@ class BenchmarkSuiteVisualizer(object):
         path = self._logger.path
         if subfolder:
             path = path / subfolder
-        path.mkdir(exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True)
 
         file_path = path / (figname + extension)
 
@@ -193,8 +189,9 @@ class BenchmarkSuiteVisualizer(object):
                     plot_mean_conf(data, ax, color=color, line=line, label=alg)
                     max_epochs = max(max_epochs, len(data[0]))
 
-        if env in self._y_limit and data_type in self._y_limit[env]:
-            ax.set_ylim(**self._y_limit[env][data_type])
+        plot_settings = self._settings.get(env, {}).get(data_type, {})
+        if 'y_limits' in plot_settings:
+            ax.set_ylim(**plot_settings['y_limits'])
 
         ax.set_xlim(xmin=0, xmax=max_epochs-1)
         ax.grid()
@@ -245,7 +242,7 @@ class BenchmarkSuiteVisualizer(object):
         if len(boxplot_data) == 0:
             return None
 
-        ax.boxplot(boxplot_data, showfliers=False, labels=boxplot_labels)
+        ax.boxplot(boxplot_data, showfliers=False, tick_labels=boxplot_labels)
         ax.grid()
         fig.tight_layout()
 
@@ -309,13 +306,13 @@ class BenchmarkSuiteVisualizer(object):
 
     def show_reports(self, boxplots=False, alg_sweep=False):
         """
-        Method to show a report of the training metrics from a performend experiment.
+        Method to show a report of the training metrics from a performed experiment.
 
         Args:
             alg_sweep (bool, False): If true, the method will generate a separate figure for each algorithm sweep.
 
         """
-        matplotlib.use(default_backend)
+        plt.switch_backend(default_backend)
         for env in self._loader_dict.keys():
             for data_type in ['J', 'R', 'V', 'E']:
                 if alg_sweep:

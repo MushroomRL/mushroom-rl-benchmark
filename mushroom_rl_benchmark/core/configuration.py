@@ -6,50 +6,14 @@ class BenchmarkConfiguration:
     def __init__(self, config_path):
         self._config_path = Path(config_path)
 
-        with open(self._config_path / 'suite.yaml', 'r') as param_file:
-            self._suite_params = yaml.safe_load(param_file)['suite_params']
-
-            if 'quiet' in self._suite_params:
-                self._quiet = self._suite_params['quiet']
-                del self._suite_params['quiet']
-            else:
-                self._quiet = True
-
-            if 'show_progress_bar' in self._suite_params:
-                self._show_progress_bar = self._suite_params['show_progress_bar']
-                del self._suite_params['show_progress_bar']
-            else:
-                self._show_progress_bar = True
-
         self._env_params = dict()
         env_cfg_dir = self._config_path / 'env'
-        for env_config_path in env_cfg_dir.iterdir():
+        for env_config_path in sorted(env_cfg_dir.iterdir()):
             if env_config_path.suffix == '.yaml':
                 env_name = env_config_path.stem
                 with open(env_config_path, 'r') as config_file:
                     yaml_file = yaml.safe_load(config_file)
                     self._env_params[env_name] = yaml_file
-
-        self._sweep_params = dict()
-        sweep_cfg_dir = self._config_path / 'sweep'
-        for sweep_config_path in sweep_cfg_dir.iterdir():
-            if sweep_config_path.suffix == '.yaml':
-                sweep_name = sweep_config_path.stem
-                with open(sweep_config_path, 'r') as sweep_file:
-                    yaml_file = yaml.safe_load(sweep_file)
-                    self._sweep_params[sweep_name] = yaml_file
-
-    @property
-    def quiet(self):
-        return self._quiet
-
-    @property
-    def show_progress_bar(self):
-        return self._show_progress_bar
-
-    @property
-    def suite_params(self):
-        return self._suite_params
 
     @property
     def envs(self):
@@ -58,18 +22,30 @@ class BenchmarkConfiguration:
     def get_available_agents(self, env):
         return self._env_params[env]['agent_params'].keys()
 
-    def get_available_sweeps(self):
-        return self._sweep_params.keys()
+    def get_environment_id(self, env):
+        return self._env_params[env].get('id', env)
 
     def get_experiment_params(self, env, agent):
         env_config = self._env_params[env]
 
         return env_config['env_params'], env_config['run_params'], env_config['agent_params'][agent]
 
-    def get_sweep_params(self, sweep, alg):
-        algs_sweep_params = self._sweep_params[sweep]
+    def select(self, environments, algorithms):
+        environments = tuple(self.envs) if 'all' in environments else tuple(environments)
+        unknown = [environment for environment in environments if environment not in self.envs]
+        if unknown:
+            available = ', '.join(self.envs)
+            raise ValueError(f'Unknown environment {unknown[0]}. Available environments: {available}')
 
-        if alg in algs_sweep_params:
-            return algs_sweep_params[alg]
-        else:
-            return dict()
+        selected_experiments = list()
+        for environment in environments:
+            available = tuple(self.get_available_agents(environment))
+            selected = available if 'all' in algorithms else tuple(algorithms)
+            invalid = [algorithm for algorithm in selected if algorithm not in available]
+            if invalid:
+                choices = ', '.join(available)
+                raise ValueError(f'{invalid[0]} is not configured for {environment}. '
+                                 f'Available algorithms: {choices}')
+            selected_experiments.extend((environment, algorithm) for algorithm in selected)
+
+        return tuple(selected_experiments)
