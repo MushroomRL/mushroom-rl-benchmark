@@ -2,7 +2,7 @@
 
 defaults:
   - hydra
-  - profile: basic
+  - profile: sequential
   - _self_
 
 log_console: true

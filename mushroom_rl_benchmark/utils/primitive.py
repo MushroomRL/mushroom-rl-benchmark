@@ -5,7 +5,7 @@ def _is_primitive(obj):
     Args:
         obj: the object to test
     Returns:
-        True if the object is primitive i.e. hasn't a __dict__ attribute
+        True if the object is primitive, i.e., it does not have a __dict__ attribute.
 
     """
     return not hasattr(obj, '__dict__')
