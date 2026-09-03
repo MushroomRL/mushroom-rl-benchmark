@@ -106,7 +106,7 @@ class BenchmarkExperiment:
 
         # Compute V
         if agent_builder.compute_value_function:
-            states = dataset.get_init_states()
+            states = core.agent.history_manager.parse_initial_state(dataset)
             V = agent_builder.compute_Q(agent=core.agent, states=states)
             if isinstance(V, torch.Tensor):
                 V = V.detach().item()
@@ -115,7 +115,7 @@ class BenchmarkExperiment:
         # Compute Policy Entropy
         if agent_builder.compute_policy_entropy:
             if agent_builder.compute_entropy_with_states:
-                states = core.agent.history_manager.parse_history(dataset)[0]
+                states = core.agent.history_manager.parse_state(dataset)
                 entropy = core.agent.policy.entropy(states)
             else:
                 entropy = core.agent.policy.entropy()
